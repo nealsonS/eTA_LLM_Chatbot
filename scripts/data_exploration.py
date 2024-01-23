@@ -98,6 +98,29 @@ stock_df = pd.read_csv(raw_path + 'kaggle_download/all_stocks_5yr.csv')
 stock_df.to_csv(proc_path + 'stock.csv')
 
 # ZIXI WANG
+book_math = 'https://web.math.ucsb.edu/~agboola/teaching/2021/winter/122A/rudin.pdf'
+
+#PDFs
+req_bMath = requests.get(book_math)
+
+#write to file
+with open(raw_path + 'book_math.pdf', 'wb') as f_out1:
+    f_out1.write(req_bMath.content)
+
+
+#create a container pandas
+math_df = pd.DataFrame(columns = ['content'])
+
+#parse using pdfplumber
+with pdfplumber.open(raw_path + 'book_math.pdf') as pdf_in:
+    # get pages to iterate over it
+    pages = pdf_in.pages
+
+    for i, p in enumerate(pages):
+        math_df.loc[i, 'content'] = p.extract_text()
+
+    math_df.to_csv(proc_path + 'book_math.csv')
+
 # URL for Wired's mathematics section
 wired_math_url = 'https://www.wired.com/tag/mathematics/'
 
