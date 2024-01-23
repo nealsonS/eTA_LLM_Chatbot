@@ -97,10 +97,12 @@ stock_df = pd.read_csv(raw_path + 'kaggle_download/all_stocks_5yr.csv')
 # # save the csv
 stock_df.to_csv(proc_path + 'stock.csv')
 
-# ZIXI WANG
-book_math = 'https://web.math.ucsb.edu/~agboola/teaching/2021/winter/122A/rudin.pdf'
 
-#PDFs
+
+# ZIXI WANG
+
+#PDF
+book_math = 'https://web.math.ucsb.edu/~agboola/teaching/2021/winter/122A/rudin.pdf'
 req_bMath = requests.get(book_math)
 
 #write to file
@@ -121,6 +123,7 @@ with pdfplumber.open(raw_path + 'book_math.pdf') as pdf_in:
 
     math_df.to_csv(proc_path + 'book_math.csv')
 
+# HTML
 # URL for Wired's mathematics section
 wired_math_url = 'https://www.wired.com/tag/mathematics/'
 
@@ -156,3 +159,12 @@ with open(full_csv_path_wired, 'w', newline='', encoding='utf-8') as csv_file_wi
 print(f'Data saved to {full_csv_path_wired}')
 
 
+# csv
+# Download the Mathematical Problems Dataset from Kaggle
+kaggle.api.dataset_download_files('thedevastator/mathematical-problems-dataset-various-mathematic', path=raw_path + 'kaggle_download', unzip=True)
+
+# Read the csv file
+math_df = pd.read_csv(raw_path + 'kaggle_download/')
+
+# Save the csv file to the processed path
+math_df.to_csv(proc_path + 'math_problems.csv')
