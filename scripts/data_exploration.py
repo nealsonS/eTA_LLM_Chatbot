@@ -119,7 +119,8 @@ with pdfplumber.open(raw_path + 'book_math.pdf') as pdf_in:
     pages = pdf_in.pages
 
     for i, p in enumerate(pages):
-        math_df.loc[i, 'content'] = p.extract_text()
+        if i < 20:
+            math_df.loc[i, 'content'] = p.extract_text()
 
     math_df.to_csv(proc_path + 'book_math.csv')
 
