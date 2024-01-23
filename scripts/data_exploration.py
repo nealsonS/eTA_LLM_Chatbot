@@ -25,7 +25,7 @@ with open(raw_path + 'book_microEcon.pdf', 'wb') as f_out:
     f_out.write(req_bMicroEcon.content)
 
 # create container string
-book_microEcon_str = ''
+book_microEcon_df = pd.DataFrame(columns = ['content'])
 
 # parse using pdfplumber
 with pdfplumber.open(raw_path + 'book_microEcon.pdf') as pdf_in:
@@ -35,10 +35,9 @@ with pdfplumber.open(raw_path + 'book_microEcon.pdf') as pdf_in:
     # my device crashes if I extract all text
     for i, p in enumerate(pages):
 	        if i < 20:
-        		book_microEcon_str = book_microEcon_str + p.extract_text()
+        		book_microEcon_df.loc[i, 'content'] = p.extract_text()
         
-with open(proc_path + 'book_str.txt', 'w', encoding = 'utf-8') as f_out:
-	f_out.write(book_microEcon_str)
+book_microEcon_df.to_csv(proc_path + 'book_str.csv')
 
 
 # HTML
@@ -162,10 +161,10 @@ print(f'Data saved to {full_csv_path_wired}')
 
 # csv
 # Download the Mathematical Problems Dataset from Kaggle
-kaggle.api.dataset_download_files('thedevastator/mathematical-problems-dataset-various-mathematic', path=raw_path + 'kaggle_download', unzip=True)
+kaggle.api.dataset_download_files('extralime/math-lectures', path=raw_path + 'kaggle_download_math', unzip=True)
 
 # Read the csv file
-math_df = pd.read_csv(raw_path + 'kaggle_download/')
+math_df = pd.read_csv(raw_path + 'kaggle_download_math/raw_text.csv')
 
 # Save the csv file to the processed path
 math_df.to_csv(proc_path + 'math_problems.csv')
