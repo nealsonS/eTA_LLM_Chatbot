@@ -1,6 +1,7 @@
 import requests
 from selenium import webdriver
 from bs4 import BeautifulSoup
+import kaggle
 import pdfplumber
 import time
 import pandas as pd
@@ -11,44 +12,34 @@ import os
 raw_path = '../data/raw_data/'
 proc_path = '../data/processed_data/'
 
+# NEALSON SETIAWAN
 # set URLs
 book_microEcon = 'https://assets.openstax.org/oscms-prodcms/media/documents/Microeconomics3e-WEB.pdf?_gl=1*1klko0h*_ga*MTI0MDU1MDk4OC4xNzA1OTY4NjQ0*_ga_T746F8B0QC*MTcwNTk2ODY0My4xLjEuMTcwNTk2ODgzMC40MC4wLjA.'
-book_math = 'https://web.math.ucsb.edu/~agboola/teaching/2021/winter/122A/rudin.pdf'
 
 # PDFs
 # microEcon
 req_bMicroEcon = requests.get(book_microEcon)
-req_bMath = requests.get(book_math)
 
 # write to file
 with open(raw_path + 'book_microEcon.pdf', 'wb') as f_out:
     f_out.write(req_bMicroEcon.content)
-with open(raw_path + 'book_math.pdf', 'wb') as f_out1:
-    f_out1.write(req_bMath.content)
 
-
-# create a container pandas
-microEcon_df = pd.DataFrame(columns = ['content'])
-math_df = pd.DataFrame(columns = ['content'])
+# create container string
+book_microEcon_str = ''
 
 # parse using pdfplumber
 with pdfplumber.open(raw_path + 'book_microEcon.pdf') as pdf_in:
     # get pages to iterate over it
     pages = pdf_in.pages
 
+    # my device crashes if I extract all text
     for i, p in enumerate(pages):
-        microEcon_df.loc[i, 'content'] = p.extract_text()
+	        if i < 20:
+        		book_microEcon_str = book_microEcon_str + p.extract_text()
+        
+with open(proc_path + 'book_str.txt', 'w', encoding = 'utf-8') as f_out:
+	f_out.write(book_microEcon_str)
 
-    microEcon_df.to_csv(proc_path + 'book_microEcon.csv')
-
-with pdfplumber.open(raw_path + 'book_math.pdf') as pdf_in:
-    # get pages to iterate over it
-    pages = pdf_in.pages
-
-    for i, p in enumerate(pages):
-        math_df.loc[i, 'content'] = p.extract_text()
-
-    math_df.to_csv(proc_path + 'book_math.csv')
 
 # HTML
 cnbc_url = 'https://www.cnbc.com/economy/'
@@ -60,7 +51,7 @@ wd = webdriver.Firefox()
 wd.get(cnbc_url)
 
 # wait 15 seconds
-time.sleep(5)
+time.sleep(15)
 
 # get raw HTML
 cnbc_html = wd.page_source
@@ -96,8 +87,17 @@ for ct in card_titles:
 
 cnbc_df.to_csv(proc_path + 'cnbc.csv')
 
+# download csv from stock market
+kaggle.api.authenticate()
+kaggle.api.dataset_download_files('camnugent/sandp500', path=raw_path + 'kaggle_download', unzip=True)
 
+# read the csv from the download
+stock_df = pd.read_csv(raw_path + 'kaggle_download/all_stocks_5yr.csv')
 
+# # save the csv
+stock_df.to_csv(proc_path + 'stock.csv')
+
+# ZIXI WANG
 # URL for Wired's mathematics section
 wired_math_url = 'https://www.wired.com/tag/mathematics/'
 
