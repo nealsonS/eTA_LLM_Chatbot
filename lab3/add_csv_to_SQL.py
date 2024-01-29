@@ -1,6 +1,7 @@
 import mysql.connector
 import sys
 import pandas as pd
+import numpy as np
 
 def create_database(cursor, db_name):
 	cursor.execute(f'CREATE DATABASE IF NOT EXISTS {db_name.lower()}')
@@ -20,15 +21,22 @@ def create_table(cursor, tb_name):
 	cursor.execute(c_query)
 
 def insert_to_table(cursor, tb_name, f_df):
-
-	# get list of values
-	list_val = f_df.values.tolist()
+	
+	# convert to None to avoid loading in NumPy
+	f_df = f_df.where(pd.notna(f_df), None)
+	
+	# list of values
+	val_arr = np.array(f_df.values.tolist())
+	
+	# convert np.nan to None
+	val_arr_None = [[None if np.isnan(val) else val for val in row] for row in val_arr]
 	
 	query=f"""INSERT INTO {tb_name} 
 	(AdjClose, Close, High, Low, Open, Volume) VALUES
-	(%s, %s, %s, %s, %s, %s);
+	({', '.join(['%s' for i in f_df.columns])});
 	"""
-	cursor.executemany(query, list_val)
+
+	cursor.executemany(query, val_arr_None)
 	
 # MAIN FUNCTION
 
@@ -83,18 +91,15 @@ df = pd.read_csv(csv_fname, header=[0,1])
 # swap column levels
 df.columns = df.columns.swaplevel()
 
+
 # for each stock, make a new table
 for stock in df.columns.unique(0):
-	
+
 	sub_df = df.loc[:, stock]
-	print(0)
 	create_table(cursor, stock)
 	con.commit()	
 	insert_to_table(cursor, stock, sub_df)
 	con.commit()
-
-# add to MySQL server
-#df.to_sql('stock_price', con, if_exists='replace', index=False)
 
 # close connection
 con.close()
