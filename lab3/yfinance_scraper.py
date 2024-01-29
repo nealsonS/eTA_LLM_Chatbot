@@ -1,12 +1,12 @@
 import yfinance as yf
 import pandas as pd
-from datetime import datetime
+#from datetime import datetime
 
 
 
 def user_companies():
 	usr_input = input("Enter company name(s), separate by space:\n>>>")
-	companies = usr_input.upper().split(" ")
+	companies = usr_input.upper()
 	return companies
 	
 	
@@ -28,10 +28,9 @@ def user_interval():
 	
 #~~~~~~ from https://www.qmr.ai/yfinance-library-the-definitive-guide/#Fetch_Options_Chain_Data_from_Yahoo_Finance  ~~~~~~
 def hist_scraping(companies, period, interval):
-	end_date = datetime.now().strftime('%Y-%m-%d')
-	tickers = yf.Tickers(companies)
-	tickers_hist = tickers.history(period=period, end=end_date, interval=interval)
-	return tickers_hist
+	#end_date = datetime.now().strftime('%Y-%m-%d')
+	data = yf.download(companies, period=period, interval=interval)
+	return data
 
 
 def export_data(data_hist):
