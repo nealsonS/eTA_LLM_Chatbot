@@ -38,9 +38,9 @@ def export_data(data_hist):
 	print(data.head())
 	df = pd.DataFrame(data)
 	name = input("Name the output file (do not include .csv or .txt):\n>>>")
-	csv_path = "/home/deboragh/Desktop/deborah_2164672036/Lab_3/" + name + ".csv" 
+	csv_path = "./" + name + ".csv" 
 	df.to_csv(csv_path, index=False)
-	txt_path = "/home/deboragh/Desktop/deborah_2164672036/Lab_3/" + name + ".txt"  #txt for easier loading to mysql
+	txt_path = "./" + name + ".txt"  #txt for easier loading to mysql
 	df.to_csv(txt_path, sep='\t', index=False)
 	
 	
