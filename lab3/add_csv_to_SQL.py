@@ -137,7 +137,6 @@ df = pd.read_csv(csv_fname, header = [0,1])
 # check if dataset is multiStock or just one stock
 multiStock_flag = check_ifMultiStock(df)
 
-print(multiStock_flag)
 if multiStock_flag:
 	# swap column levels
 	df.columns = df.columns.swaplevel()
