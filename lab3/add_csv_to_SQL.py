@@ -4,6 +4,24 @@ import pandas as pd
 import numpy as np
 from datetime import date
 
+def check_ifMultiStock(df):
+
+	return not df.columns.levels[1].str.replace('.', '').str.isnumeric().any()
+	
+def flatten_multiLevelColumns(df):
+
+	# get 2nd level of columns
+	row = df.columns.get_level_values(1).values.astype('float')
+	
+	df.columns = df.columns.get_level_values(0)
+	
+	# add it and sort it to add it to the first row
+	df.loc[-1] = row
+	df.index = df.index + 1
+	df = df.sort_index()
+	
+	return df
+
 def create_database(cursor, db_name):
 	cursor.execute(f'CREATE DATABASE IF NOT EXISTS {db_name.lower()}')
 
@@ -97,7 +115,7 @@ create_database(cursor=cursor, db_name=db_name)
 # close the connection
 con.close()
 
-# create a new connection with the new database
+# reconnect to the new database
 con = mysql.connector.connect(
 	user='root', 
 	password=password,
@@ -111,22 +129,40 @@ cursor = con.cursor()
 create_lookup_table(cursor)
 
 # read the csv file
-csv_fname = input('Please input the csv file to be inserted to SQL server:\nPlease input in a xxx.csv format\n')
-df = pd.read_csv(csv_fname, header=[0,1])
+csv_fname = input('Please input the csv file to be inserted to SQL server:\nPlease input without .csv\n')
+csv_fname = csv_fname + '.csv'
 
-# swap column levels
-df.columns = df.columns.swaplevel()
+df = pd.read_csv(csv_fname, header = [0,1])
 
-# for each stock, make a new table
-for stock in df.columns.unique(0):
+# check if dataset is multiStock or just one stock
+multiStock_flag = check_ifMultiStock(df)
 
-	sub_df = df.loc[:, stock]
+print(multiStock_flag)
+if multiStock_flag:
+	# swap column levels
+	df.columns = df.columns.swaplevel()
+
+	# for each stock, make a new table
+	for stock in df.columns.unique(0):
+
+		sub_df = df.loc[:, stock]
+		create_table(cursor, stock)
+		con.commit()	
+		insert_to_table(cursor, stock, sub_df)
+		con.commit()
+		add_stock_to_lookup(cursor, stock)
+		con.commit()
+else:
+
+	df = flatten_multiLevelColumns(df)
+	stock = input('Please enter stock symbol in format XXXX:\nFor Ex: GOOG\n')
+	
 	create_table(cursor, stock)
 	con.commit()	
-	insert_to_table(cursor, stock, sub_df)
+	insert_to_table(cursor, stock, df)
 	con.commit()
 	add_stock_to_lookup(cursor, stock)
 	con.commit()
-
+	
 # close connection
 con.close()
