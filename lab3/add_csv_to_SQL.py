@@ -2,10 +2,19 @@ import mysql.connector
 import sys
 import pandas as pd
 import numpy as np
+from datetime import date
 
 def create_database(cursor, db_name):
 	cursor.execute(f'CREATE DATABASE IF NOT EXISTS {db_name.lower()}')
 
+def create_lookup_table(cursor):
+	q1 = """CREATE TABLE IF NOT EXISTS Stock_lookup(
+		Stock VARCHAR(4), 
+		CreationDate VARCHAR(10), 
+		PRIMARY KEY (Stock)
+		);"""
+		
+	cursor.execute(q1)
 def create_table(cursor, tb_name):
 	d_query=f"DROP TABLE IF EXISTS {tb_name};"
 	c_query=f"""CREATE TABLE {tb_name}(
@@ -35,9 +44,22 @@ def insert_to_table(cursor, tb_name, f_df):
 	(AdjClose, Close, High, Low, Open, Volume) VALUES
 	({', '.join(['%s' for i in f_df.columns])});
 	"""
-
-	cursor.executemany(query, val_arr_None)
 	
+	cursor.executemany(query, val_arr_None)
+
+def add_stock_to_lookup(cursor, tb_name):
+	
+	# get today's date
+	today = date.today().strftime('%Y-%m-%d')
+	q1 = f'INSERT INTO Stock_lookup (Stock, CreationDate) VALUES ("{tb_name}", "{today}");'
+	
+	# to skip if already exists
+	try:
+		cursor.execute(q1)
+	except mysql.connector.errors.IntegrityError as err:
+		pass
+		
+
 # MAIN FUNCTION
 
 # collect password of mysql server
@@ -71,6 +93,7 @@ cursor = con.cursor()
 db_name = input('Please enter the name of the database:\n')
 create_database(cursor=cursor, db_name=db_name)
 
+
 # close the connection
 con.close()
 
@@ -84,13 +107,15 @@ con = mysql.connector.connect(
 # get cursor
 cursor = con.cursor()
 
+# create lookup table if not exist
+create_lookup_table(cursor)
+
 # read the csv file
 csv_fname = input('Please input the csv file to be inserted to SQL server:\nPlease input in a xxx.csv format\n')
 df = pd.read_csv(csv_fname, header=[0,1])
 
 # swap column levels
 df.columns = df.columns.swaplevel()
-
 
 # for each stock, make a new table
 for stock in df.columns.unique(0):
@@ -99,6 +124,8 @@ for stock in df.columns.unique(0):
 	create_table(cursor, stock)
 	con.commit()	
 	insert_to_table(cursor, stock, sub_df)
+	con.commit()
+	add_stock_to_lookup(cursor, stock)
 	con.commit()
 
 # close connection
