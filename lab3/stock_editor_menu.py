@@ -26,6 +26,8 @@ def add_stock(db_name, user, password):
 	print(stock_interval)
 
 	data = hist_scraping(stock_companies, stock_period, stock_interval)
+	data = handle_missing_values(data)
+	data = calculate_daily_returns(data)
 
 	export_sql(data, stock_companies, db_name, user, password)
 
@@ -94,6 +96,16 @@ def drop_stock(db_name, user, password):
 		print(f'Dropped {stock} from portfolio!')
 
 	con.close()
+	
+def handle_missing_values(df):
+    df.ffill(inplace=True)
+    df.bfill(inplace=True)
+    return df
+
+def calculate_daily_returns(df):
+    df['Daily_Returns'] = df['Close'].pct_change()
+    return df
+
 
 #~~~~~~~~~~~~ main() ~~~~~~~~~~~~~~~~~~~
 if __name__ == '__main__':
