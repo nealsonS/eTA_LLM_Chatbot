@@ -231,6 +231,8 @@ if __name__ == '__main__':
 
 	data = hist_scraping(stock_companies, stock_period, stock_interval)
 
+	print('Data scraped!')
+
 	output_format = get_output_format()
 
 	if output_format == 'csv':
