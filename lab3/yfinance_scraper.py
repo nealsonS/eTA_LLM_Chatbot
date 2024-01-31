@@ -6,10 +6,26 @@ import mysql.connector
 from datetime import date
 
 def user_companies():
-	usr_input = input("Enter company name(s), separate by space:\n>>>")
-	companies = usr_input.upper().strip()
+
+	validated = False
+	companies_list = []
+
+	while not validated:
+		info = None
+		usr_input = input("Enter company name(s), separate by space:\n>>>")
+		companies = usr_input.upper().strip()
+		companies_list = companies.split()
+
+		# I noticed that the info of stocks that aren't in yticker has info that is: {'trailingPegRatio': None}
+		for stock in companies_list:
+			ticker = yf.Ticker(stock)
+			info = ticker.info
+			if info == {'trailingPegRatio': None}:
+				print(f"\nStock {stock} is not available in yfinance!\nPlease enter one that does")
+				break
+		else:
+			validated = True
 	return companies
-	
 	
 def user_period():
 	period_range = ['1d','5d','1mo','3mo','6mo','1y','2y','5y','10y','ytd','max']
