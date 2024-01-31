@@ -158,12 +158,12 @@ def add_stock_to_lookup(cursor, tb_name):
 	except mysql.connector.errors.IntegrityError as err:
 		pass
 
-def export_sql(data_hist, stock_str):
+def export_sql(data_hist, stock_str, db_name, user, password):
 	data = data_hist
 	print(data.head())
 	df = pd.DataFrame(data)
 
-	db_name, user, password = get_dbname_user_password()
+
 	create_database(db_name, user, password)
 
 	# connect to the database
@@ -220,11 +220,8 @@ if __name__ == '__main__':
 	if output_format == 'csv':
 		export_data(data)
 	elif output_format== 'sql':
-		# check if it's multi
-
-		export_sql(data, stock_companies)
-	else:
-		print(output_format)
+		db_name, user, password = get_dbname_user_password()
+		export_sql(data, stock_companies, db_name, user, password)
 
 
 
