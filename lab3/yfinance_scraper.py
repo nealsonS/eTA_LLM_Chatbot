@@ -130,22 +130,19 @@ def create_lookup_table(cursor):
 		
 	cursor.execute(q1)
 
-
 def create_table(cursor, tb_name):
-    d_query = f"DROP TABLE IF EXISTS {tb_name};"
-    c_query = f"""CREATE TABLE {tb_name}(
-    AdjClose FLOAT,
-    Close FLOAT,
-    High FLOAT,
-    Low FLOAT,
-    Open FLOAT,
-    Volume FLOAT,
-    Daily_Returns FLOAT
-    );
-    """
-    cursor.execute(d_query)
-    cursor.execute(c_query)
-
+	d_query=f"DROP TABLE IF EXISTS {tb_name};"
+	c_query=f"""CREATE TABLE {tb_name}(
+	AdjClose FLOAT,
+	Close FLOAT,
+	High FLOAT,
+	Low FLOAT,
+	Open FLOAT,
+	Volume FLOAT
+	);
+	"""
+	cursor.execute(d_query)
+	cursor.execute(c_query)
 
 def insert_to_table(cursor, tb_name, f_df):
 	
@@ -158,14 +155,12 @@ def insert_to_table(cursor, tb_name, f_df):
 	# convert np.nan to None
 	val_arr_None = [[None if np.isnan(val) else val for val in row] for row in val_arr]
 	
-	query = f"""INSERT INTO {tb_name} 
-    	(AdjClose, Close, High, Low, Open, Volume, Daily_Returns) VALUES
-    	({', '.join(['%s' for _ in f_df.columns])});
-    	"""
-    	cursor.executemany(query, val_arr_None)
-
-
-
+	query=f"""INSERT INTO {tb_name} 
+	(AdjClose, Close, High, Low, Open, Volume) VALUES
+	({', '.join(['%s' for i in f_df.columns])});
+	"""
+	
+	cursor.executemany(query, val_arr_None)
 
 def add_stock_to_lookup(cursor, tb_name):
 	
@@ -249,4 +244,3 @@ if __name__ == '__main__':
 
 
 	
-
