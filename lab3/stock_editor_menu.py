@@ -46,7 +46,7 @@ def display_stock(db_name, user, password):
 	# drop STOCK_LOOKUP
 	table_tuples.remove((lookup_name,))
 
-	col_names = ['AdjClose', 'Close', 'High', 'Low', 'Open', 'Volume']
+	col_names = ['AdjClose', 'Close', 'High', 'Low', 'Open', 'Volume', 'Daily_Returns']
 
 	# if portfolio is not empty
 	if len(table_tuples) > 0:
