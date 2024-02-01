@@ -3,7 +3,7 @@ import sys
 import pandas as pd
 import numpy as np
 from datetime import date
-from yfinance_scraper import connect_to_MySQL_database, create_database, get_dbname_user_password, create_lookup_table, create_table, insert_to_table, add_stock_to_lookup, export_sql
+from yfinance_scraper import connect_to_MySQL_database, create_database, get_dbname_user_password, create_lookup_table, create_table, insert_to_table, add_stock_to_lookup, export_sql, handle_missing_values, calculate_daily_returns
 
 def check_ifMultiStock(df):
 
@@ -58,6 +58,10 @@ if __name__ == '__main__':
 		for stock in df.columns.unique(0):
 
 			sub_df = df.loc[:, stock]
+
+			sub_df = handle_missing_values(sub_df)
+			sub_df = calculate_daily_returns(sub_df)
+
 			create_table(cursor, stock)
 			con.commit()	
 			insert_to_table(cursor, stock, sub_df)
@@ -68,6 +72,9 @@ if __name__ == '__main__':
 
 		df = flatten_multiLevelColumns(df)
 		stock = input('Please enter stock symbol in format XXXX:\nFor Ex: GOOG\n')
+
+		df = handle_missing_values(df)
+		df = calculate_daily_returns(df)
 		
 		create_table(cursor, stock)
 		con.commit()	
