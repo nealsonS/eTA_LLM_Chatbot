@@ -176,6 +176,15 @@ def add_stock_to_lookup(cursor, tb_name):
 	except mysql.connector.errors.IntegrityError as err:
 		pass
 
+def handle_missing_values(df):
+    df = df.ffill()
+    df = df.bfill()
+    return df
+
+def calculate_daily_returns(df):
+    df.loc[:,'Daily_Returns'] = df.loc[:,'Close'].pct_change()
+    return df
+
 def export_sql(data_hist, stock_str, db_name, user, password):
 	data = data_hist
 	print(data.head())
@@ -201,6 +210,10 @@ def export_sql(data_hist, stock_str, db_name, user, password):
 		for stock in df.columns.unique(0):
 
 			sub_df = df.loc[:, stock]
+
+			sub_df = handle_missing_values(sub_df)
+			sub_df = calculate_daily_returns(sub_df)
+
 			create_table(cursor, stock)
 			con.commit()	
 			insert_to_table(cursor, stock, sub_df)
@@ -210,6 +223,10 @@ def export_sql(data_hist, stock_str, db_name, user, password):
 	else:
 		
 		stock = stock_str
+
+		df = handle_missing_values(df)
+		df = calculate_daily_returns(df)
+
 		create_table(cursor, stock)
 		con.commit()	
 		insert_to_table(cursor, stock, df)
