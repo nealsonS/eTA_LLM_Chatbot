@@ -59,11 +59,13 @@ def export_data(data_hist):
 	data = data_hist
 	print(data.head())
 	df = pd.DataFrame(data)
+	df.index= df.index.strftime('%Y-%m-%d')
+
 	name = input("Name the output file (do not include .csv or .txt):\n>>>")
 	csv_path = "./" + name + ".csv" 
-	df.to_csv(csv_path, index=False)
+	df.to_csv(csv_path, index=True)
 	txt_path = "./" + name + ".txt"  #txt for easier loading to mysql
-	df.to_csv(txt_path, sep='\t', index=False)
+	df.to_csv(txt_path, sep='\t', index=True)
 
 	print(f'Exported as {name}.csv and {name}.txt!')
 
@@ -133,6 +135,7 @@ def create_lookup_table(cursor):
 def create_table(cursor, tb_name):
     d_query = f"DROP TABLE IF EXISTS {tb_name};"
     c_query = f"""CREATE TABLE {tb_name}(
+    Date VARCHAR(20),
     AdjClose FLOAT,
     Close FLOAT,
     High FLOAT,
@@ -149,20 +152,18 @@ def create_table(cursor, tb_name):
 def insert_to_table(cursor, tb_name, f_df):
 	
 	# convert to None to avoid loading in NumPy
-	f_df = f_df.where(pd.notna(f_df), None)
+	f_df = f_df.fillna(np.nan).replace([np.nan], [None])
 	
 	# list of values
-	val_arr = np.array(f_df.values.tolist())
-	
-	# convert np.nan to None
-	val_arr_None = [[None if np.isnan(val) else val for val in row] for row in val_arr]
-	
+	val_arr = f_df.values.tolist()
+
+
 	query=f"""INSERT INTO {tb_name} 
-	(AdjClose, Close, High, Low, Open, Volume, Daily_Returns) VALUES
+	(Date, AdjClose, Close, High, Low, Open, Volume, Daily_Returns) VALUES
 	({', '.join(['%s' for i in f_df.columns])});
 	"""
 	
-	cursor.executemany(query, val_arr_None)
+	cursor.executemany(query, val_arr)
 
 def add_stock_to_lookup(cursor, tb_name):
 	
@@ -185,23 +186,17 @@ def calculate_daily_returns(df):
     df.loc[:,'Daily_Returns'] = df.loc[:,'Close'].pct_change()
     return df
 
-def export_sql(data_hist, stock_str, db_name, user, password):
-	data = data_hist
-	print(data.head())
-	df = pd.DataFrame(data)
+def separate_data_to_each_table(data_hist, stock_str):
 
+	df = pd.DataFrame(data_hist)
 
-	create_database(db_name, user, password)
+	# create container dataframe list
+	df_dict = {}
 
-	# connect to the database
-	con = connect_to_MySQL_database(db_name, user, password)
-	cursor = con.cursor()
-
-	# create lookup table if not exist
-	create_lookup_table(cursor)
-
+	# if data is multi
 	multi = len(stock_str.split(' ')) > 1
 
+	# seperate the dataframe from data
 	if multi:
 		# swap column levels
 		df.columns = df.columns.swaplevel()
@@ -211,32 +206,43 @@ def export_sql(data_hist, stock_str, db_name, user, password):
 
 			sub_df = df.loc[:, stock]
 
-			sub_df = handle_missing_values(sub_df)
-			sub_df = calculate_daily_returns(sub_df)
+			df_dict[stock] = sub_df
 
-			create_table(cursor, stock)
-			con.commit()	
-			insert_to_table(cursor, stock, sub_df)
-			con.commit()
-			add_stock_to_lookup(cursor, stock)
-			con.commit()
 	else:
-		
-		stock = stock_str
+		df_dict[stock_str] = df
 
-		df = handle_missing_values(df)
-		df = calculate_daily_returns(df)
+	return df_dict
 
-		create_table(cursor, stock)
-		con.commit()	
-		insert_to_table(cursor, stock, df)
-		con.commit()
-		add_stock_to_lookup(cursor, stock)
-		con.commit()
+def export_sql(data, stock, db_name, user, password):
+	df = pd.DataFrame(data)
+
+	# add datetime
+	df['Date'] = df.index.strftime('%Y-%m-%d %H:%M')
+
+	# move date to front 
+	df = pd.concat([df['Date'], df.drop('Date', axis=1)], axis=1)
+	df = df.reset_index(drop=True)
+
+	print(df.head())
+	create_database(db_name, user, password)
+
+	# connect to the database
+	con = connect_to_MySQL_database(db_name, user, password)
+	cursor = con.cursor()
+
+	# create lookup table if not exist
+	create_lookup_table(cursor)
+
+	create_table(cursor, stock)
+	con.commit()	
+	insert_to_table(cursor, stock, df)
+	con.commit()
+	add_stock_to_lookup(cursor, stock)
+	con.commit()
 		
 	# close connection
 	con.close()
-	print('Added to MySQL server!')
+	print(f'Added {stock} to MySQL server!')
 
 	
 #~~~~~~~~~~~~ main() ~~~~~~~~~~~~~~~~~~~
@@ -256,9 +262,20 @@ if __name__ == '__main__':
 
 	if output_format == 'csv':
 		export_data(data)
+
 	elif output_format== 'sql':
 		db_name, user, password = get_dbname_user_password()
-		export_sql(data, stock_companies, db_name, user, password)
+
+		# get list of stock dictionaries
+		df_dict = separate_data_to_each_table(data, stock_companies)
+
+		for stock, data in df_dict.items():
+
+			# preprocess data
+			data = handle_missing_values(data)
+			data = calculate_daily_returns(data)
+
+			export_sql(data, stock, db_name, user, password)
 
 
 
