@@ -27,8 +27,16 @@ def add_stock(db_name, user, password):
 
 	data = hist_scraping(stock_companies, stock_period, stock_interval)
 
+	# get list of stock dictionaries
+	df_dict = separate_data_to_each_table(data, stock_companies)
 
-	export_sql(data, stock_companies, db_name, user, password)
+	for stock, data in df_dict.items():
+
+		# preprocess data
+		data = handle_missing_values(data)
+		data = calculate_daily_returns(data)
+
+		export_sql(data, stock, db_name, user, password)
 
 def display_stock(db_name, user, password):
 
@@ -45,7 +53,7 @@ def display_stock(db_name, user, password):
 	# drop STOCK_LOOKUP
 	table_tuples.remove((lookup_name,))
 
-	col_names = ['AdjClose', 'Close', 'High', 'Low', 'Open', 'Volume', 'Daily_Returns']
+	col_names = ['Date', 'AdjClose', 'Close', 'High', 'Low', 'Open', 'Volume', 'Daily_Returns']
 
 	# if portfolio is not empty
 	if len(table_tuples) > 0:
