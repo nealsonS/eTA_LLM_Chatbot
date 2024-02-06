@@ -68,10 +68,10 @@ if __name__ == '__main__':
 	if mode == "1":
 		window_size = int(input("\nEnter window size (smaller number = volatile average; bigger number = rounder average\n>>> "))
 		print(window_size)
-		print("\n--------------------- \nCalculating Simple Moving Average...")
+		print("\n--------------------- \n Doing Exponential Smoothing...")
 		exp = exp_smooth(close_data, window_size)
 		print(exp.head())
-		usr_inp = input("\nWould you like to view a graph of the Simple Moving Average: 'yes' or 'no'?\n>>> ") 
+		usr_inp = input("\nWould you like to view a graph of the Exponential Smoothing: 'yes' or 'no'?\n>>> ") 
 		if usr_inp == 'yes':
 			exp_smooth_plot(exp, window_size)
 		else:
@@ -81,7 +81,7 @@ if __name__ == '__main__':
 		long_window = float(input("\nEnter a big window size (ie. 0.05)\n>>> "))
 		exp = exp_cross(close_data, short_window, long_window)
 		print(exp.head())
-		usr_inp = input("\nWould you like to view a graph of the Simple Moving Average: 'yes' or 'no'?\n>>> ") 
+		usr_inp = input("\nWould you like to view a graph of the Exponential Smoothing: 'yes' or 'no'?\n>>> ") 
 		if usr_inp == 'yes':
 			exp_cross_plot(exp, short_window, long_window)
 		else:
