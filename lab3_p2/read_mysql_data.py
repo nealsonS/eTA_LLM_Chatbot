@@ -12,7 +12,7 @@ def get_user_password():
 
 host = 'localhost'
 user, password = get_user_password()
-database = 'lab3' #change if needed
+database = input("Please enter your MySQL database:\n")#'lab3' #change if needed
 
 
 connect = mysql.connector.connect(
