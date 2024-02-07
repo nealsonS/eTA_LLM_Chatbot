@@ -14,14 +14,11 @@ import pickle
 
 data = pd.DataFrame()
 data['Close'] = df['Close']
-#dates = []
-#for i in range(len(df['Close'])):
-#	dates.append(i)  #dummy dates for now
 data.index = pd.to_datetime(df['Date'], format = '%Y-%m-%d %H:%M')
 #data['Date'] = pd.to_datetime(data['Date'])
 #data.set_index('Date', inplace=True)
 
-# Plot the stock prices
+# visualization
 plt.figure(figsize=(12, 6))
 plt.plot(data['Close'], label='Actual Stock Prices')
 plt.title('Stock Prices Over Time')
@@ -30,7 +27,7 @@ plt.ylabel('Closing Price')
 plt.legend()
 plt.show()
 
-# Check if the data is stationary (using Dickey-Fuller test)
+# check if data is stationary with dickey-fuller test
 from statsmodels.tsa.stattools import adfuller
 
 result = adfuller(data['Close'])
@@ -38,7 +35,7 @@ print('ADF Statistic:', result[0])
 print('p-value:', result[1])
 print('Critical Values:', result[4])
 
-# If the data is not stationary, difference it to make it stationary
+# if not stationary, find the difference to make it stationary
 if result[1] > 0.05:
     print('Time series is not stationary! Differencing!')
     data_diff = data['Close'].diff().dropna()
@@ -46,7 +43,7 @@ else:
     print('Time series is stationary!')
     data_diff = data['Close']
 
-# Plot the differenced data
+# visualization
 plt.figure(figsize=(12, 6))
 plt.plot(data_diff, label='Differenced Stock Prices')
 plt.title('Differenced Stock Prices Over Time')
@@ -55,12 +52,11 @@ plt.ylabel('Closing Price Difference')
 plt.legend()
 plt.show()
 
-# However to train the dataset, let's boxcox the dataset instead
-# Split the data into training and testing sets
+# train the dataset with boxcox instead
 train_size = int(len(data) * 0.8)
 train, test = data[:train_size], data[train_size:]
 
-# Analyze ACF and PACF to check for order
+# analyze ACF and PACF to check for order
 def plot_acf_pacf(data):
     f, ax = plt.subplots(nrows=2, ncols=1, figsize=(12, 6))
     plot_acf(data,ax=ax[0])
@@ -74,7 +70,7 @@ def plot_acf_pacf(data):
     q = input('Type order of q:\n')
     return int(p), int(d), int(q)
 
-# Ask if want automatic p,d,q input or manually by checking ACF and PACF plots
+# ask if want automatic p,d,q input or manually by checking ACF and PACF plots
 # courtesy of code from: https://github.com/alkaline-ml/pmdarima?tab=readme-ov-file
 is_auto = input('Type auto or manual for automatic input or manual input:\n').strip()
 
@@ -88,7 +84,7 @@ if is_auto == 'auto':
     else:
         m = 1
 
-    # Define and fit your pipeline
+    # define and fit pipeline
     pipeline = Pipeline([
         ('boxcox', BoxCoxEndogTransformer(lmbda2=1e-6)),
         ('arima', pm.AutoARIMA(seasonal=True, m=m,
@@ -97,28 +93,28 @@ if is_auto == 'auto':
     ])
     model_fit = pipeline.fit(train)
 
-    # save the model
-    with open(f'./results/{table_name}.pkl', 'wb') as f_out:
+    # save model
+    with open(f'./{table_name}.pkl', 'wb') as f_out:
         pickle.dump(model_fit, f_out)
 
     print(model_fit.summary())
 
 else:
     p, d, q = plot_acf_pacf(train)
-    # Fit ARIMA model
+    # fit ARIMA model
     order = [p, d, q]  
     pipeline = Pipeline([('boxcox', BoxCoxEndogTransformer(lmbda2=1e-6)),
      ('arima', ARIMA(order=order))
      ])
     model_fit = pipeline.fit(train)
 
-    # save the model
-    with open(f'./results/{table_name}.pkl', 'wb') as f_out:
+    # save model
+    with open(f'./{table_name}.pkl', 'wb') as f_out:
         pickle.dump(model_fit, f_out)
 
     print(model_fit.summary())
 
-# Make predictions
+# make predictions
 #predictions = model_fit.predict(start=len(train), end=len(train) + len(test) - 1, typ='levels')
 pred, confint = model_fit.predict(n_periods=test.shape[0], return_conf_int=True)
 
@@ -139,7 +135,7 @@ predictions_cumsum.loc[first_non_nan_index:] = data['Close'].iloc[train_size] + 
 # Create a Series with the adjusted predictions
 predicted_prices = pd.Series(predictions_cumsum, index=test.index)'''
 
-# Plot actual vs predicted prices
+# visualize actual vs predicted prices
 plt.figure(figsize=(12, 6))
 plt.plot(data['Close'], label='Actual Stock Prices')
 plt.plot(pred_series, label='Predicted Stock Prices')
@@ -150,7 +146,7 @@ plt.ylabel('Closing Price')
 plt.legend()
 plt.show()
 
-# Evaluate the model
+# evaluate the model
 #print(len(data['Close'][train_size:])) #problem here
 #print(len(predicted_prices))
 #for d in data['Close'][train_size:]:

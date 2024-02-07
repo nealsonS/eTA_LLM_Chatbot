@@ -8,13 +8,14 @@ import numpy as np
 
 
 def get_invest_duration():
-	invest_duration = input('Please input how LONG should the mock investment be (in days):\nE.X: 30\n').strip()
+	invest_duration = input('Please input how LONG should the mock investment be (in days):\nE.X: 10\n').strip()
 
 	while not invest_duration.isnumeric():
 		print('Invalid input! Please input a number!\n')
-		invest_duration = input('Please input how LONG should the mock investment be (in days):\nE.X: 30\n').strip()
+		invest_duration = input('Please input how LONG should the mock investment be (in days):\nE.X: 10\n').strip()
 
 	return int(invest_duration)
+
 
 def get_invest_amount():
 	invest_amount = input('Please input how MUCH should the initial mock investment be:\nE.X: 20000\n').strip()
@@ -25,6 +26,7 @@ def get_invest_amount():
 
 	return int(invest_amount)
 
+
 def get_num_of_invest():
 	invest_num = input('Please input how many shares to buy/sell each time:\nE.X: 5\n').strip()
 
@@ -33,6 +35,7 @@ def get_num_of_invest():
 		invest_num = input('Please input how many shares to buy/sell each time:\nE.X: 5\n').strip()
 
 	return int(invest_num)
+
 
 def plot_predictions(pred, ci_df):
 	# Plot actual vs predicted prices
@@ -44,6 +47,7 @@ def plot_predictions(pred, ci_df):
 	plt.ylabel('Closing Price')
 	plt.legend()
 	plt.show()
+
 
 def perform_invest(mod, data, inv_amnt, inv_dur, inv_num):
 	# create portfolio 
@@ -125,9 +129,11 @@ def perform_invest(mod, data, inv_amnt, inv_dur, inv_num):
 
 	return p_hist
 
+
 def calc_port_val(data):
 	last_row = data.loc[len(data) - 1]
 	return last_row['Amount_left'] + last_row['Portfolio_value']
+
 
 def calc_total_ROI(data):
 	init_inv = data.iloc[0]['Amount_left'] + data.iloc[0]['Portfolio_value']
@@ -135,23 +141,26 @@ def calc_total_ROI(data):
 	roi = (last_inv-init_inv)/ init_inv * 100
 	return round(roi, 2)
 
+
 def calc_annual_return(data, div_val):
 	years = len(data) / div_val
 	init_inv = data.iloc[0]['Amount_left'] + data.iloc[0]['Portfolio_value']
 	last_inv = data.iloc[data.shape[0]-1]['Amount_left'] + data.iloc[data.shape[0]-1]['Portfolio_value']
-
 	return round((((last_inv/init_inv)**years) - 1) * 100, 2)
+
 
 def calc_profit(data):
 	init_inv = data.iloc[0]['Amount_left'] + data.iloc[0]['Portfolio_value']
 	last_inv = data.iloc[data.shape[0]-1]['Amount_left'] + data.iloc[data.shape[0]-1]['Portfolio_value']
 	return round(last_inv-init_inv, 2)
 
+
 def calc_sharpe_ratio(data):
 	daily_returns = data['Close'].pct_change()
 	rof_rate = 0.001 #assume 0.001
 	sr = (np.mean(daily_returns) - rof_rate) / daily_returns.std() * 100
 	return round(sr, 2)
+
 
 def get_time_interval():
 	m_str = input('What interval is the dataset?\nType: daily/monthly/yearly\n').lower().strip()
@@ -174,9 +183,12 @@ def get_time_interval():
 
 	return div_str, m
 
+
+
 if __name__ == '__main__':
 
-	res_path = 'results/'
+	#res_path = 'results/'
+	res_path = './'
 
 	data = df['Close']
 	# get stock_name
