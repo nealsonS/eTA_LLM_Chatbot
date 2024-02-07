@@ -29,7 +29,7 @@ def user_companies():
 	
 def user_period():
 	period_range = ['1d','5d','1mo','3mo','6mo','1y','2y','5y','10y','ytd','max']
-	message = "Enter time range from this list:\n" + str(period_range) + "\n('max' is recommended)\n>>>"
+	message = "Enter time range from this list:\n" + str(period_range) + "\n('5y' is recommended)\n>>>"
 	usr_input = input(message)
 	if usr_input in period_range:
 		return usr_input

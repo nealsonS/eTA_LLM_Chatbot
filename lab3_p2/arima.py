@@ -77,21 +77,23 @@ def plot_acf_pacf(data):
 # Ask if want automatic p,d,q input or manually by checking ACF and PACF plots
 # courtesy of code from: https://github.com/alkaline-ml/pmdarima?tab=readme-ov-file
 is_auto = input('Type auto or manual for automatic input or manual input:\n').strip()
-'''m_str = input('What interval is the dataset?\nType: daily/monthly/yearly').lower().strip()
 
-if m_str == 'daily':
-    m = 365
-elif m_str == 'monthly':
-    m = 12
-elif m_str == 'yearly':
-    m=1'''
 if is_auto == 'auto':
+    m_str = input('What interval is the dataset?\nType: daily/monthly/yearly and anything else for non-seasonality\n').lower().strip()
+
+    if m_str == 'daily':
+        m = 7
+    elif m_str == 'monthly':
+        m = 12
+    else:
+        m = 1
+
     # Define and fit your pipeline
     pipeline = Pipeline([
         ('boxcox', BoxCoxEndogTransformer(lmbda2=1e-6)),
-        ('arima', pm.AutoARIMA(seasonal=True, m=12,
+        ('arima', pm.AutoARIMA(seasonal=True, m=m,
                                suppress_warnings=True,
-                               trace=True))
+                               trace=True, max_order=12))
     ])
     model_fit = pipeline.fit(train)
 
