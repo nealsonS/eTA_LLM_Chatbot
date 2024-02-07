@@ -62,7 +62,11 @@ conn.commit()
 
 def store_posts(subreddit, limit):
     for post in fetch_posts(subreddit, limit):
-        post['content'] = preprocess_text(post['content'])
+        print(f"Fetching post: {post['title']}")
+        processed_content = preprocess_text(post['content'])
+        
+        # Debug print to ensure content is fetched
+        print(f"Processed content: {processed_content}")
         # Make sure the URL is a string, just in case
         post['url'] = str(post['url'])
         cursor.execute('''
