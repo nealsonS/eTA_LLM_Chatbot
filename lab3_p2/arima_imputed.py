@@ -17,7 +17,6 @@ res_path = os.path.join('.', 'results')
 
 # make results folder if not exists
 if not os.path.exists(res_path):
-    # If it doesn't exist, create it
     os.makedirs(res_path)
 
 data = pd.DataFrame()
@@ -93,18 +92,21 @@ if is_auto == 'auto':
         m = 7
         train = train.resample('1D').asfreq()
         test= test.resample('1D').asfreq()
+
     elif m_str == 'monthly':
         m = 12
-        train = train.resample('1M').asfreq()
+        train = train.resample('M').asfreq()
+        test= test.resample('M').asfreq()
+        print(train)
+
     else:
         m = 1
-        train = train.resample('1Y').asfreq()
+        train = train.resample('Y').asfreq()
+        test= test.resample('Y').asfreq()
 
-    train_val = SimpleImputer(missing_values=np.nan, strategy='mean').fit_transform(train)
-    test_val = SimpleImputer(missing_values=np.nan, strategy='mean').fit_transform(test)
 
-    train_df = pd.DataFrame(train_val, columns = train.columns, index = train.index)
-    test_df = pd.DataFrame(test_val, columns = test.columns, index = test.index)
+    train_df = train.interpolate(method='linear')
+    test_df = test.interpolate(method='linear')
 
     # Define and fit your pipeline
     pipeline = Pipeline([
