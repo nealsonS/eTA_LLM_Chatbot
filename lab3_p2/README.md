@@ -18,6 +18,15 @@ DISCLAIMER:
 It saves a csv file of the portfolio at results as well!
 
 Notes:
+- read_mysql_data.py connects you to the database that was formed with stock_editor.py.
+
+- simple_moving_ave.py is just a python script that we played around with to 
+	understand how stock prediction algorithms work. The Buy/Sell signal code 
+	was reused in signal_gen.py
+
+- exponential_smoothing.py is just a python script that we played around with to
+	understand how stock prediction algorithms work.
+
 - The signal_gen.py is just a python script with a function that 
 	contains signal generation functions
 	
