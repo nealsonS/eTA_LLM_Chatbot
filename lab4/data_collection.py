@@ -70,4 +70,4 @@ def store_posts(subreddit, limit):
         VALUES (%s, %s, %s, %s)''', (post['title'], post['content'], post['created_at'], post['url']))
     conn.commit()
 
-store_posts('tech', 100)  # Modify the limit as per your requirement
+store_posts('Music', 100)  # Modify the limit as per your requirement
