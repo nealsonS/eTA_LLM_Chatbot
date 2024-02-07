@@ -27,3 +27,11 @@ Notes:
 - Signal generation is based on simple moving averages crossing
 
 - The database on MySQL used in the scripts is lab3 (that stores the tables)
+
+- arima_imputed.py was our attempt at making an imputed version of arima but the
+	resampling was tricky so we stopped
+	
+- The model is boxcox to an arima model 
+	(manually typed p,d,q from seeing ACF and PACF plots)
+	OR
+	(using autoARIMA to try every combination and find lowest AIC)

@@ -10,7 +10,13 @@ from pmdarima.pipeline import Pipeline
 from pmdarima.arima import ARIMA
 from pmdarima.preprocessing import BoxCoxEndogTransformer
 import pickle
+import os
 
+res_path = os.path.join('.', 'results')
+
+# make results folder if not exists
+if not os.path.exists(res_path):
+    os.makedirs(res_path)
 
 data = pd.DataFrame()
 data['Close'] = df['Close']
@@ -94,7 +100,7 @@ if is_auto == 'auto':
     model_fit = pipeline.fit(train)
 
     # save model
-    with open(f'./{table_name}.pkl', 'wb') as f_out:
+    with open(os.path.join(res_path, f'{table_name}.pkl'), 'wb') as f_out:
         pickle.dump(model_fit, f_out)
 
     print(model_fit.summary())
@@ -109,7 +115,7 @@ else:
     model_fit = pipeline.fit(train)
 
     # save model
-    with open(f'./{table_name}.pkl', 'wb') as f_out:
+    with open(os.path.join(res_path, f'{table_name}.pkl'), 'wb') as f_out:
         pickle.dump(model_fit, f_out)
 
     print(model_fit.summary())
