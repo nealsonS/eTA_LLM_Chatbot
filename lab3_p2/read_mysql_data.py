@@ -1,11 +1,18 @@
 import pandas as pd
 import mysql.connector
 
+def get_user_password():
+    # collect password and database of mysql server
+    user = input("Please enter your MySQL user:\nLeave Blank if it is root\n")
+    user = user.lower().strip()
+    if user == '':
+        user = 'root'
+    password = input("Please enter your MySQL password:\n")
+    return user, password
 
 host = 'localhost'
-user = 'root' #change if needed
-password = '' #change if needed
-database = 'demo' #change if needed
+user, password = get_user_password()
+database = 'lab3' #change if needed
 
 
 connect = mysql.connector.connect(
