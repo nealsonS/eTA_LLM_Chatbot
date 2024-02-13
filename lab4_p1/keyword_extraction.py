@@ -2,15 +2,11 @@ import praw
 import mysql.connector
 import re
 from datetime import datetime
-import nltk
-from nltk.corpus import stopwords
-from nltk.tokenize import word_tokenize
 from rake_nltk import Rake
+import requests
+from bs4 import BeautifulSoup
 #import RAKE
 
-# Ensure you have NLTK resources downloaded
-nltk.download('punkt')
-nltk.download('stopwords')
 
 # Initialize PRAW with your Reddit App credentials
 reddit = praw.Reddit(client_id='EBX_xza7Pe9nyTLmXcYGJg',
@@ -41,15 +37,11 @@ def preprocess_text(text):
 
 # Default Rake
 # def extract_keywords(text):
-#     # Initialize RAKE by providing a list of stopwords
 #     rake = RAKE.Rake(RAKE.SmartStopList())
-    
-#     # Extract keywords. The run method returns a list of tuples (keyword, score)
 #     keywords = rake.run(text)
-    
-#     # For simplicity, let's return only keywords, not scores, and join them into a string
 #     keywords = ', '.join([keyword for keyword, score in keywords])
 #     return keywords
+
 
 # From rake.py
 def extract_keywords(text):
@@ -59,6 +51,48 @@ def extract_keywords(text):
     keywords = ', '.join(keyword_phrases)  # Join phrases into a single string
     return keywords
 
+def article_scraper(link):
+    url = link
+    try:
+        response = requests.get(url)
+        if response.status_code == 200:
+            soup = BeautifulSoup(response.text, 'html.parser')
+            # Attempt to find the 'title' element
+            element = soup.find('body')  # or find("body") for more content
+            # Check if the element is found
+            if element:
+                text_content = element.get_text(" | ", strip = True)
+                print(text_content)
+                return text_content
+            else:
+                # If the element is not found, return a default message or handle accordingly
+                return "No title found"
+        else:
+            error = f"Failed to retrieve content. Status code: {response.status_code}"
+            return error
+    except requests.exceptions.RequestException as e:
+        error = f"Error accessing {url}: {e}"
+        return error
+
+
+
+
+def check_url(urls):
+	url_content = [] # will need to add this to mysql !!!!!!!!!!!!!!!!!!!!!!!!!
+	for u in urls:
+		if "youtu.be" in u or "youtube.com" in u:
+		#	print("YouTube video link")
+			url_content.append("YouTube video link")
+		elif "soundcloud" in u or "open.spotify" in u:
+		#	print("Audio link")
+			url_content.append("Audio link")
+		elif "reddit.com" in u:
+		#	print("Reddit link")
+			url_content.append("Reddit link")
+		else:
+		#	print("***Possibly article link!!!")
+			url_content.append(article_scraper(u))
+	return url_content
 
 
 def get_user_password():
@@ -87,14 +121,21 @@ def store_posts(subreddit, limit):
     CREATE TABLE IF NOT EXISTS reddit_posts (
         id INT AUTO_INCREMENT PRIMARY KEY,
         title TEXT,
-        content TEXT,
+        content MEDIUMTEXT,
         created_at DATETIME,
         url TEXT,
-        keywords TEXT
+        keywords MEDIUMTEXT
     )''')
 
+
     for post in fetch_posts(subreddit, limit):
-        processed_content = preprocess_text(post['content'])
+        processed_content = preprocess_text(post['content']) if post['content'] else None
+        # Check if content is empty
+        if not processed_content or processed_content.strip() == '':
+            # Attempt to scrape content or identify the type of link
+            scraped_content_or_type = check_url([post['url']])
+            processed_content = scraped_content_or_type[0] if scraped_content_or_type else "Content could not be retrieved"
+        
         keywords = extract_keywords(processed_content)
         
         cursor.execute('''
@@ -105,4 +146,4 @@ def store_posts(subreddit, limit):
     conn.commit()
     conn.close()
 
-store_posts('Math', 100)
+store_posts('tech', 100)
