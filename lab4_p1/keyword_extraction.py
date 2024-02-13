@@ -121,7 +121,7 @@ def store_posts(subreddit, limit):
     CREATE TABLE IF NOT EXISTS reddit_posts (
         id INT AUTO_INCREMENT PRIMARY KEY,
         title TEXT,
-        content TEXT,
+        content MEDIUMTEXT,
         created_at DATETIME,
         url TEXT,
         keywords TEXT
