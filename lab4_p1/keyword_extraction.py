@@ -53,6 +53,44 @@ def extract_keywords(text):
     keywords = ', '.join(keyword_phrases)  # Join phrases into a single string
     return keywords
 
+def article_scraper(link):
+	#print(link)
+	url = link
+	try:
+		response = requests.get(url)
+		if response.status_code == 200:
+		    soup = BeautifulSoup(response.text, 'html.parser')
+		    element = soup.find('title') #or find("body") #extract article content COMMENT THIS OUT TO GET ALL ARTICLE TEXT
+		    #text = soup.findAll(text=True)
+		    #text_content = element.get_text(' | ', strip=True) #extract article content COMMENT THIS OUT TO GET ALL ARTICLE TEXT
+		    text_content = element.get_text()
+		    print(text_content)
+		    return text_content
+		else:
+		    #print(f"Failed to retrieve content. Status code: {response.status_code}")
+		    error = f"Failed to retrieve content. Status code: {response.status_code}"
+		return error
+	except requests.exceptions.RequestException as e:
+		# Handle exceptions (e.g., connection error, timeout, etc.)
+		#print(f"Error accessing {url}: {e}")
+		error = f"Error accessing {url}: {e}"
+		return error
+
+
+
+def check_YT(urls):
+	url_content = [] # will need to add this to mysql !!!!!!!!!!!!!!!!!!!!!!!!!
+	for u in urls:
+		if "youtu.be" in u or "youtube.com" in u:
+		#	print("YouTube video link")
+			url_content.append("YouTube video link")
+		elif "soundcloud" in u or "open.spotify" in u:
+		#	print("Audio link")
+			url_content.append("Audio link")
+		else:
+		#	print("***Possibly article link!!!")
+			url_content.append(article_scraper(u))
+	return url_content
 
 
 def get_user_password():
