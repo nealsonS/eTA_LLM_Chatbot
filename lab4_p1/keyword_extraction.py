@@ -86,9 +86,9 @@ def check_url(urls):
 		elif "soundcloud" in u or "open.spotify" in u:
 		#	print("Audio link")
 			url_content.append("Audio link")
-        elif "reddit.com" in u:
-            #	print("Reddit link")
-            url_content.append("Reddit link")
+		elif "reddit.com" in u:
+		#	print("Reddit link")
+			url_content.append("Reddit link")
 		else:
 		#	print("***Possibly article link!!!")
 			url_content.append(article_scraper(u))
