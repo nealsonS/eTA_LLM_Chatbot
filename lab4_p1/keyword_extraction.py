@@ -53,29 +53,39 @@ def extract_keywords(text, num_keywords=10):
     return keywords
 
 
-def article_scraper(link):
-    url = link
-    try:
-        response = requests.get(url)
-        if response.status_code == 200:
-            soup = BeautifulSoup(response.text, 'html.parser')
-            # Attempt to find the 'title' element
-            element = soup.find('body')  # or find("body") for more content
-            # Check if the element is found
-            if element:
-                text_content = element.get_text(" | ", strip = True)
-                print(text_content)
-                return text_content
-            else:
-                # If the element is not found, return a default message or handle accordingly
-                return "No title found"
-        else:
-            error = f"Failed to retrieve content. Status code: {response.status_code}"
-            return error
-    except requests.exceptions.RequestException as e:
-        error = f"Error accessing {url}: {e}"
-        return error
+# def article_scraper(link):
+#     url = link
+#     try:
+#         response = requests.get(url)
+#         if response.status_code == 200:
+#             soup = BeautifulSoup(response.text, 'html.parser')
+#             # Attempt to find the 'title' element
+#             element = soup.find('body')  # or find("body") for more content
+#             # Check if the element is found
+#             if element:
+#                 text_content = element.get_text(" | ", strip = True)
+#                 print(text_content)
+#                 return text_content
+#             else:
+#                 # If the element is not found, return a default message or handle accordingly
+#                 return "No title found"
+#         else:
+#             error = f"Failed to retrieve content. Status code: {response.status_code}"
+#             return error
+#     except requests.exceptions.RequestException as e:
+#         error = f"Error accessing {url}: {e}"
+#         return error
 
+
+# Modified article_scraper function to use Newspaper3k
+def article_scraper(link):
+    article = Article(link)
+    try:
+        article.download()
+        article.parse()
+        return article.text
+    except Exception as e:
+        return f"Failed to download or parse article: {e}"
 
 
 
