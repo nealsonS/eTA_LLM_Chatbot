@@ -5,6 +5,7 @@ from datetime import datetime
 import nltk
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
+from rake_nltk import Rake
 
 # Ensure you have NLTK resources downloaded
 nltk.download('punkt')
