@@ -3,6 +3,8 @@ import mysql.connector
 import re
 from datetime import datetime
 from rake_nltk import Rake
+import requests
+from bs4 import BeautifulSoup
 #import RAKE
 
 
