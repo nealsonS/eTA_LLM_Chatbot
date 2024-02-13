@@ -1,9 +1,25 @@
 Lab 4 part 1
 
+Typical/Recommended workflow:
+1. Create a database on mysql server (preferably 'lab4')
+2. Run `keyword_extraction.py` to scrape and add reddit_posts table to the database
+3. Run `topic_modelling.py` to get topic assignment through bert model
+	It adds columns: `Topic`, `Topic_Name`, `Topic_Keywords` to the reddit_posts table
+
+Script Brief Overview:
+### data_collection.py:
+collects data from reddit using praw and upload the collected data to mysql
+
 ### keyword_extraction.py
 updated version of data_collection.py that preprocess the data and extracts keyword from content column and adds a keyword column to the table
 
-### berTopic.py
+### download_table.py
+a tool to download the specific table from mysql to better view the full content of the table (because on phpadmin it does not display full content if it is too long)
+
+### keyword_extraction.py
+updated version of data_collection.py that preprocess the data and extracts keyword from content column and adds a keyword column to the table
+
+### topic_modelling.py
 tool to use BERT modelling to topic modelling to assign each headline to a topic
 It adds columns: ['Topic' and 'Topic_Keywords'] to the reddit_posts table
 
