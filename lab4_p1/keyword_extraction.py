@@ -44,12 +44,14 @@ def preprocess_text(text):
 
 
 # From rake.py
-def extract_keywords(text):
+def extract_keywords(text, num_keywords=10):
     r = Rake()  # Initialize RAKE
     r.extract_keywords_from_text(text)
     keyword_phrases = r.get_ranked_phrases()  # Extract keyword phrases ranked by relevance
-    keywords = ', '.join(keyword_phrases)  # Join phrases into a single string
+    limited_keywords = keyword_phrases[:num_keywords]
+    keywords = ', '.join(limited_keywords)  # Join phrases into a single string
     return keywords
+
 
 def article_scraper(link):
     url = link
