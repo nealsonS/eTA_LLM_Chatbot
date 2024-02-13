@@ -25,9 +25,11 @@ corresponding_url = "url"
 #select_query = f"SELECT * FROM {table_name} WHERE {content_check} = '' " # IS NULL would not work
 select_query = f"SELECT {content_check}, {corresponding_url} FROM {table_name} WHERE {content_check} = ''"
 
+################## mysql portion ^ ##################
+
+
+################## checks for empty cells via mysql ##################
 df = pd.DataFrame()
-
-
 
 try:
 	cursor.execute(select_query)
@@ -46,7 +48,7 @@ except mysql.connector.Error as err:
 cursor.close()
 connection.close()
 
-
+################## local df ##################
 #print(df)
 urls = df['url']
 print(urls)
