@@ -59,9 +59,10 @@ def article_scraper(link):
 		response = requests.get(url)
 		if response.status_code == 200:
 		    soup = BeautifulSoup(response.text, 'html.parser')
-		    element = soup.find('title')
+		    element = soup.find('title') #or find("body") #extract article content COMMENT THIS OUT TO GET ALL ARTICLE TEXT
 		    #text = soup.findAll(text=True)
-		    text_content = element.get_text() #extract article content
+		    #text_content = element.get_text(' | ', strip=True) #extract article content COMMENT THIS OUT TO GET ALL ARTICLE TEXT
+		    text_content = element.get_text()
 		    print(text_content)
 		    return text_content
 		else:
