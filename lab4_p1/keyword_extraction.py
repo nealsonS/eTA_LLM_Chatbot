@@ -38,15 +38,6 @@ def preprocess_text(text):
     text = re.sub(r'[^a-zA-Z0-9\s]', '', text)  # Remove special characters
     return text
 
-# NLTK keyword extraction 
-# def extract_keywords(text):
-#     """
-#     Extracts keywords from text using NLTK for tokenization and stopword removal.
-#     """
-#     stop_words = set(stopwords.words('english'))
-#     word_tokens = word_tokenize(text)
-#     keywords = [word for word in word_tokens if word not in stop_words and word.isalpha()]
-#     return ', '.join(keywords)
 
 # Default Rake
 # def extract_keywords(text):
