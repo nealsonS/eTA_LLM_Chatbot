@@ -57,13 +57,23 @@ def extract_keywords(text, num_keywords=10):
 
 # Modified article_scraper function to use Newspaper3k
 def article_scraper(link):
+    print(f"Attempting to scrape content from: {link}")
     article = Article(link)
     try:
         article.download()
+        print("Download successful, parsing article...")
         article.parse()
+        print("Article parsed successfully.")
+        if article.text:
+            print(f"Extracted content length: {len(article.text)} characters")
+        else:
+            print("No content extracted.")
         return article.text
     except Exception as e:
-        return f"Failed to download or parse article: {e}"
+        error_message = f"Failed to download or parse article: {e}"
+        print(error_message)
+        return error_message
+
 
 
 
