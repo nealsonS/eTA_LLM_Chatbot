@@ -49,24 +49,24 @@ def preprocess_text(text):
 #     return ', '.join(keywords)
 
 # Default Rake
-# def extract_keywords(text):
-#     # Initialize RAKE by providing a list of stopwords
-#     rake = RAKE.Rake(RAKE.SmartStopList())
+def extract_keywords(text):
+    # Initialize RAKE by providing a list of stopwords
+    rake = RAKE.Rake(RAKE.SmartStopList())
     
-#     # Extract keywords. The run method returns a list of tuples (keyword, score)
-#     keywords = rake.run(text)
+    # Extract keywords. The run method returns a list of tuples (keyword, score)
+    keywords = rake.run(text)
     
-#     # For simplicity, let's return only keywords, not scores, and join them into a string
-#     keywords = ', '.join([keyword for keyword, score in keywords])
-#     return keywords
+    # For simplicity, let's return only keywords, not scores, and join them into a string
+    keywords = ', '.join([keyword for keyword, score in keywords])
+    return keywords
 
 # From rake.py
-def extract_keywords(text):
-    r = Rake()  # Initialize RAKE
-    r.extract_keywords_from_text(text)
-    keyword_phrases = r.get_ranked_phrases()  # Extract keyword phrases ranked by relevance
-    keywords = ', '.join(keyword_phrases)  # Join phrases into a single string
-    return keywords
+# def extract_keywords(text):
+#     r = Rake()  # Initialize RAKE
+#     r.extract_keywords_from_text(text)
+#     keyword_phrases = r.get_ranked_phrases()  # Extract keyword phrases ranked by relevance
+#     keywords = ', '.join(keyword_phrases)  # Join phrases into a single string
+#     return keywords
 
 
 
