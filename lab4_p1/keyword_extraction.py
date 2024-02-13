@@ -87,8 +87,15 @@ def store_posts(subreddit, limit):
         keywords TEXT
     )''')
 
+
     for post in fetch_posts(subreddit, limit):
-        processed_content = preprocess_text(post['content'])
+        processed_content = preprocess_text(post['content']) if post['content'] else None
+        # Check if content is empty
+        if not processed_content or processed_content.strip() == '':
+            # Attempt to scrape content or identify the type of link
+            scraped_content_or_type = check_YT([post['url']])
+            processed_content = scraped_content_or_type[0] if scraped_content_or_type else "Content could not be retrieved"
+        
         keywords = extract_keywords(processed_content)
         
         cursor.execute('''
