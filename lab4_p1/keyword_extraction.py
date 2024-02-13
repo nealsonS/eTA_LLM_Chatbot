@@ -58,17 +58,10 @@ def article_scraper(link):
         if response.status_code == 200:
             soup = BeautifulSoup(response.text, 'html.parser')
             # Attempt to find the 'title' element
-<<<<<<< Updated upstream
-            element = soup.find('title')  # or find("body") for more content
+            element = soup.find('body')  # or find("body") for more content
             # Check if the element is found
             if element:
-                text_content = element.get_text()
-=======
-            element = soup.find('body')  # or find("title") for title
-            # Check if the element is found
-            if element:
-                text_content = element.get_text(' | ', strip=True)
->>>>>>> Stashed changes
+                text_content = element.get_text(" | ", strip = True)
                 print(text_content)
                 return text_content
             else:
@@ -84,11 +77,7 @@ def article_scraper(link):
 
 
 
-<<<<<<< Updated upstream
-def check_YT(urls):
-=======
 def check_url(urls):
->>>>>>> Stashed changes
 	url_content = [] # will need to add this to mysql !!!!!!!!!!!!!!!!!!!!!!!!!
 	for u in urls:
 		if "youtu.be" in u or "youtube.com" in u:
@@ -97,12 +86,9 @@ def check_url(urls):
 		elif "soundcloud" in u or "open.spotify" in u:
 		#	print("Audio link")
 			url_content.append("Audio link")
-<<<<<<< Updated upstream
-=======
-		elif "reddit.com" in u:
-		#	print("Reddit link")
-			url_content.append("Reddit link")
->>>>>>> Stashed changes
+        elif "reddit.com" in u:
+            #	print("Reddit link")
+            url_content.append("Reddit link")
 		else:
 		#	print("***Possibly article link!!!")
 			url_content.append(article_scraper(u))
@@ -147,11 +133,7 @@ def store_posts(subreddit, limit):
         # Check if content is empty
         if not processed_content or processed_content.strip() == '':
             # Attempt to scrape content or identify the type of link
-<<<<<<< Updated upstream
-            scraped_content_or_type = check_YT([post['url']])
-=======
             scraped_content_or_type = check_url([post['url']])
->>>>>>> Stashed changes
             processed_content = scraped_content_or_type[0] if scraped_content_or_type else "Content could not be retrieved"
         
         keywords = extract_keywords(processed_content)
