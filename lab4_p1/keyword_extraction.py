@@ -90,14 +90,50 @@ def get_user_password():
     user = user or 'root'
     password = input("Please enter your MySQL password:\n")
     return user, password
+# create database if not exist
+def create_database(db_name, user, password):
+
+    # connect to database
+    # THIS ASSUMES USER IS ROOT
+    try:
+        con = mysql.connector.connect(
+            user=user, 
+            password=password,
+            host='127.0.0.1')
+            
+    # if connection has problem (Error Handling):
+    # from: https://dev.mysql.com/doc/connector-python/en/connector-python-example-connecting.html
+    except mysql.connector.Error as err:
+        if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
+            print("Something is wrong with your user name or password")
+        elif err.errno == errorcode.ER_BAD_DB_ERROR:
+            print("Database does not exist")
+        else:
+            print(err)
+            
+        # stop the program
+        sys.exit("Connection Error! Stopping program...")
+
+    # get cursor to execute queries on database
+    cursor = con.cursor()
+
+    cursor.execute(f'CREATE DATABASE IF NOT EXISTS {db_name.lower()}')
+
+    # close the connection
+    con.close()
 
 def store_posts(subreddit, limit):
+
     """
     Stores fetched and processed posts into a MySQL database.
     """
     host = 'localhost'
     user, password = get_user_password()
     database = input("Please enter your MySQL database:\n")
+
+    # create database if not exists
+    create_database(database, user, password)
+
     conn = mysql.connector.connect(
         host=host,
         user=user,
