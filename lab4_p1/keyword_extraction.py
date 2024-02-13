@@ -5,6 +5,7 @@ from datetime import datetime
 from rake_nltk import Rake
 import requests
 from bs4 import BeautifulSoup
+from newspaper import Article
 #import RAKE
 
 
