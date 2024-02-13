@@ -124,7 +124,7 @@ def store_posts(subreddit, limit):
         content MEDIUMTEXT,
         created_at DATETIME,
         url TEXT,
-        keywords TEXT
+        keywords MEDIUMTEXT
     )''')
 
 
