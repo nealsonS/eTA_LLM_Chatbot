@@ -9,3 +9,5 @@ updated version of data_collection.py that preprocess the data and extracts keyw
 ### download_table.py
 a tool to download the specific table from mysql to better view the full content of the table (because on phpadmin it does not display full content if it is too long)
 
+### 'ignore' folder
+this contains the files we did not end up using for different reasons. These are 'spacy.py', 'rake.py', and 'BERT.py'
