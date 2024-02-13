@@ -2,15 +2,9 @@ import praw
 import mysql.connector
 import re
 from datetime import datetime
-import nltk
-from nltk.corpus import stopwords
-from nltk.tokenize import word_tokenize
 from rake_nltk import Rake
 #import RAKE
 
-# Ensure you have NLTK resources downloaded
-nltk.download('punkt')
-nltk.download('stopwords')
 
 # Initialize PRAW with your Reddit App credentials
 reddit = praw.Reddit(client_id='EBX_xza7Pe9nyTLmXcYGJg',
