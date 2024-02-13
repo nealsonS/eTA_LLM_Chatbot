@@ -112,4 +112,4 @@ def store_posts(subreddit, limit):
     conn.commit()
     conn.close()
 
-store_posts('tech', 100)
+store_posts('Math', 100)
