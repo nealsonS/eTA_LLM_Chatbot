@@ -31,6 +31,15 @@ def get_user_password():
     password = input("Please enter your MySQL password:\n")
     return user, password
 
+def get_amount_of_data():
+    num = input('Please enter number of data to be downloaded:\n')
+
+    while not num.isnumeric():
+        print('Invalid input!')
+        num = input('Please enter number of data to be downloaded:\n')
+
+    return int(num)
+
 host = 'localhost'
 user, password = get_user_password()
 database = input("Please enter your MySQL database:\n")
@@ -74,4 +83,4 @@ def store_posts(subreddit, limit):
         VALUES (%s, %s, %s, %s)''', (post['title'], post['content'], post['created_at'], post['url']))
     conn.commit()
 
-store_posts('Music', 100)  # Modify the limit as per your requirement
+store_posts('tech', get_amount_of_data())  # Modify the limit as per your requirement
