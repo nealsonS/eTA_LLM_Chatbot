@@ -11,9 +11,9 @@ nltk.download('punkt')
 nltk.download('stopwords')
 
 # Initialize PRAW with your Reddit App credentials
-reddit = praw.Reddit(client_id='YOUR_CLIENT_ID',
-                     client_secret='YOUR_CLIENT_SECRET',
-                     user_agent='YOUR_USER_AGENT')
+reddit = praw.Reddit(client_id='EBX_xza7Pe9nyTLmXcYGJg',
+                     client_secret='UgjKmwJ6G2uPvR2imghS1RiMGxWdXw',
+                     user_agent='script:DSCI560:v1 (by /u/your_reddit_username)')
 
 def fetch_posts(subreddit, limit=100):
     """
