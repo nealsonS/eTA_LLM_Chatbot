@@ -23,6 +23,16 @@ Script Brief Overview:
 	1. results/Doc2Vec.mod- Trained Gensim Doc2Vec model (can be loaded)
 	2. results/Doc2Vec_vec.csv - Vector representations of all the documents
 	
+### clustering.py
+	Run this script to get topic clustering of `Content`
+	column of reddit_posts table from MySQL
+
+	Input: 
+	1. It retrieves data from MySQL
+	Output: 
+	1. for nltk_clustering(), you will get a list of the documents (reddit posts) and their estimated clusters out of n clusters. A scatterplot will also appear to show the clusters.
+	2. for scikit_clustering(), you will get a list of n topics with the top 10 keywords for each topic
+	
 Helper scripts overview:
 ### get_mysql_data.py
 	Import the function `get_dataset_from_mysql()` from this script
