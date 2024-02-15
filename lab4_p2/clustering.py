@@ -75,6 +75,9 @@ def scikit_clustering(documents):
 
 
 
+
+
+
 if __name__ == '__main__':
 	print('Retrieving Data from MySQL\n')
 	df, con = get_dataset_from_mysql()
