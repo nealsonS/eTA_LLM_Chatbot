@@ -9,11 +9,18 @@ from IPython.core.display import display
 from get_mysql_data import get_dataset_from_mysql
 
 
+def is_single_char(s):
+    return len(s) == 1
+
 
 def preprocess_text(text):
     # tokenize and remove stopwords
     tokens = word_tokenize(text)
     tokens = [word.lower() for word in tokens if word.isalnum() and word.lower() not in STOPWORDS]
+    #music_stop= ['music', 'like', 'likes', 's', 'im', 'ive']
+    #math_stop = ['math', 'mathematics', 'like', 'likes', 's', 'im', 'ive']
+    tech_stop = ['tech', 'technology', 'like', 'likes', 'research', 'researchers', 'teams', 'team', 'im', 'said', 'study', 'ive', 'new', 'university', 'says', 'use', 'material', 'materials']
+    tokens = [word.lower() for word in tokens if word.lower() not in tech_stop and not word.lower().isdigit() and not is_single_char(word)] #checks for numbers and single-char words
     return tokens
 
 
@@ -26,7 +33,7 @@ def gensim_topic_clustering(documents):
     corpus = [dictionary.doc2bow(doc) for doc in processed_docs]
 
     # train LDA model
-    num_topics = 5 
+    num_topics = 5
     lda_model = LdaModel(corpus, num_topics=num_topics, id2word=dictionary, passes=15)
 
     # display topics
