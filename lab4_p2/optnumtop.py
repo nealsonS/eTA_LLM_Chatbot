@@ -26,37 +26,36 @@ def preprocess_text(text):
 
 
 
-def gensim_topic_clustering(documents, optimal_topics):
+def gensim_topic_clustering2(documents, optimal_topics):
     processed_docs = [preprocess_text(doc) for doc in documents]
-
     # create dictionary and corpus
     dictionary = corpora.Dictionary(processed_docs)
     corpus = [dictionary.doc2bow(doc) for doc in processed_docs]
-
     # train LDA model
     num_topics = optimal_topics
     lda_model = LdaModel(corpus, num_topics=num_topics, id2word=dictionary, passes=15)
-
-   # display topics and associated documents
     for topic_id, topic_words in lda_model.print_topics():
-        # extracting only words from topic words
+    	# only get the words, not probability
         words = [word.split("*")[1].replace('"', '') for word in topic_words.split(" + ")]
         print(f"\nTopic #{topic_id + 1}: {', '.join(words)}")
-   
-# will fix this to show documents under topics
-#    topic_docs = [document for document, score in sorted(enumerate(lda_model.get_document_topics(corpus[0])), key=lambda x: -x[1][topic_id])]
- #   if topic_docs:
-        # print first few documents in the cluster
-  #      for doc_index in topic_docs[:5]:
-   #         print(f"Document #{doc_index + 1}: {documents[0][:50]}...")  
-   # else:
-    #    print("No documents in this cluster.")
-        
-    # visualize topics with pyLDAvis (makes a separate html file in the folder, open that to view visualization)
-    vis = pyLDAvis.gensim_models.prepare(lda_model, corpus, dictionary=lda_model.id2word)
-    pyLDAvis.save_html(vis, 'lda_result_tech_opt.html')
-    display(HTML('lda_result_tech_opt.html'))
-    
+        # store documents under each topic
+        topic_docs = []
+        for i in range(len(corpus)):
+            model = sorted(enumerate(lda_model.get_document_topics(corpus[i])), key=lambda x: x[1][1], reverse=True)
+            for index, (doc_topic_id, probability) in model:
+                if doc_topic_id == topic_id:
+                    topic_doc = {'topic_id': doc_topic_id, 'probability': probability, 'document': documents[i]}
+                    topic_docs.append(topic_doc)
+                    break  # break after finding the topic in the document
+        # Print documents for the current topic
+        sorted_topic_docs = sorted(topic_docs, key=lambda x: x['probability'], reverse=True)
+        for t in sorted_topic_docs:
+            print(f"{t['topic_id']+1}\t{t['probability']:.4f}\t{t['document'][:70]}")
+
+    vis = pyLDAvis.gensim_models.prepare(lda_model, corpus, dictionary=lda_model.id2word, sort_topics=False)
+    pyLDAvis.save_html(vis, 'tech_clusters.html')
+    #display(HTML('tech_clusters.html'))
+    print("Please open 'tech_clusters.html' to view the visualization.")
     
 
 def compute_coherence_values(dictionary, corpus, texts, limit, start=2, step=1):
@@ -79,7 +78,7 @@ def find_optimal_number_of_topics(documents, start=2, limit=10, step=1):
 
     model_list, coherence_values = compute_coherence_values(dictionary, corpus, processed_docs, limit, start, step)
 
-    # Plot the coherence scores
+    # visualize coherence scores
     import matplotlib.pyplot as plt
     x = range(start, limit + 1, step)
     plt.plot(x, coherence_values)
@@ -87,7 +86,6 @@ def find_optimal_number_of_topics(documents, start=2, limit=10, step=1):
     plt.ylabel("Coherence Score")
     plt.show()
 
-    # Find the optimal number of topics with the highest coherence score
     optimal_num_topics = start + coherence_values.index(max(coherence_values)) * step
     return optimal_num_topics
 
@@ -96,13 +94,10 @@ if __name__ == '__main__':
     print('Retrieving Data from MySQL\n')
     df, con = get_dataset_from_mysql()
     content = df.loc[:, 'content']
-
     documents = content
-
-    # Find the optimal number of topics
+    # find optimal number of topics before doing LDA
     optimal_topics = find_optimal_number_of_topics(documents)
     print(f"The optimal number of topics is: {optimal_topics}")
+    gensim_topic_clustering2(documents, optimal_topics)
 
-    # Use the optimal number of topics in your LDA model
-    gensim_topic_clustering(documents, optimal_topics)
 
