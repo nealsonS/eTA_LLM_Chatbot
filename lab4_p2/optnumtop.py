@@ -43,7 +43,7 @@ def gensim_topic_clustering(documents, optimal_topics):
         words = [word.split("*")[1].replace('"', '') for word in topic_words.split(" + ")]
         print(f"\nTopic #{topic_id + 1}: {', '.join(words)}")
    
-   # will fix this to show documents under topics
+# will fix this to show documents under topics
 #    topic_docs = [document for document, score in sorted(enumerate(lda_model.get_document_topics(corpus[0])), key=lambda x: -x[1][topic_id])]
  #   if topic_docs:
         # print first few documents in the cluster
@@ -51,8 +51,6 @@ def gensim_topic_clustering(documents, optimal_topics):
    #         print(f"Document #{doc_index + 1}: {documents[0][:50]}...")  
    # else:
     #    print("No documents in this cluster.")
-
-
         
     # visualize topics with pyLDAvis (makes a separate html file in the folder, open that to view visualization)
     vis = pyLDAvis.gensim_models.prepare(lda_model, corpus, dictionary=lda_model.id2word)
@@ -102,9 +100,9 @@ if __name__ == '__main__':
     documents = content
 
     # Find the optimal number of topics
-    #optimal_topics = find_optimal_number_of_topics(documents)
-    #print(f"The optimal number of topics is: {optimal_topics}")
+    optimal_topics = find_optimal_number_of_topics(documents)
+    print(f"The optimal number of topics is: {optimal_topics}")
 
     # Use the optimal number of topics in your LDA model
-    gensim_topic_clustering(documents, 5)#optimal_topics)
+    gensim_topic_clustering(documents, optimal_topics)
 

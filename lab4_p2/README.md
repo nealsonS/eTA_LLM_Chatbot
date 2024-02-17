@@ -24,7 +24,20 @@ Script Brief Overview:
 	2. results/Doc2Vec_vec.csv - Vector representations of all the documents
 	
 	
-### clustering.py
+### optnumtop.py 
+	Run this script to get topic clustering of `Content`
+	column of reddit_posts table from MySQL
+
+	Input: 
+	1. It retrieves data from MySQL
+	Output: 
+	1. finds the optimal number of topics from documents
+	2. uses LDA to do topic modeling
+	3. creates HTML file in folder to open and view visualization
+	** still working on showing the documents under each document
+	
+	
+### clustering.py (IGNORE FOR NOW)
 	Run this script to get topic clustering of `Content`
 	column of reddit_posts table from MySQL
 
@@ -34,7 +47,8 @@ Script Brief Overview:
 	1. for nltk_clustering(), you will get a list of the documents (reddit posts) and their estimated clusters out of n clusters. A scatterplot will also appear to show the clusters.
 	2. for scikit_clustering(), you will get a list of n topics with the top 10 keywords for each topic
 	
-### gensim_clustering.py
+	
+### gensim_clustering.py  (IGNORE FOR NOW, code reused for optnumtop.py)
 	Run this script to get topic clustering of `Content`
 	column of reddit_posts table from MySQL
 
