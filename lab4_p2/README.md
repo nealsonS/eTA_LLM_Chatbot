@@ -32,9 +32,10 @@ Script Brief Overview:
 	1. It retrieves data from MySQL
 	Output: 
 	1. finds the optimal number of topics from documents
-	2. uses LDA to do topic modeling
-	3. creates HTML file in folder to open and view visualization
-	** still working on showing the documents under each document
+	2. uses LDA to do topic modeling for the optimal number of topics
+	3. displays a 70-character snippet of the documents under each topic
+	4. creates HTML file in folder to open and view visualization
+	
 	
 	
 ### clustering.py (IGNORE FOR NOW)
