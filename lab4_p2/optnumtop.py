@@ -1,5 +1,5 @@
 from gensim.models import CoherenceModel
-from get_mysql_data import get_dataset_from_mysql
+#from get_mysql_data import get_dataset_from_mysql
 from gensim import corpora
 from gensim.models import LdaModel
 from gensim.parsing.preprocessing import STOPWORDS
@@ -53,9 +53,9 @@ def gensim_topic_clustering2(documents, optimal_topics):
             print(f"{t['topic_id']+1}\t{t['probability']:.4f}\t{t['document'][:70]}")
 
     vis = pyLDAvis.gensim_models.prepare(lda_model, corpus, dictionary=lda_model.id2word, sort_topics=False)
-    pyLDAvis.save_html(vis, 'results/tech_clusters.html')
+    pyLDAvis.save_html(vis, 'tech_clusters.html')
     #display(HTML('tech_clusters.html'))
-    print("Please open 'results/tech_clusters.html' to view the visualization.")
+    print("Please open 'tech_clusters.html' to view the visualization.")
     
 
 def compute_coherence_values(dictionary, corpus, texts, limit, start=2, step=1):
@@ -90,7 +90,7 @@ def find_optimal_number_of_topics(documents, start=2, limit=10, step=1):
     return optimal_num_topics
 
 
-if __name__ == '__main__':
+def optnumtop():
     print('Retrieving Data from MySQL\n')
     df, con = get_dataset_from_mysql()
     content = df.loc[:, 'content']

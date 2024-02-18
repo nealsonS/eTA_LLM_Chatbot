@@ -6,39 +6,7 @@ from sentence_transformers import SentenceTransformer
 import umap
 import hdbscan
 from sklearn.feature_extraction.text import CountVectorizer
-
-def get_dataset_from_mysql():
-
-	# get data
-	def get_user_password():
-	    user = input("Please enter your MySQL user:\nLeave Blank if it is root\n")
-	    user = user or 'root'
-	    password = input("Please enter your MySQL password:\n")
-	    return user, password
-
-	host = 'localhost'
-	user, password = get_user_password()
-	#database = input("Please enter your MySQL database:\n")
-	database = input("Please enter your MySQL database:\n")
-	conn = mysql.connector.connect(
-	    host=host,
-	    user=user,
-	    password=password,
-	    database=database
-	)
-	cursor = conn.cursor()
-
-	query = f"SELECT title FROM reddit_posts"
-	cursor.execute(query)
-
-	rows = cursor.fetchall()
-
-	columns = [col[0] for col in cursor.description]
-
-	df = pd.DataFrame(rows, columns=columns)
-
-	return df, conn
-
+from get_mysql_data import get_dataset_from_mysql 
 
 # Modelling!
 
@@ -105,7 +73,7 @@ def insert_to_mySQL(df, con):
 	# insert data to columns
 	insert_to_table(cursor, 'reddit_posts', df)
 
-if __name__ == '__main__':
+def topic_modeling():
 
 	df, con = get_dataset_from_mysql()
 	cursor = con.cursor()
