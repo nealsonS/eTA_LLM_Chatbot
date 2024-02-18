@@ -6,6 +6,7 @@ from rake_nltk import Rake
 import requests
 from bs4 import BeautifulSoup
 from newspaper import Article
+import pandas as pd
 
 
 # Initialize PRAW with your Reddit App credentials
@@ -48,7 +49,7 @@ def extract_keywords(text, num_keywords=10):
 
 # Modified article_scraper function to use Newspaper3k
 def article_scraper(link):
-    print("Collecting reddit post data, please wait.")
+    #print("Collecting reddit post data, please wait.")
     #print(f"Attempting to scrape content from: {link}")
     article = Article(link)
     try:
@@ -57,14 +58,16 @@ def article_scraper(link):
         article.parse()
         #print("Article parsed successfully.")
         if article.text:
-            print("Post content parsed successfully.")
+            pass
+            #print("Post content parsed successfully.")
             #print(f"Extracted content length: {len(article.text)} characters")
         else:
-            print("No content extracted.")
+            pass
+            #print("No content extracted.")
         return article.text
     except Exception as e:
         error_message = f"Failed to download or parse article: {e}"
-        print(error_message)
+        #print(error_message)
         return error_message
 
 
@@ -127,23 +130,12 @@ def create_database(db_name, user, password):
 
 
 
-def store_posts(subreddit, limit):
-
+def store_posts(subreddit, limit, conn):
     """
     Stores fetched and processed posts into a MySQL database.
     """
-    host = 'localhost'
-    user, password = get_user_password()
-    database = input("Please enter your MySQL database:\n")
-
     # create database if not exists
-    create_database(database, user, password)
-    conn = mysql.connector.connect(
-        host=host,
-        user=user,
-        password=password,
-        database=database
-    )
+    create_database(conn._database, conn._user, conn._password)
     cursor = conn.cursor()
     # create table if not exists
     cursor.execute('''
@@ -169,7 +161,14 @@ def store_posts(subreddit, limit):
         INSERT INTO reddit_posts (title, content, created_at, url, keywords)
         VALUES (%s, %s, %s, %s, %s)''', 
         (post['title'], processed_content, post['created_at'], post['url'], keywords))
-    conn.commit()
-    conn.close()
+    
+    query = f"SELECT * FROM reddit_posts"
+    cursor.execute(query)
+    rows = cursor.fetchall()
+    columns = [col[0] for col in cursor.description]
+    df = pd.DataFrame(rows, columns=columns)
+    return df, conn
+    #conn.commit()
+    #conn.close()
 
 #store_posts('tech', 100)

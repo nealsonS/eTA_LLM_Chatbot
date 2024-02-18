@@ -3,8 +3,6 @@ import re
 
 import pandas as pd
 
-#import nltk
-#nltk.download('wordnet')
 from nltk.tokenize import RegexpTokenizer
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
@@ -13,7 +11,8 @@ from collections.abc import Iterable # resolving an ImportError
 from gensim.models.doc2vec import Doc2Vec, TaggedDocument
 from gensim.models.doc2vec import TaggedDocument
 
-#from get_mysql_data import get_dataset_from_mysql
+
+from get_mysql_data import get_dataset_from_mysql
 
 # functions
 '''preprocess function: 
@@ -64,8 +63,8 @@ def get_vec_representations(model, data_len):
 
 	return pd.DataFrame(vec_list)
 
-#if __name__ == '__main__':
-def text_abstraction(df):
+if __name__ == '__main__':
+
 	# results folder path
 	res_path = 'results'
 	mod_save_path = os.path.join(res_path, 'Doc2Vec.mod')
@@ -74,16 +73,16 @@ def text_abstraction(df):
 	# set vector representation size
 	vector_size = 30
 
-	#print('Retrieving Data from MySQL\n')
-	#df, con = get_dataset_from_mysql()
+	print('Retrieving Data from MySQL\n')
+	df, con = get_dataset_from_mysql()
 
 	content = df.loc[:, 'content']
 
-	#print('Cleaning Text')
+	print('Cleaning Text')
 	# clean and tag documents
 	clean_docs = preprocess_docs(content, training = True)
 
-	#print('Initializing Model')
+	print('Initializing Model')
 	# initialize a Document and train
 	# min_count = 3 to remove really infrequent words
 	model = Doc2Vec(vector_size = vector_size, min_count=2, epochs = 40)
@@ -91,7 +90,7 @@ def text_abstraction(df):
 	# build the vocabulary
 	model.build_vocab(clean_docs)
 
-	#print('Training Model')
+	print('Training Model')
 	# train
 	model.train(clean_docs, total_examples=model.corpus_count, epochs=model.epochs)
 
@@ -104,4 +103,4 @@ def text_abstraction(df):
 	vec_df.to_csv(vec_save_path)
 	print(f'Outputted vector representations to {vec_save_path}')
 
-	#con.close()
+	con.close()
