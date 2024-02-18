@@ -8,11 +8,18 @@ Part 1:
 	It adds columns: `Topic`, `Topic_Name`, `Topic_Keywords` to the reddit_posts table
 
 Part 2:
-1. Run `text_abstraction_Doc2Vec.py` to get vector representations of documents
+1. For the full automation code, run `automation.py`
+2. For only vector representations of documents, run `text_abstraction_Doc2Vec.py` 
 	saved in results/Doc2Vec_vec.csv
-2.
+3. For only the clustering of articles based on topics, run `optnumtop.py`
+	saved in results/tech_clusters.html.
+
 
 Script Brief Overview:
+### automation.py
+	Run this script to get topic clustering of `Content`
+
+
 ### text_abstraction_Doc2Vec.py
 	Run this script to get vector representations of `Content`
 	column of reddit_posts table from MySQL
@@ -48,16 +55,8 @@ Script Brief Overview:
 	1. for nltk_clustering(), you will get a list of the documents (reddit posts) and their estimated clusters out of n clusters. A scatterplot will also appear to show the clusters.
 	2. for scikit_clustering(), you will get a list of n topics with the top 10 keywords for each topic
 	
-	
-### gensim_clustering.py  (IGNORE FOR NOW, code reused for optnumtop.py)
-	Run this script to get topic clustering of `Content`
-	column of reddit_posts table from MySQL
 
-	Input: 
-	1. It retrieves data from MySQL
-	Output: 
-	1. uses LDA to do topic modeling
-	2. creates HTML file in folder to open and view visualization
+	
 	
 	
 Helper scripts overview:
