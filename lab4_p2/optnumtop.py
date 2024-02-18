@@ -53,9 +53,9 @@ def gensim_topic_clustering2(documents, optimal_topics):
             print(f"{t['topic_id']+1}\t{t['probability']:.4f}\t{t['document'][:70]}")
 
     vis = pyLDAvis.gensim_models.prepare(lda_model, corpus, dictionary=lda_model.id2word, sort_topics=False)
-    pyLDAvis.save_html(vis, 'tech_clusters.html')
+    pyLDAvis.save_html(vis, 'results/tech_clusters.html')
     #display(HTML('tech_clusters.html'))
-    print("Please open 'tech_clusters.html' to view the visualization.")
+    print("Please open 'results/tech_clusters.html' to view the visualization.")
     
 
 def compute_coherence_values(dictionary, corpus, texts, limit, start=2, step=1):
