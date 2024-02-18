@@ -12,7 +12,6 @@ def get_dataset_from_mysql():
 
 	host = 'localhost'
 	user, password = get_user_password()
-	#database = input("Please enter your MySQL database:\n")
 	database = input("Please enter your MySQL database:\n")
 	conn = mysql.connector.connect(
 	    host=host,

@@ -6,7 +6,6 @@ from rake_nltk import Rake
 import requests
 from bs4 import BeautifulSoup
 from newspaper import Article
-#import RAKE
 
 
 # Initialize PRAW with your Reddit App credentials
@@ -36,14 +35,6 @@ def preprocess_text(text):
     return text
 
 
-# Default Rake
-# def extract_keywords(text):
-#     rake = RAKE.Rake(RAKE.SmartStopList())
-#     keywords = rake.run(text)
-#     keywords = ', '.join([keyword for keyword, score in keywords])
-#     return keywords
-
-
 # From rake.py
 def extract_keywords(text, num_keywords=10):
     r = Rake()  # Initialize RAKE
@@ -57,15 +48,17 @@ def extract_keywords(text, num_keywords=10):
 
 # Modified article_scraper function to use Newspaper3k
 def article_scraper(link):
-    print(f"Attempting to scrape content from: {link}")
+    print("Collecting reddit post data, please wait.")
+    #print(f"Attempting to scrape content from: {link}")
     article = Article(link)
     try:
         article.download()
-        print("Download successful, parsing article...")
+        #print("Download successful, parsing article...")
         article.parse()
-        print("Article parsed successfully.")
+        #print("Article parsed successfully.")
         if article.text:
-            print(f"Extracted content length: {len(article.text)} characters")
+            print("Post content parsed successfully.")
+            #print(f"Extracted content length: {len(article.text)} characters")
         else:
             print("No content extracted.")
         return article.text
@@ -73,8 +66,6 @@ def article_scraper(link):
         error_message = f"Failed to download or parse article: {e}"
         print(error_message)
         return error_message
-
-
 
 
 def check_url(urls):
@@ -100,6 +91,8 @@ def get_user_password():
     user = user or 'root'
     password = input("Please enter your MySQL password:\n")
     return user, password
+    
+    
 # create database if not exist
 def create_database(db_name, user, password):
 
@@ -132,6 +125,8 @@ def create_database(db_name, user, password):
     # close the connection
     con.close()
 
+
+
 def store_posts(subreddit, limit):
 
     """
@@ -143,7 +138,6 @@ def store_posts(subreddit, limit):
 
     # create database if not exists
     create_database(database, user, password)
-
     conn = mysql.connector.connect(
         host=host,
         user=user,
@@ -151,8 +145,7 @@ def store_posts(subreddit, limit):
         database=database
     )
     cursor = conn.cursor()
-
-    # Create table if not exists
+    # create table if not exists
     cursor.execute('''
     CREATE TABLE IF NOT EXISTS reddit_posts (
         id INT AUTO_INCREMENT PRIMARY KEY,
@@ -162,8 +155,6 @@ def store_posts(subreddit, limit):
         url TEXT,
         keywords MEDIUMTEXT
     )''')
-
-
     for post in fetch_posts(subreddit, limit):
         processed_content = preprocess_text(post['content']) if post['content'] else None
         # Check if content is empty
@@ -178,8 +169,7 @@ def store_posts(subreddit, limit):
         INSERT INTO reddit_posts (title, content, created_at, url, keywords)
         VALUES (%s, %s, %s, %s, %s)''', 
         (post['title'], processed_content, post['created_at'], post['url'], keywords))
-        
     conn.commit()
     conn.close()
 
-store_posts('tech', 100)
+#store_posts('tech', 100)

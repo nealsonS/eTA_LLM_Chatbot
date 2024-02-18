@@ -7,7 +7,10 @@ from nltk.tokenize import RegexpTokenizer
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 
-from gensim.models.doc2vec import Doc2Vec, TaggedDocument
+from collections.abc import Iterable # resolving an ImportError
+#from gensim.models.doc2vec import Doc2Vec, TaggedDocument
+from gensim.models.doc2vec import TaggedDocument
+
 
 from get_mysql_data import get_dataset_from_mysql
 
