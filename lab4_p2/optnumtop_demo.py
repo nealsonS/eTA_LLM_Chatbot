@@ -8,11 +8,6 @@ import pyLDAvis.gensim_models as gensimvis
 import pyLDAvis
 from IPython.core.display import HTML
 from IPython.core.display import display
-import warnings
-import pandas as pd
-
-# Suppress all warnings (not recommended)
-warnings.filterwarnings("ignore", category=DeprecationWarning)
 
 
 def is_single_char(s):
@@ -31,11 +26,7 @@ def preprocess_text(text):
 
 
 
-def gensim_topic_clustering2(documents, optimal_topics, usr_input):
-    # Values to append
-    new_values = pd.Series(['content', usr_input])
-    # Append the new values to the original Series
-    updated_series = documents._append(new_values, ignore_index=True)
+def gensim_topic_clustering2(documents, optimal_topics):
     processed_docs = [preprocess_text(doc) for doc in documents]
     # create dictionary and corpus
     dictionary = corpora.Dictionary(processed_docs)
@@ -43,7 +34,6 @@ def gensim_topic_clustering2(documents, optimal_topics, usr_input):
     # train LDA model
     num_topics = optimal_topics
     lda_model = LdaModel(corpus, num_topics=num_topics, id2word=dictionary, passes=15)
-    outputted = False
     for topic_id, topic_words in lda_model.print_topics():
     	# only get the words, not probability
         words = [word.split("*")[1].replace('"', '') for word in topic_words.split(" + ")]
@@ -57,26 +47,15 @@ def gensim_topic_clustering2(documents, optimal_topics, usr_input):
                     topic_doc = {'topic_id': doc_topic_id, 'probability': probability, 'document': documents[i]}
                     topic_docs.append(topic_doc)
                     break  # break after finding the topic in the document
-        # documents for current topic
+        # Print documents for the current topic
         sorted_topic_docs = sorted(topic_docs, key=lambda x: x['probability'], reverse=True)
-        # identify topic of user input
-        
-        new_doc_bow = dictionary.doc2bow(preprocess_text(usr_input))
-        new_doc_topic = max(lda_model.get_document_topics(new_doc_bow), key=lambda x: x[1])
-        new_doc_topic_id, new_doc_probability = new_doc_topic
-        printed_documents = set()
         for t in sorted_topic_docs:
-            if t['topic_id'] == new_doc_topic_id and t['document'] not in printed_documents:
-                if not outputted:
-                    print(f">>>> Your keywords match Topic #{new_doc_topic_id + 1} <<<<<")
-                    outputted = True
-                print(f"{t['topic_id'] + 1}\t{t['probability']:.4f}\t{t['document'][:70]}")
-                printed_documents.add(t['document'])
+            print(f"{t['topic_id']+1}\t{t['probability']:.4f}\t{t['document'][:70]}")
 
     vis = pyLDAvis.gensim_models.prepare(lda_model, corpus, dictionary=lda_model.id2word, sort_topics=False)
     pyLDAvis.save_html(vis, 'tech_clusters.html')
     #display(HTML('tech_clusters.html'))
-    print("Please open 'tech_clusters.html' to view the visualization.") 
+    print("Please open 'tech_clusters.html' to view the visualization.")
     
 
 def compute_coherence_values(dictionary, corpus, texts, limit, start=2, step=1):
@@ -111,13 +90,14 @@ def find_optimal_number_of_topics(documents, start=2, limit=10, step=1):
     return optimal_num_topics
 
 
-def optnumtop(df, usr_input):
+if __name__ == '__main__':
+    print('Retrieving Data from MySQL\n')
+    df, con = get_dataset_from_mysql()
     content = df.loc[:, 'content']
     documents = content
     # find optimal number of topics before doing LDA
-    print("Finding the optimal number of topics of reddit post contents. Please wait.")
     optimal_topics = find_optimal_number_of_topics(documents)
     print(f"The optimal number of topics is: {optimal_topics}")
-    gensim_topic_clustering2(documents, optimal_topics, usr_input)
+    gensim_topic_clustering2(documents, optimal_topics)
 
-
+()

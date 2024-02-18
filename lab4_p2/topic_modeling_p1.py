@@ -73,9 +73,9 @@ def insert_to_mySQL(df, con):
 	# insert data to columns
 	insert_to_table(cursor, 'reddit_posts', df)
 
-def topic_modeling():
+def topic_modeling(df,con):
 
-	df, con = get_dataset_from_mysql()
+	#df, con = get_dataset_from_mysql()
 	cursor = con.cursor()
 
 	# get the title of each row and convert to numpy
