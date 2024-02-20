@@ -3,6 +3,7 @@ from topic_modeling_p1 import topic_modeling
 from keyword_extraction_p1 import store_posts
 from text_abstraction_Doc2Vec import text_abstraction
 from optnumtop import optnumtop
+import pandas as pd
 import mysql.connector
 import time
 import threading
@@ -26,6 +27,20 @@ def get_connection(user, password, database):
     )
 
     return conn
+def get_db_from_conn(user, password, database):
+    conn = get_connection(user, password, database)
+
+    cursor = conn.cursor()
+
+    query = f"SELECT * FROM reddit_posts"
+    cursor.execute(query)
+
+    rows = cursor.fetchall()
+
+    columns = [col[0] for col in cursor.description]
+
+    df = pd.DataFrame(rows, columns=columns)
+    return df
 
 # scraping, preprocessing, and storage updated every X minutes
 def background_task(conn):
@@ -72,6 +87,7 @@ if __name__ == '__main__':
             background_task(conn)
 
 
+    df = get_db_from_conn(user, password, db)
    # continue with other main thread tasks
    # while not updating, take keyword, then it should be clustered again and output the cluster topic and a graphical representation.
     keywords = input("Enter keywords to find the best cluster they could belong in, separated by space\n")
@@ -80,7 +96,5 @@ if __name__ == '__main__':
     text_abstraction(df)
     # wait for background threads to complete (optional)
     #background_thread.join()
-
-    conn.commit()
     conn.close
  

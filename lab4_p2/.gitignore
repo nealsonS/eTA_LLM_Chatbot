@@ -1,2 +1,5 @@
 __pycache__
-results
+results/Doc2Vec.mod
+results/Doc2Vec.csv
+topics_info.csv
+tech_clusters.html
