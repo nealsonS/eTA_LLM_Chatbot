@@ -7,7 +7,7 @@ from nltk.tokenize import word_tokenize
 import pyLDAvis.gensim_models as gensimvis
 import pyLDAvis
 from IPython.core.display import HTML
-from IPython.core.display import display
+from IPython import display
 import warnings
 import pandas as pd
 
