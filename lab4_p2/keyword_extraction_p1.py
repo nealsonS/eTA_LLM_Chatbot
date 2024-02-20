@@ -137,6 +137,11 @@ def store_posts(subreddit, limit, conn):
     # create database if not exists
     create_database(conn._database, conn._user, conn._password)
     cursor = conn.cursor()
+
+    # drop table if not exist
+    cursor.execute("DROP TABLE IF EXISTS reddit_posts")
+    conn.commit()
+    
     # create table if not exists
     cursor.execute('''
     CREATE TABLE IF NOT EXISTS reddit_posts (

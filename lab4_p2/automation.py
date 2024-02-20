@@ -3,15 +3,35 @@ from topic_modeling_p1 import topic_modeling
 from keyword_extraction_p1 import store_posts
 from text_abstraction_Doc2Vec import text_abstraction
 from optnumtop import optnumtop
+import mysql.connector
 import time
 import threading
 
+# get data
+def get_user_password_db():
+    user = input("Please enter your MySQL user:\nLeave Blank if it is root\n")
+    user = user or 'root'
+    password = input("Please enter your MySQL password:\n")
+    database = input("Please enter your MySQL database:\n")
+    return user, password, database
+
+def get_connection(user, password, database):
+
+    host = 'localhost'
+    conn = mysql.connector.connect(
+        host=host,
+        user=user,
+        password=password,
+        database=database
+    )
+
+    return conn
 
 # scraping, preprocessing, and storage updated every X minutes
-def background_task(df, conn, interval):
+def background_task(conn):
+    print('Scraping, preprocessing, and storing data')
     df, conn = store_posts('tech', 100, conn)
     topic_modeling(df, conn)
-    time.sleep(interval)
         
 
 if __name__ == '__main__':
@@ -29,11 +49,29 @@ if __name__ == '__main__':
     	    seconds = int(inp) * 60
     	    intervals.append(seconds)
     #print(intervals)
-    for i in intervals:
-        df, conn = get_dataset_from_mysql()
-        # background thread for tasks
-        background_thread = threading.Thread(target=background_task, args=(df, conn, i))
-        background_thread.start()
+
+    # find rolling difference
+    if len(intervals) > 1:
+        diff_i = [j-i for i, j in zip(intervals[:-1], intervals[1:])]
+    else:
+        diff_i = []
+
+    user, password, db = get_user_password_db()
+    conn = get_connection(user, password, db)
+    background_task(conn)
+
+    if len(diff_i) > 0:
+        for i in diff_i:
+            print(f'Waiting {i} seconds')
+            time.sleep(i)
+            conn = get_connection(user, password, db)
+
+            # background thread for tasks
+            #background_thread = threading.Thread(target=background_task, args=(df, conn, i))
+            #background_thread.start()
+            background_task(conn)
+
+
    # continue with other main thread tasks
    # while not updating, take keyword, then it should be clustered again and output the cluster topic and a graphical representation.
     keywords = input("Enter keywords to find the best cluster they could belong in, separated by space\n")
@@ -41,7 +79,7 @@ if __name__ == '__main__':
     optnumtop(df, keywords)
     text_abstraction(df)
     # wait for background threads to complete (optional)
-    background_thread.join()
+    #background_thread.join()
 
     conn.commit()
     conn.close
