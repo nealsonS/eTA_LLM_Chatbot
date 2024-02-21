@@ -57,7 +57,7 @@ def extract_text_from_pdf(pdf_path):
 # Extract well name and API number using flexible patterns
 def extract_well_name_and_api(text):
     api_patterns = [r"API[#: ]*\s*(\d{2,}-?\d{3,}-?\d{5,})"]
-    well_name_patterns = [r"Well Name[: ]*\s*([\w\s]+)"]
+    well_name_patterns = [r"Well Name and Number[: ]*\s*([\w\s]+)"]
     
     api_number = "Unknown"
     well_name = "Unknown"
