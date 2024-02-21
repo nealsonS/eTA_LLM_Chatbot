@@ -1,8 +1,8 @@
 import os
+import re
 import sys
 import PyPDF2
 import pytesseract
-from PIL import Image
 import mysql.connector
 from ocrmypdf import ocr
 from mysql.connector import errorcode
@@ -10,7 +10,7 @@ from mysql.connector import errorcode
 # Function to get MySQL user and password
 def get_user_password():
     user = input("Please enter your MySQL user:\nLeave Blank if it is root\n")
-    user = user or 'root'  # Default to 'root' if left blank
+    user = user or 'root'  # Defaults to 'root' if left blank
     password = input("Please enter your MySQL password:\n")
     return user, password
 
@@ -47,58 +47,69 @@ def extract_text_from_pdf(pdf_path):
         text = ''
         for page in reader.pages:
             text += page.extract_text() + " "
-        if not text:
+        if not text:  # If no text extracted, use OCR
             print(f"Using OCR for: {pdf_path}")
             text = ocr_pdf_to_text(pdf_path)
         return text
     finally:
         pdf_file.close()
 
-# Insert data into database
-def insert_data_into_db(cursor, data, table_name='your_table_name'):
-    check_and_create_table(cursor, table_name)  # Ensure table exists
-    try:
-        sql = f"INSERT INTO {table_name} (api_number, longitude, latitude, well_name, address) VALUES (%s, %s, %s, %s, %s)"
-        cursor.execute(sql, data)
-    except mysql.connector.Error as err:
-        print("Failed to insert data into MySQL table:", err)
+# Extract well name and API number using flexible patterns
+def extract_well_name_and_api(text):
+    api_patterns = [r"API[#: ]*\s*(\d{2,}-?\d{3,}-?\d{5,})"]
+    well_name_patterns = [r"Well Name[: ]*\s*([\w\s]+)"]
+    
+    api_number = "Unknown"
+    well_name = "Unknown"
+    
+    for pattern in api_patterns:
+        match = re.search(pattern, text, re.IGNORECASE)
+        if match:
+            api_number = match.group(1)
+            break
+    
+    for pattern in well_name_patterns:
+        match = re.search(pattern, text, re.IGNORECASE)
+        if match:
+            well_name = match.group(1).strip()
+            break
+    
+    return well_name, api_number
 
-def check_and_create_table(cursor, table_name):
-    create_table_sql = f"""
-    CREATE TABLE IF NOT EXISTS {table_name} (
+# Check and create table if not exists
+def check_and_create_table(cursor):
+    create_table_sql = """
+    CREATE TABLE IF NOT EXISTS well_data (
         id INT AUTO_INCREMENT PRIMARY KEY,
-        api_number VARCHAR(255),
-        longitude VARCHAR(255),
-        latitude VARCHAR(255),
         well_name VARCHAR(255),
-        address VARCHAR(255)
+        api_number VARCHAR(255)
     )
     """
-    try:
-        cursor.execute(create_table_sql)
-    except mysql.connector.Error as err:
-        print(f"Failed to create table: {err}")
+    cursor.execute(create_table_sql)
+
+# Insert data into database
+def insert_data_into_db(cursor, well_name, api_number):
+    check_and_create_table(cursor)  # Ensure table exists
+    insert_sql = "INSERT INTO well_data (well_name, api_number) VALUES (%s, %s)"
+    cursor.execute(insert_sql, (well_name, api_number))
 
 if __name__ == "__main__":
     host = 'localhost'
     user, password = get_user_password()
     database = input("Please enter your MySQL database:\n")
     
-    # Connect to your database
     connection = connect_to_database(host, user, password, database)
     cursor = connection.cursor()
 
-    # Specify the path to your PDF directory
     pdf_directory = '/home/colinzwang/Documents/DSCI560_Lab5'
     for filename in os.listdir(pdf_directory):
         if filename.endswith('.pdf'):
             pdf_path = os.path.join(pdf_directory, filename)
             extracted_text = extract_text_from_pdf(pdf_path)
-            # Example data - replace with actual data extraction logic
-            data = ('api_number_example', 'longitude_example', 'latitude_example', 'well_name_example', 'address_example')
-            insert_data_into_db(cursor, data)
+            well_name, api_number = extract_well_name_and_api(extracted_text)
+            if well_name != "Unknown" and api_number != "Unknown":
+                insert_data_into_db(cursor, well_name, api_number)
 
-    # Commit changes and close the connection
     connection.commit()
     cursor.close()
     connection.close()
