@@ -102,7 +102,7 @@ if __name__ == "__main__":
     connection = connect_to_database(host, user, password, database)
     cursor = connection.cursor()
 
-    pdf_directory = '/path/to/your/pdf_directory'
+    pdf_directory = '/home/colinzwang/Documents/DSCI560_Lab5'
     
     # Initialize counters
     count_well_name_success = 0
