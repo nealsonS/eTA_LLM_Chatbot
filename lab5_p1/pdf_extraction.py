@@ -72,7 +72,7 @@ if __name__ == "__main__":
     cursor = connection.cursor()
 
     # Specify the path to your PDF directory
-    pdf_directory = 'path_to_your_pdf_files'
+    pdf_directory = '/home/colinzwang/Documents/DSCI560_Lab5'
     for filename in os.listdir(pdf_directory):
         if filename.endswith('.pdf'):
             pdf_path = os.path.join(pdf_directory, filename)
