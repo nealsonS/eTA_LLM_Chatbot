@@ -59,11 +59,8 @@ def extract_well_name_and_api(text):
     # Patterns to match API numbers, considering various possible formats
     api_patterns = [r"API[#: ]*\s*(\d{2,}-?\d{3,}-?\d{5,})"]
     
-    # Patterns to match Well Names, capturing text up until "and number" if present
-    well_name_patterns = [
-        r"Well Name[: ]*\s*([\w\s]+?)(?:and number|$)",  # Non-greedy match up to "and number" or end
-        r"Well Name and Number[: ]*\s*([\w\s]+?)(?:and number|$)"  # Adjusted for direct "Well Name and Number"
-    ]
+    # Patterns to match Well Names
+    well_name_patterns = [r"Well Name[: ]*\s*([\w\s]+)"]
     
     api_number = "Unknown"
     well_name = "Unknown"
