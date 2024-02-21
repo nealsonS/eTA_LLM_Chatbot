@@ -107,9 +107,16 @@ if __name__ == "__main__":
             pdf_path = os.path.join(pdf_directory, filename)
             extracted_text = extract_text_from_pdf(pdf_path)
             well_name, api_number = extract_well_name_and_api(extracted_text)
+
+            # Print the extracted information for verification
+            print(f"Extracted for '{filename}': Well Name - {well_name}, API Number - {api_number}")
+
             if well_name != "Unknown" and api_number != "Unknown":
                 insert_data_into_db(cursor, well_name, api_number)
-
+            else:
+                print(f"Failed to extract well name or API number for '{filename}'.")
+    
     connection.commit()
     cursor.close()
     connection.close()
+
