@@ -102,22 +102,44 @@ if __name__ == "__main__":
     connection = connect_to_database(host, user, password, database)
     cursor = connection.cursor()
 
-    pdf_directory = '/home/colinzwang/Documents/DSCI560_Lab5'
+    pdf_directory = '/path/to/your/pdf_directory'
+    
+    # Initialize counters
+    count_well_name_success = 0
+    count_api_success = 0
+    count_failures = 0
+    count_errors = 0
+
     for filename in os.listdir(pdf_directory):
         if filename.endswith('.pdf'):
             pdf_path = os.path.join(pdf_directory, filename)
-            extracted_text = extract_text_from_pdf(pdf_path)
-            well_name, api_number = extract_well_name_and_api(extracted_text)
+            try:
+                extracted_text = extract_text_from_pdf(pdf_path)
+                well_name, api_number = extract_well_name_and_api(extracted_text)
 
-            # Print the extracted information for verification
-            print(f"Extracted for '{filename}': Well Name - {well_name}, API Number - {api_number}")
+                if well_name != "Unknown":
+                    count_well_name_success += 1
+                if api_number != "Unknown":
+                    count_api_success += 1
+                if well_name == "Unknown" or api_number == "Unknown":
+                    count_failures += 1
 
-            if well_name != "Unknown" or api_number != "Unknown":
-                insert_data_into_db(cursor, well_name, api_number)
-            else:
-                print(f"Failed to extract well name and API number for '{filename}'.")
-    
+                print(f"Extracted for '{filename}': Well Name - {well_name}, API Number - {api_number}")
+
+                if well_name != "Unknown" and api_number != "Unknown":
+                    insert_data_into_db(cursor, well_name, api_number)
+            except Exception as e:
+                print(f"Error processing '{filename}': {e}")
+                count_errors += 1
+
     connection.commit()
     cursor.close()
     connection.close()
+
+    # Print summary
+    print(f"\nSummary:")
+    print(f"Total well names successfully extracted: {count_well_name_success}")
+    print(f"Total API numbers successfully extracted: {count_api_success}")
+    print(f"Total failures (unknown well name or API number): {count_failures}")
+    print(f"Total errors during extraction: {count_errors}")
 
