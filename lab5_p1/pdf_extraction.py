@@ -59,26 +59,35 @@ def extract_well_name_and_api(text):
     # Patterns to match API numbers, considering various possible formats
     api_patterns = [r"API[#: ]*\s*(\d{2,}-?\d{3,}-?\d{5,})"]
     
-    # Patterns to match Well Names
-    well_name_patterns = [r"Well Name[: ]*\s*([\w\s]+)"]
+    # Patterns to match Well Names, capturing text up until "and number" if present,
+    # or end of the statement. This version is broadened to include commas and makes
+    # assumptions about the structure of well names to improve flexibility.
+    well_name_patterns = [
+        r"Well Name(?: and Number)?[: ]*\s*([,\w\s]+?)(?: and number|$)",  # Combined and broadened
+    ]
     
+    # Initialize variables to hold the extracted data
     api_number = "Unknown"
     well_name = "Unknown"
     
+    # Attempt to find a match for the API number
     for pattern in api_patterns:
         match = re.search(pattern, text, re.IGNORECASE)
         if match:
             api_number = match.group(1)
             break  # Stop at the first match
     
+    # Attempt to find a match for the Well Name
     for pattern in well_name_patterns:
         match = re.search(pattern, text, re.IGNORECASE)
         if match:
             well_name = match.group(1).strip()
-            # If "and number" is part of the match, it will be excluded by the regex pattern
+            # Additional cleaning might be required to remove unwanted parts
+            well_name = re.sub(r' and number$', '', well_name, flags=re.IGNORECASE).strip()
             break  # Stop at the first match
     
     return well_name, api_number
+
 
 
 # Check and create table if not exists
