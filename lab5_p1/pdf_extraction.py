@@ -126,7 +126,7 @@ if __name__ == "__main__":
 
                 print(f"Extracted for '{filename}': Well Name - {well_name}, API Number - {api_number}")
 
-                if well_name != "Unknown" and api_number != "Unknown":
+                if well_name != "Unknown" or api_number != "Unknown":
                     insert_data_into_db(cursor, well_name, api_number)
             except Exception as e:
                 print(f"Error processing '{filename}': {e}")
