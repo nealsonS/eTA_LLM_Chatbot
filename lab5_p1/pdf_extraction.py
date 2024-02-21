@@ -57,7 +57,7 @@ def extract_text_from_pdf(pdf_path):
 # Insert data into database
 def insert_data_into_db(cursor, data):
     try:
-        sql = "INSERT INTO `your_table_name` (`api_number`, `longitude`, `latitude`, `well_name`, `address`) VALUES (%s, %s, %s, %s, %s)"
+        sql = "INSERT INTO `Table1` (`api_number`, `longitude`, `latitude`, `well_name`, `address`) VALUES (%s, %s, %s, %s, %s)"
         cursor.execute(sql, data)
     except mysql.connector.Error as err:
         print("Failed to insert data into MySQL table:", err)
