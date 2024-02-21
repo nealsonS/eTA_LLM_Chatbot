@@ -112,10 +112,10 @@ if __name__ == "__main__":
             # Print the extracted information for verification
             print(f"Extracted for '{filename}': Well Name - {well_name}, API Number - {api_number}")
 
-            if well_name != "Unknown" and api_number != "Unknown":
+            if well_name != "Unknown" or api_number != "Unknown":
                 insert_data_into_db(cursor, well_name, api_number)
             else:
-                print(f"Failed to extract well name or API number for '{filename}'.")
+                print(f"Failed to extract well name and API number for '{filename}'.")
     
     connection.commit()
     cursor.close()
