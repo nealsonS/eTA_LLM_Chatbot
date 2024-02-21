@@ -55,12 +55,29 @@ def extract_text_from_pdf(pdf_path):
         pdf_file.close()
 
 # Insert data into database
-def insert_data_into_db(cursor, data):
+def insert_data_into_db(cursor, data, table_name='your_table_name'):
+    check_and_create_table(cursor, table_name)  # Ensure table exists
     try:
-        sql = "INSERT INTO `Table1` (`api_number`, `longitude`, `latitude`, `well_name`, `address`) VALUES (%s, %s, %s, %s, %s)"
+        sql = f"INSERT INTO {table_name} (api_number, longitude, latitude, well_name, address) VALUES (%s, %s, %s, %s, %s)"
         cursor.execute(sql, data)
     except mysql.connector.Error as err:
         print("Failed to insert data into MySQL table:", err)
+
+def check_and_create_table(cursor, table_name):
+    create_table_sql = f"""
+    CREATE TABLE IF NOT EXISTS {table_name} (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        api_number VARCHAR(255),
+        longitude VARCHAR(255),
+        latitude VARCHAR(255),
+        well_name VARCHAR(255),
+        address VARCHAR(255)
+    )
+    """
+    try:
+        cursor.execute(create_table_sql)
+    except mysql.connector.Error as err:
+        print(f"Failed to create table: {err}")
 
 if __name__ == "__main__":
     host = 'localhost'
