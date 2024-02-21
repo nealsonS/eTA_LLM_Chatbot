@@ -56,8 +56,14 @@ def extract_text_from_pdf(pdf_path):
 
 # Extract well name and API number using flexible patterns
 def extract_well_name_and_api(text):
+    # Patterns to match API numbers, considering various possible formats
     api_patterns = [r"API[#: ]*\s*(\d{2,}-?\d{3,}-?\d{5,})"]
-    well_name_patterns = [r"Well Name[: ]*\s*([\w\s]+)"]
+    
+    # Patterns to match Well Names, capturing text up until "and number" if present
+    well_name_patterns = [
+        r"Well Name[: ]*\s*([\w\s]+?)(?:and number|$)",  # Non-greedy match up to "and number" or end
+        r"Well Name and Number[: ]*\s*([\w\s]+?)(?:and number|$)"  # Adjusted for direct "Well Name and Number"
+    ]
     
     api_number = "Unknown"
     well_name = "Unknown"
@@ -66,15 +72,17 @@ def extract_well_name_and_api(text):
         match = re.search(pattern, text, re.IGNORECASE)
         if match:
             api_number = match.group(1)
-            break
+            break  # Stop at the first match
     
     for pattern in well_name_patterns:
         match = re.search(pattern, text, re.IGNORECASE)
         if match:
             well_name = match.group(1).strip()
-            break
+            # If "and number" is part of the match, it will be excluded by the regex pattern
+            break  # Stop at the first match
     
     return well_name, api_number
+
 
 # Check and create table if not exists
 def check_and_create_table(cursor):
