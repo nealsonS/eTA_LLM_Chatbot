@@ -46,13 +46,14 @@ def extract_text_from_pdf(pdf_path):
         reader = PyPDF2.PdfReader(pdf_file)
         text = ''
         for page in reader.pages:
-            text += page.extract_text() + " "
-        if not text:  # If no text extracted, use OCR
-            print(f"Using OCR for: {pdf_path}")
-            text = ocr_pdf_to_text(pdf_path)
+            try:
+                text += page.extract_text() + " "
+            except KeyError:
+                print(f"Skipping a page in {pdf_path} due to extraction issues.")
         return text
     finally:
         pdf_file.close()
+
 
 # Extract well name and API number using flexible patterns
 def extract_well_name_and_api(text):
