@@ -55,44 +55,70 @@ def extract_text_from_pdf(pdf_path):
         pdf_file.close()
 
 
-# Extract well name and API number using flexible patterns
-def extract_well_name_and_api(text):
+def extract_well_details(text):
+    details = {
+        "well_name": "Unknown",
+        "api_number": "Unknown",
+        "longitude": "Unknown",
+        "latitude": "Unknown",
+        "address": "Unknown"
+    }
+
+    # Regex patterns for new fields
+    longitude_pattern = r"Longitude[: ]*\s*([-+]?\d{1,3}\.\d+)"
+    latitude_pattern = r"Latitude[: ]*\s*([-+]?\d{1,3}\.\d+)"
+    address_pattern = r"Address[: ]*\s*([\w\s,]+)"
+
+    # Existing patterns for well name and API number
     api_patterns = [r"API[#: ]*\s*(\d{2,}-?\d{3,}-?\d{5,})"]
     well_name_patterns = [r"Well Name and Number[: ]*\s*([\w\s]+)"]
-    
-    api_number = "Unknown"
-    well_name = "Unknown"
-    
+
+    # well_name_patterns = [
+    #     r"Well Name(?: and Number)?[: ]*\s*([,\w\s]+?)(?= and Number|$)"
+    # ]
+
+    # Update details dict based on matches
+    for name, pattern in [("longitude", longitude_pattern), ("latitude", latitude_pattern), ("address", address_pattern)]:
+        match = re.search(pattern, text, re.IGNORECASE)
+        if match:
+            details[name] = match.group(1).strip()
+
     for pattern in api_patterns:
         match = re.search(pattern, text, re.IGNORECASE)
         if match:
-            api_number = match.group(1)
+            details["api_number"] = match.group(1)
             break
-    
+
     for pattern in well_name_patterns:
         match = re.search(pattern, text, re.IGNORECASE)
         if match:
-            well_name = match.group(1).strip()
+            details["well_name"] = match.group(1).strip()
             break
-    
-    return well_name, api_number
 
-# Check and create table if not exists
+    return details
+
+
 def check_and_create_table(cursor):
     create_table_sql = """
     CREATE TABLE IF NOT EXISTS well_data (
         id INT AUTO_INCREMENT PRIMARY KEY,
         well_name VARCHAR(255),
-        api_number VARCHAR(255)
+        api_number VARCHAR(255),
+        longitude VARCHAR(255),
+        latitude VARCHAR(255),
+        address TEXT
     )
     """
     cursor.execute(create_table_sql)
 
-# Insert data into database
-def insert_data_into_db(cursor, well_name, api_number):
+def insert_data_into_db(cursor, details):
     check_and_create_table(cursor)  # Ensure table exists
-    insert_sql = "INSERT INTO well_data (well_name, api_number) VALUES (%s, %s)"
-    cursor.execute(insert_sql, (well_name, api_number))
+    insert_sql = """
+    INSERT INTO well_data (well_name, api_number, longitude, latitude, address) 
+    VALUES (%s, %s, %s, %s, %s)
+    """
+    cursor.execute(insert_sql, (details["well_name"], details["api_number"], details["longitude"], details["latitude"], details["address"]))
+
 
 if __name__ == "__main__":
     host = 'localhost'
@@ -104,42 +130,19 @@ if __name__ == "__main__":
 
     pdf_directory = '/home/colinzwang/Documents/DSCI560_Lab5'
     
-    # Initialize counters
-    count_well_name_success = 0
-    count_api_success = 0
-    count_failures = 0
-    count_errors = 0
 
     for filename in os.listdir(pdf_directory):
         if filename.endswith('.pdf'):
             pdf_path = os.path.join(pdf_directory, filename)
-            try:
-                extracted_text = extract_text_from_pdf(pdf_path)
-                well_name, api_number = extract_well_name_and_api(extracted_text)
+            extracted_text = extract_text_from_pdf(pdf_path)
+            details = extract_well_details(extracted_text)
+            
+            print(f"Extracted for '{filename}': {details}")
+            
+            if details["well_name"] != "Unknown" and details["api_number"] != "Unknown":
+                insert_data_into_db(cursor, details)
 
-                if well_name != "Unknown":
-                    count_well_name_success += 1
-                if api_number != "Unknown":
-                    count_api_success += 1
-                if well_name == "Unknown" or api_number == "Unknown":
-                    count_failures += 1
-
-                print(f"Extracted for '{filename}': Well Name - {well_name}, API Number - {api_number}")
-
-                if well_name != "Unknown" or api_number != "Unknown":
-                    insert_data_into_db(cursor, well_name, api_number)
-            except Exception as e:
-                print(f"Error processing '{filename}': {e}")
-                count_errors += 1
 
     connection.commit()
     cursor.close()
     connection.close()
-
-    # Print summary
-    print(f"\nSummary:")
-    print(f"Total well names successfully extracted: {count_well_name_success}")
-    print(f"Total API numbers successfully extracted: {count_api_success}")
-    print(f"Total failures (unknown well name or API number): {count_failures}")
-    print(f"Total errors during extraction: {count_errors}")
-
