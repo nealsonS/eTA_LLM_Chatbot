@@ -7,4 +7,4 @@ Script Brief Overview:
 	Input:
 	1. It asks user to input login to mysql server
 	Output: 
-	1. Stores extracted data into designated table
+	1. Stores extracted data (well name, api number, longitude, latitude, address) into designated table in mysql server
