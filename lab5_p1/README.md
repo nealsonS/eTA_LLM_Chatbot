@@ -1,5 +1,7 @@
 Script Brief Overview:
 ### pdf_extraction.py
+	Please download the data and change the pdf_directory variable to the path of local data
+	
 	Run this script to convert local pdf to text and extract useful information from the text.
 	
 	Input:
