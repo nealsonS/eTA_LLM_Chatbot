@@ -129,7 +129,7 @@ def update_well_in_db(cursor, api_number, well_details):
         closest_city = %s,
         barrels_of_oil = %s,
         barrels_of_gas = %s,
-        well_name = %s,
+        well_name = %s
     WHERE api_number = %s
     """
     
