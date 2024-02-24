@@ -65,7 +65,7 @@ def scrape_well_info(api_number):
         return {}
     
     soup = BeautifulSoup(response.text, 'html.parser')
-    table = soup.find('table', class_='wide-table interest_table')
+    table = soup.find('table', class_='table wide-table interest_table')
     well_info = {}
 
     if table:
