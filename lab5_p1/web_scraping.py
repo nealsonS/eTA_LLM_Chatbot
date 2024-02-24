@@ -80,6 +80,18 @@ def scrape_well_info(api_number):
 
     return well_info
 
+def update_well_in_db(cursor, well_info):
+    update_sql = """
+    UPDATE well_data SET
+        well_name = %s, lease_name = %s, location = %s,
+        operator = %s, status = %s
+    WHERE api_number = %s
+    """
+    cursor.execute(update_sql, (
+        well_info["well_name"], well_info["lease_name"], well_info["location"],
+        well_info["operator"], well_info["status"], well_info["api"]
+    ))
+
 
 if __name__ == "__main__":
     host = 'localhost'
