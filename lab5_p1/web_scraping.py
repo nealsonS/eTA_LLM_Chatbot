@@ -5,7 +5,6 @@ import mysql.connector
 import PyPDF2
 from ocrmypdf import ocr
 from mysql.connector import errorcode
-# Assuming requests and BeautifulSoup4 are installed
 import requests
 from bs4 import BeautifulSoup
 
