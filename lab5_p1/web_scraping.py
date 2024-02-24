@@ -126,6 +126,7 @@ if __name__ == "__main__":
             update_well_in_db(cursor, well_info)
         else:
             print(f"No information scraped for API {api_number}.")
+        print("\n")
     
     connection.commit()
     print("Database changes committed.")
