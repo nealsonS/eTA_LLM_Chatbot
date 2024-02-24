@@ -70,22 +70,34 @@ def scrape_well_info(api_number):
 
     if table:
         data_rows = table.find_all('tr')[1:]  # Skip header row
+        if not data_rows:
+            print("No data rows found in the table.")
+            return well_info  # Return empty dict if no data rows are present
+
         for row in data_rows:
-            cols = row.find_all('td')
-            well_info = {
-                "api": cols[0].text.strip(),
-                "well_name": cols[1].text.strip(),
-                "lease_name": cols[2].text.strip(),
-                "location": cols[3].text.strip(),
-                "operator": cols[4].text.strip(),
-                "status": cols[5].text.strip(),
-            }
-            print(f"Scraped information: {well_info}")
-            break  # Assuming we're only interested in the first match
+            try:
+                cols = row.find_all('td')
+                if cols and len(cols) >= 6:  # Ensure there are enough columns
+                    well_info = {
+                        "api": cols[0].text.strip(),
+                        "well_name": cols[1].text.strip(),
+                        "lease_name": cols[2].text.strip(),
+                        "location": cols[3].text.strip(),
+                        "operator": cols[4].text.strip(),
+                        "status": cols[5].text.strip(),
+                    }
+                    print(f"Scraped information: {well_info}")
+                    break  # Assuming we're only interested in the first match
+                else:
+                    print("Not enough columns in row or no columns found.")
+            except IndexError as e:
+                print(f"Error processing table row: {e}")
+                continue  # Continue to next row or API number if IndexError occurs
     else:
         print("Table not found on the page.")
 
     return well_info
+
 
 
 def update_well_in_db(cursor, well_info):
