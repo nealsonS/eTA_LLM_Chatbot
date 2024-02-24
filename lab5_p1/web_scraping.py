@@ -76,8 +76,8 @@ def scrape_well_info(api_number):
                 "operator": cols[4].text.strip(),
                 "status": cols[5].text.strip(),
             }
-            break  # Assuming we're only interested in the first match
-
+            break  
+            
     return well_info
 
 def update_well_in_db(cursor, well_info):
@@ -103,15 +103,16 @@ if __name__ == "__main__":
     
     check_and_create_table(cursor)
     
-    # Assume you already have data in your well_data table, so we'll start the scraping and updating process
-    cursor.execute("SELECT api_number, well_name FROM well_data")
-    wells = cursor.fetchall()
+    cursor.execute("SELECT api_number FROM well_data")
+    apis = cursor.fetchall()
     
-    for api_number, well_name in wells:
-        scraped_details = scrape_well_details(api_number, well_name)
-        update_well_details_in_db(cursor, api_number, scraped_details)
-        print(f"Updated well {well_name} ({api_number}) with scraped data.")
-    
+    for (api_number,) in apis:
+        well_info = scrape_well_info(api_number)
+        if well_info:
+            update_well_in_db(cursor, well_info)
+            print(f"Updated database for API {api_number}.")
+
+
     connection.commit()
     cursor.close()
     connection.close()
