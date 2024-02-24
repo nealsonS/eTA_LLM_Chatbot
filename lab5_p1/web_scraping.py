@@ -52,22 +52,34 @@ def check_and_create_table(cursor):
             print(f"Skipped adding {column_name}: {err.msg}")
 
 
-def scrape_well_details(api_number, well_name):
-    # Placeholder function - adjust based on the real website's structure
-    return {
-        "well_status": "Active",  # Example data
-        "well_type": "Oil",
-        "closest_city": "Example City",
-        "barrels_of_oil": "1000"
-    }
+def scrape_well_info(api_number):
+    search_url = f"https://www.drillingedge.com/search?type=wells&api_no={api_number}"
+    response = requests.get(search_url)
+    soup = BeautifulSoup(response.text, 'html.parser')
 
-def update_well_details_in_db(cursor, api_number, details):
-    update_sql = """
-    UPDATE well_data
-    SET well_status = %s, well_type = %s, closest_city = %s, barrels_of_oil = %s
-    WHERE api_number = %s
-    """
-    cursor.execute(update_sql, (details["well_status"], details["well_type"], details["closest_city"], details["barrels_of_oil"], api_number))
+    # Find the table by class (adjust class name as needed based on actual page structure)
+    table = soup.find('table', class_='wide-table interest_table')
+    well_info = {}
+
+    if table:
+        # Assuming first <tr> is the header and the next <tr> contains the desired data
+        data_rows = table.find_all('tr')[1:]  # Skip header row
+
+        for row in data_rows:
+            # Extracting table data. Adjust as per actual HTML structure
+            cols = row.find_all('td')
+            well_info = {
+                "api": cols[0].text.strip(),
+                "well_name": cols[1].text.strip(),
+                "lease_name": cols[2].text.strip(),
+                "location": cols[3].text.strip(),
+                "operator": cols[4].text.strip(),
+                "status": cols[5].text.strip(),
+            }
+            break  # Assuming we're only interested in the first match
+
+    return well_info
+
 
 if __name__ == "__main__":
     host = 'localhost'
