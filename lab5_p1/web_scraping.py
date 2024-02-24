@@ -39,7 +39,9 @@ def check_and_create_table(cursor):
         "well_status": "VARCHAR(255)",
         "well_type": "VARCHAR(255)",
         "closest_city": "VARCHAR(255)",
-        "barrels_of_oil": "VARCHAR(255)"
+        "barrels_of_oil": "VARCHAR(255)",
+        "barrels_of_gas": "VARCHAR(255)"
+
     }
     
     # Try adding each new column without IF NOT EXISTS clause
@@ -52,74 +54,147 @@ def check_and_create_table(cursor):
             print(f"Skipped adding {column_name}: {err.msg}")
 
 
-def scrape_well_info(api_number):
-    print(f"Starting to scrape information for API number: {api_number}")
-    search_url = f"https://www.drillingedge.com/search?type=wells&api_no={api_number}"
-    print(f"Searching for {search_url}.")
+# def scrape_well_info(api_number):
+#     print(f"Starting to scrape information for API number: {api_number}")
+#     search_url = f"https://www.drillingedge.com/search?type=wells&api_no={api_number}"
+#     print(f"Searching for {search_url}.")
 
-    response = requests.get(search_url)
-    if response.status_code == 200:
-        print("Successfully fetched the web page.")
-    else:
-        print(f"Failed to fetch the web page. Status code: {response.status_code}")
+#     response = requests.get(search_url)
+#     if response.status_code == 200:
+#         print("Successfully fetched the web page.")
+#     else:
+#         print(f"Failed to fetch the web page. Status code: {response.status_code}")
+#         return {}
+    
+#     soup = BeautifulSoup(response.text, 'html.parser')
+#     table = soup.find('table', class_='table wide-table interest_table')
+#     well_info = {}
+
+#     if table:
+#         data_rows = table.find_all('tr')[1:]  # Skip header row
+#         if not data_rows:
+#             print("No data rows found in the table.")
+#             return well_info  # Return empty dict if no data rows are present
+
+#         for row in data_rows:
+#             try:
+#                 cols = row.find_all('td')
+#                 if cols and len(cols) >= 6:  # Ensure there are enough columns
+#                     well_info = {
+#                         "api": cols[0].text.strip(),
+#                         "well_name": cols[1].text.strip(),
+#                         "lease_name": cols[2].text.strip(),
+#                         "location": cols[3].text.strip(),
+#                         "operator": cols[4].text.strip(),
+#                         "status": cols[5].text.strip(),
+#                     }
+#                     print(f"Scraped information: {well_info}")
+#                     break  # Assuming we're only interested in the first match
+#                 else:
+#                     print("Not enough columns in row or no columns found.")
+#             except IndexError as e:
+#                 print(f"Error processing table row: {e}")
+#                 continue  # Continue to next row or API number if IndexError occurs
+#     else:
+#         print("Table not found on the page.")
+
+#     return well_info
+
+
+
+def update_well_in_db(cursor, api_number, well_details):
+    print(f"Updating database for API {api_number} with scraped information.")
+    
+    # Construct the SQL update statement
+    update_sql = """
+    UPDATE well_data SET
+        well_status = %s,
+        well_type = %s,
+        closest_city = %s,
+        barrels_of_oil = %s,
+        barrels_of_gas = %s  # Ensure this column exists in your table if you're including gas
+    WHERE api_number = %s
+    """
+    
+    # Prepare the data tuple for the SQL query
+    data_tuple = (
+        well_details.get('well_status', 'N/A'),  # Default to 'N/A' if not found
+        well_details.get('well_type', 'N/A'),
+        well_details.get('closest_city', 'N/A'),
+        well_details.get('barrels_of_oil', 'N/A'),
+        well_details.get('barrels_of_gas', 'N/A'),  # Include this if tracking gas
+        api_number,
+    )
+    
+    try:
+        cursor.execute(update_sql, data_tuple)
+        print("Database update successful for API number:", api_number)
+    except mysql.connector.Error as err:
+        print(f"Error updating database for API {api_number}: {err}")
+
+
+
+
+### NEW CODE
+def fetch_well_details(url):
+    response = requests.get(url)
+    if response.status_code != 200:
+        print(f"Failed to fetch details from {url}")
         return {}
     
+    details_soup = BeautifulSoup(response.text, 'html.parser')
+    
+    # Extract barrels of oil as the first <span class="dropcap">. Assuming it's always formatted like "1.7 k"
+    barrels_of_oil = details_soup.find('span', class_='dropcap')
+    barrels_of_oil = barrels_of_oil.text.strip() if barrels_of_oil else "Not available"
+    
+    # Extract additional details from the skinny table
+    details_table = details_soup.find('table', class_='skinny')
+    details = {}
+    if details_table:
+        for row in details_table.find_all('tr'):
+            cols = row.find_all(['th', 'td'])  # Get all cells
+            if len(cols) > 1:  # Ensure there's at least one key-value pair
+                # Iterating over cells, considering each key-value pair
+                for i in range(0, len(cols) - 1, 2):
+                    key = cols[i].text.strip()
+                    value = cols[i+1].text.strip()
+                    details[key] = value
+    
+    # Extracting specific information
+    well_status = details.get("Well Status", "Not available")
+    well_type = details.get("Well Type", "Not available")
+    closest_city = details.get("Closest City", "Not available")
+    
+    return {
+        "barrels_of_oil": barrels_of_oil,
+        "well_status": well_status,
+        "well_type": well_type,
+        "closest_city": closest_city
+    }
+
+### NEW NEW
+def get_well_detail_link(api_number):
+    search_url = f"https://www.drillingedge.com/search?type=wells&api_no={api_number}"
+    response = requests.get(search_url)
     soup = BeautifulSoup(response.text, 'html.parser')
+
+    # Find the well name link in the table
     table = soup.find('table', class_='table wide-table interest_table')
-    well_info = {}
+    if not table:
+        print(f"Failed to find table for API number {api_number}")
+        return None
 
-    if table:
-        data_rows = table.find_all('tr')[1:]  # Skip header row
-        if not data_rows:
-            print("No data rows found in the table.")
-            return well_info  # Return empty dict if no data rows are present
-
-        for row in data_rows:
-            try:
-                cols = row.find_all('td')
-                if cols and len(cols) >= 6:  # Ensure there are enough columns
-                    well_info = {
-                        "api": cols[0].text.strip(),
-                        "well_name": cols[1].text.strip(),
-                        "lease_name": cols[2].text.strip(),
-                        "location": cols[3].text.strip(),
-                        "operator": cols[4].text.strip(),
-                        "status": cols[5].text.strip(),
-                    }
-                    print(f"Scraped information: {well_info}")
-                    break  # Assuming we're only interested in the first match
-                else:
-                    print("Not enough columns in row or no columns found.")
-            except IndexError as e:
-                print(f"Error processing table row: {e}")
-                continue  # Continue to next row or API number if IndexError occurs
+    well_link = table.find('a', href=True)  # Assuming the first link is the well detail link
+    if well_link:
+        return well_link['href']
     else:
-        print("Table not found on the page.")
-
-    return well_info
-
+        print(f"Failed to find well link for API number {api_number}")
+        return None
 
 
-def update_well_in_db(cursor, well_info):
-    print(f"Updating database for API {well_info['api']} with scraped information.")
-    try:
-        update_sql = """
-        UPDATE well_data SET
-            well_name = %s, lease_name = %s, location = %s,
-            operator = %s, status = %s
-        WHERE api_number = %s
-        """
-        cursor.execute(update_sql, (
-            well_info["well_name"], well_info["lease_name"], well_info["location"],
-            well_info["operator"], well_info["status"], well_info["api"]
-        ))
-        print("Database update successful.")
-    except mysql.connector.Error as err:
-        print(f"Database update failed: {err}")
-
-
+### MAIN MAIN
 if __name__ == "__main__":
-    print("Script started.")
     host = 'localhost'
     user, password = get_user_password()
     database = input("Please enter your MySQL database:\n")
@@ -130,20 +205,16 @@ if __name__ == "__main__":
 
     check_and_create_table(cursor)
 
+    # Fetch API numbers and process each
     cursor.execute("SELECT api_number FROM well_data")
-    apis = cursor.fetchall()
-    print(f"api #: {apis}")
-
-    for (api_number,) in apis:
-        well_info = scrape_well_info(api_number)
-        if well_info:
-            update_well_in_db(cursor, well_info)
+    for (api_number,) in cursor.fetchall():
+        detail_page_url = get_well_detail_link(api_number)
+        if detail_page_url:
+            well_details = fetch_well_details(detail_page_url)
+            update_well_in_db(cursor, api_number, well_details)
         else:
-            print(f"No information scraped for API {api_number}.")
-        print("\n")
-    
+            print(f"No detail link found for API number {api_number}")
+
     connection.commit()
-    print("Database changes committed.")
     cursor.close()
     connection.close()
-    print("Script completed.")
