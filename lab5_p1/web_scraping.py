@@ -53,20 +53,22 @@ def check_and_create_table(cursor):
 
 
 def scrape_well_info(api_number):
+    print(f"Starting to scrape information for API number: {api_number}")
     search_url = f"https://www.drillingedge.com/search?type=wells&api_no={api_number}"
     response = requests.get(search_url)
+    if response.status_code == 200:
+        print("Successfully fetched the web page.")
+    else:
+        print(f"Failed to fetch the web page. Status code: {response.status_code}")
+        return {}
+    
     soup = BeautifulSoup(response.text, 'html.parser')
-
-    # Find the table by class (adjust class name as needed based on actual page structure)
     table = soup.find('table', class_='wide-table interest_table')
     well_info = {}
 
     if table:
-        # Assuming first <tr> is the header and the next <tr> contains the desired data
         data_rows = table.find_all('tr')[1:]  # Skip header row
-
         for row in data_rows:
-            # Extracting table data. Adjust as per actual HTML structure
             cols = row.find_all('td')
             well_info = {
                 "api": cols[0].text.strip(),
@@ -76,43 +78,54 @@ def scrape_well_info(api_number):
                 "operator": cols[4].text.strip(),
                 "status": cols[5].text.strip(),
             }
-            break  
-            
+            print(f"Scraped information: {well_info}")
+            break  # Assuming we're only interested in the first match
+    else:
+        print("Table not found on the page.")
+
     return well_info
 
+
 def update_well_in_db(cursor, well_info):
-    update_sql = """
-    UPDATE well_data SET
-        well_name = %s, lease_name = %s, location = %s,
-        operator = %s, status = %s
-    WHERE api_number = %s
-    """
-    cursor.execute(update_sql, (
-        well_info["well_name"], well_info["lease_name"], well_info["location"],
-        well_info["operator"], well_info["status"], well_info["api"]
-    ))
+    print(f"Updating database for API {well_info['api']} with scraped information.")
+    try:
+        update_sql = """
+        UPDATE well_data SET
+            well_name = %s, lease_name = %s, location = %s,
+            operator = %s, status = %s
+        WHERE api_number = %s
+        """
+        cursor.execute(update_sql, (
+            well_info["well_name"], well_info["lease_name"], well_info["location"],
+            well_info["operator"], well_info["status"], well_info["api"]
+        ))
+        print("Database update successful.")
+    except mysql.connector.Error as err:
+        print(f"Database update failed: {err}")
 
 
 if __name__ == "__main__":
+    print("Script started.")
     host = 'localhost'
     user, password = get_user_password()
     database = input("Please enter your MySQL database:\n")
     
     connection = connect_to_database(host, user, password, database)
+    print("Connected to the database.")
     cursor = connection.cursor()
-    
-    check_and_create_table(cursor)
-    
+
     cursor.execute("SELECT api_number FROM well_data")
     apis = cursor.fetchall()
-    
+
     for (api_number,) in apis:
         well_info = scrape_well_info(api_number)
         if well_info:
             update_well_in_db(cursor, well_info)
-            print(f"Updated database for API {api_number}.")
-
-
+        else:
+            print(f"No information scraped for API {api_number}.")
+    
     connection.commit()
+    print("Database changes committed.")
     cursor.close()
     connection.close()
+    print("Script completed.")
