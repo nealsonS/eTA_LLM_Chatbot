@@ -55,6 +55,7 @@ def extract_text_from_pdf(pdf_path):
         pdf_file.close()
 
 
+
 def extract_well_details(text):
     details = {
         "well_name": "Unknown",
@@ -70,12 +71,8 @@ def extract_well_details(text):
     address_pattern = r"Address[: ]*\s*([\w\s,]+)"
 
     # Existing patterns for well name and API number
-    api_patterns = [r"API[#: ]*\s*(\d{2,}-?\d{3,}-?\d{5,})"]
+    api_patterns = [r"API[#: ]*\s*(\d{2,}-?\d{3,}-?\d{5,}|\d{10})"]  # Modified to also match a 10 digit sequence
     well_name_patterns = [r"Well Name and Number[: ]*\s*([\w\s]+)"]
-
-    # well_name_patterns = [
-    #     r"Well Name(?: and Number)?[: ]*\s*([,\w\s]+?)(?= and Number|$)"
-    # ]
 
     # Update details dict based on matches
     for name, pattern in [("longitude", longitude_pattern), ("latitude", latitude_pattern), ("address", address_pattern)]:
@@ -86,7 +83,11 @@ def extract_well_details(text):
     for pattern in api_patterns:
         match = re.search(pattern, text, re.IGNORECASE)
         if match:
-            details["api_number"] = match.group(1)
+            api_number = match.group(1)
+            # Check if API number needs formatting
+            if re.match(r"^\d{10}$", api_number):
+                api_number = f"{api_number[:2]}-{api_number[2:5]}-{api_number[5:]}"
+            details["api_number"] = api_number
             break
 
     for pattern in well_name_patterns:
@@ -96,6 +97,7 @@ def extract_well_details(text):
             break
 
     return details
+
 
 
 def check_and_create_table(cursor):
