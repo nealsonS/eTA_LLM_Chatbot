@@ -105,13 +105,15 @@ def fetch_well_details(url):
     well_status = details.get("Well Status", "Not available")
     well_type = details.get("Well Type", "Not available")
     closest_city = details.get("Closest City", "Not available")
+    well_name = details.get("Well Name", "Not available")
     
     return {
         "barrels_of_oil": barrels_of_oil,
         "barrels_of_gas": barrels_of_gas,
         "well_status": well_status,
         "well_type": well_type,
-        "closest_city": closest_city
+        "closest_city": closest_city,
+        "well_name": well_name
     }
 
 
@@ -126,7 +128,8 @@ def update_well_in_db(cursor, api_number, well_details):
         well_type = %s,
         closest_city = %s,
         barrels_of_oil = %s,
-        barrels_of_gas = %s  # Ensure this column exists in your table if you're including gas
+        barrels_of_gas = %s,
+        well_name = %s,
     WHERE api_number = %s
     """
     
@@ -136,7 +139,8 @@ def update_well_in_db(cursor, api_number, well_details):
         well_details.get('well_type', 'N/A'),
         well_details.get('closest_city', 'N/A'),
         well_details.get('barrels_of_oil', 'N/A'),
-        well_details.get('barrels_of_gas', 'N/A'),  # Include this if tracking gas
+        well_details.get('barrels_of_gas', 'N/A'),
+        well_details.get('well_name','N/A'),
         api_number,
     )
     
