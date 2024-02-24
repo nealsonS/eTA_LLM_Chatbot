@@ -128,6 +128,8 @@ if __name__ == "__main__":
     print("Connected to the database.")
     cursor = connection.cursor()
 
+    check_and_create_table(cursor)
+
     cursor.execute("SELECT api_number FROM well_data")
     apis = cursor.fetchall()
     print(f"api #: {apis}")
