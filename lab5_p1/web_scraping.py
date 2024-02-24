@@ -3,7 +3,6 @@ import re
 import sys
 import mysql.connector
 import PyPDF2
-from ocrmypdf import ocr
 from mysql.connector import errorcode
 import requests
 from bs4 import BeautifulSoup
