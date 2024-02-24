@@ -1,4 +1,3 @@
-# augment_well_data.py
 import os
 import re
 import sys
