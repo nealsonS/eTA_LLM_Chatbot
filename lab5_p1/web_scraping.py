@@ -55,6 +55,8 @@ def check_and_create_table(cursor):
 def scrape_well_info(api_number):
     print(f"Starting to scrape information for API number: {api_number}")
     search_url = f"https://www.drillingedge.com/search?type=wells&api_no={api_number}"
+    print(f"Searching for {search_url}.")
+
     response = requests.get(search_url)
     if response.status_code == 200:
         print("Successfully fetched the web page.")
@@ -116,6 +118,7 @@ if __name__ == "__main__":
 
     cursor.execute("SELECT api_number FROM well_data")
     apis = cursor.fetchall()
+    print(f"api #: {apis}")
 
     for (api_number,) in apis:
         well_info = scrape_well_info(api_number)
