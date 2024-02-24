@@ -41,7 +41,6 @@ def check_and_create_table(cursor):
         "closest_city": "VARCHAR(255)",
         "barrels_of_oil": "VARCHAR(255)",
         "barrels_of_gas": "VARCHAR(255)"
-
     }
     
     # Try adding each new column without IF NOT EXISTS clause
@@ -53,8 +52,26 @@ def check_and_create_table(cursor):
             # or log it if necessary
             print(f"Skipped adding {column_name}: {err.msg}")
 
+# Get the link associated with well name for the detailed page
+def get_well_detail_link(api_number):
+    search_url = f"https://www.drillingedge.com/search?type=wells&api_no={api_number}"
+    response = requests.get(search_url)
+    soup = BeautifulSoup(response.text, 'html.parser')
 
-### NEW CODE
+    # Find the well name link in the table
+    table = soup.find('table', class_='table wide-table interest_table')
+    if not table:
+        print(f"Failed to find table for API number {api_number}")
+        return None
+
+    well_link = table.find('a', href=True)  # Assuming the first link is the well detail link
+    if well_link:
+        return well_link['href']
+    else:
+        print(f"Failed to find well link for API number {api_number}")
+        return None
+
+### Scrape the detailed page for required information
 def fetch_well_details(url):
     response = requests.get(url)
     if response.status_code != 200:
@@ -92,25 +109,8 @@ def fetch_well_details(url):
         "closest_city": closest_city
     }
 
-### NEW NEW
-def get_well_detail_link(api_number):
-    search_url = f"https://www.drillingedge.com/search?type=wells&api_no={api_number}"
-    response = requests.get(search_url)
-    soup = BeautifulSoup(response.text, 'html.parser')
 
-    # Find the well name link in the table
-    table = soup.find('table', class_='table wide-table interest_table')
-    if not table:
-        print(f"Failed to find table for API number {api_number}")
-        return None
-
-    well_link = table.find('a', href=True)  # Assuming the first link is the well detail link
-    if well_link:
-        return well_link['href']
-    else:
-        print(f"Failed to find well link for API number {api_number}")
-        return None
-
+# Use scraped information to update new columns in table
 def update_well_in_db(cursor, api_number, well_details):
     print(f"Updating database for API {api_number} with scraped information.")
     
