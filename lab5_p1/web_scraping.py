@@ -63,14 +63,14 @@ def get_well_detail_link(api_number):
         print(f"Failed to find table for API number {api_number}")
         return None
 
-    well_link = table.find('a', href=True)  # Assuming the first link is the well detail link
+    well_link = table.find('a', href=True)  # The first link is the well detail link
     if well_link:
         return well_link['href']
     else:
         print(f"Failed to find well link for API number {api_number}")
         return None
 
-### Scrape the detailed page for required information
+# Scrape the detailed page for required information
 def fetch_well_details(url):
     response = requests.get(url)
     if response.status_code != 200:
@@ -79,9 +79,14 @@ def fetch_well_details(url):
     
     details_soup = BeautifulSoup(response.text, 'html.parser')
     
-    # Extract barrels of oil as the first <span class="dropcap">. Assuming it's always formatted like "1.7 k"
-    barrels_of_oil = details_soup.find('span', class_='dropcap')
-    barrels_of_oil = barrels_of_oil.text.strip() if barrels_of_oil else "Not available"
+    # Extract barrels of oil as the first <span class="dropcap">
+    barrels_of_oil_span = details_soup.find('span', class_='dropcap')
+    barrels_of_oil = barrels_of_oil_span.text.strip() if barrels_of_oil_span else "Not available"
+    
+    # Extract barrels of gas as the second <span class="dropcap">
+    barrels_of_gas_spans = details_soup.find_all('span', class_='dropcap')
+    barrels_of_gas = barrels_of_gas_spans[1].text.strip() if len(barrels_of_gas_spans) > 1 else "Not available"
+    
     
     # Extract additional details from the skinny table
     details_table = details_soup.find('table', class_='skinny')
@@ -103,6 +108,7 @@ def fetch_well_details(url):
     
     return {
         "barrels_of_oil": barrels_of_oil,
+        "barrels_of_gas": barrels_of_gas,
         "well_status": well_status,
         "well_type": well_type,
         "closest_city": closest_city
