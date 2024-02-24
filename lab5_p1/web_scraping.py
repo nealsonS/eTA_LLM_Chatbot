@@ -22,6 +22,7 @@ def connect_to_database(host, user, password, database):
         sys.exit(1)
 
 def check_and_create_table(cursor):
+    # Ensure the basic structure of the table exists
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS well_data (
             id INT AUTO_INCREMENT PRIMARY KEY,
@@ -29,13 +30,27 @@ def check_and_create_table(cursor):
             api_number VARCHAR(255),
             longitude VARCHAR(255),
             latitude VARCHAR(255),
-            address TEXT,
-            well_status VARCHAR(255),
-            well_type VARCHAR(255),
-            closest_city VARCHAR(255),
-            barrels_of_oil VARCHAR(255)
+            address TEXT
         )
     """)
+
+    # New or additional columns to be added
+    new_columns = {
+        "well_status": "VARCHAR(255)",
+        "well_type": "VARCHAR(255)",
+        "closest_city": "VARCHAR(255)",
+        "barrels_of_oil": "VARCHAR(255)"
+    }
+    
+    # Try adding each new column without IF NOT EXISTS clause
+    for column_name, column_type in new_columns.items():
+        try:
+            cursor.execute(f"ALTER TABLE well_data ADD COLUMN {column_name} {column_type}")
+        except mysql.connector.Error as err:
+            # If an error occurs, likely because the column already exists, catch and ignore the error
+            # or log it if necessary
+            print(f"Skipped adding {column_name}: {err.msg}")
+
 
 def scrape_well_details(api_number, well_name):
     # Placeholder function - adjust based on the real website's structure
