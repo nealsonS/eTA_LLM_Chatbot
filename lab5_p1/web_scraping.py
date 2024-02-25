@@ -42,7 +42,6 @@ def check_and_create_table(cursor):
         "barrels_of_gas": "VARCHAR(255)"
     }
     
-    # Try adding each new column without IF NOT EXISTS clause
     for column_name, column_type in new_columns.items():
         try:
             cursor.execute(f"ALTER TABLE well_data ADD COLUMN {column_name} {column_type}")
