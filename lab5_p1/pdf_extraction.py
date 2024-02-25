@@ -28,16 +28,6 @@ def connect_to_database(host, user, password, database):
         print("Error connecting to MySQL:", err)
         sys.exit(1)
 
-# OCR PDF to Text
-def ocr_pdf_to_text(pdf_path):
-    output_pdf = "temp_ocr_output.pdf"
-    ocr(pdf_path, output_pdf, force_ocr=True, output_type='pdf')
-    reader = PyPDF2.PdfReader(output_pdf)
-    text = ''
-    for page in reader.pages:
-        text += page.extract_text() + " "
-    os.remove(output_pdf)  # Cleanup the temporary OCR output file
-    return text
 
 # Extract text from PDF
 def extract_text_from_pdf(pdf_path):
