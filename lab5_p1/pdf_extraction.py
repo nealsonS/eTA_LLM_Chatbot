@@ -119,8 +119,9 @@ if __name__ == "__main__":
     
     connection = connect_to_database(host, user, password, database)
     cursor = connection.cursor()
-
-    pdf_directory = '/home/colinzwang/Documents/DSCI560_Lab5'
+    
+    #pdf_directory = '/home/vboxuser/0/lab5/docs'
+    pdf_directory = input("Enter folder path: (EX./home/user/folder)\n")
     
 
     for filename in os.listdir(pdf_directory):
