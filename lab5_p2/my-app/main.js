@@ -6,15 +6,49 @@ import {useGeographic} from 'ol/proj.js';
 
 useGeographic();
 
-const place = [-110, 45];
+//DEFAULT CODE
 
-const point = new Point(place);
+//const place = [-110, 45]; 
+//const place = [103.35, 48.02]; 
+//const point = new Point(place);
+
+//const map = new Map({
+//  target: 'map',
+//  view: new View({
+//    center: place,
+//    zoom: 8,
+//  }),
+//  layers: [
+//    new TileLayer({
+//      source: new OSM(),
+//    }),
+//    new VectorLayer({
+//      source: new VectorSource({
+//        features: [new Feature(point)],
+//      }),
+//      style: {
+//        'circle-radius': 9,
+//        'circle-fill-color': 'red',
+//      },
+//    }),
+//  ],
+//});
+
+const places = [
+  [103.35, 48.02],  
+  [-110, 45],       
+];
+
+const features = places.map(place => {
+  const point = new Point(place);
+  return new Feature(point);
+});
 
 const map = new Map({
   target: 'map',
   view: new View({
-    center: place,
-    zoom: 8,
+    center: places[0],  // initial point 
+    zoom: 1.5, // set zoom look out and see many points
   }),
   layers: [
     new TileLayer({
@@ -22,7 +56,7 @@ const map = new Map({
     }),
     new VectorLayer({
       source: new VectorSource({
-        features: [new Feature(point)],
+        features: features,
       }),
       style: {
         'circle-radius': 9,
@@ -31,6 +65,7 @@ const map = new Map({
     }),
   ],
 });
+
 
 const element = document.getElementById('popup');
 
