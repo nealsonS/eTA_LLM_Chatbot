@@ -1,0 +1,15 @@
+Part 1:
+OCRMYPDF
+PyPDF
+PyTesseract
+pdf2image
+opencv-python
+requests
+selenium
+beautifulsoup4
+mysql-connector-python
+
+
+Part 2:
+npm
+create-ol-app
