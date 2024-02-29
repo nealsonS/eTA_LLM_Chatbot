@@ -1,13 +1,16 @@
 Script Brief Overview:
 
-This is for Part 2. Please scroll down to see information about Part 1 Scripts
+(This is for Part 2. Please scroll down to see information about Part 1 Scripts.)
 
 
 Part 2 Scripts
+Please download 
 
-### pdf_extraction.py
-
-
+### my-app
+In your terminal, run the following
+	npm create ol-app my-app
+	cd my-app
+	npm start
 
 
 Part 1 Scripts

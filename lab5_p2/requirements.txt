@@ -13,3 +13,4 @@ mysql-connector-python
 Part 2:
 npm
 create-ol-app
+node (make sure it is at least 14.x. I use 20.x)
