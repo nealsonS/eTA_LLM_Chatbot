@@ -1,3 +1,4 @@
+<!-- DEFAULT
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -9,5 +10,55 @@
   <body>
     <div id="map"></div>
     <script type="module" src="./main.js"></script>
+  </body>
+</html>
+-->
+
+<!-- following code from https://openlayers.org/en/v8.1.0/examples/overlay.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Overlay</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="node_modules/ol/ol.css">
+    <style>
+      .map {
+        width: 100%;
+        height: 400px;
+      }
+      #marker {
+        width: 20px;
+        height: 20px;
+        border: 1px solid #088;
+        border-radius: 10px;
+        background-color: #0FF;
+        opacity: 0.5;
+      }
+      #vienna {
+        text-decoration: none;
+        color: white;
+        font-size: 11pt;
+        font-weight: bold;
+        text-shadow: black 0.1em 0.1em 0.2em;
+      }
+      .popover-body {
+        min-width: 276px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map" class="map"></div>
+    <div style="display: none;">
+      <!-- Clickable label for Vienna -->
+      <a class="overlay" id="vienna" target="_blank" href="https://en.wikipedia.org/wiki/Vienna">Vienna</a>
+      <div id="marker" title="Marker"></div>
+      <!-- Popup -->
+      <div id="popup"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="module" src="main.js"></script>
   </body>
 </html>

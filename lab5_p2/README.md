@@ -4,13 +4,27 @@ Script Brief Overview:
 
 
 Part 2 Scripts
-Please download 
-
+	
 ### my-app
 In your terminal, run the following
 	npm create ol-app my-app
 	cd my-app
 	npm start
+The following scripts are inside the my-app folder.
+
+
+###### main.js
+	Currently attempting to follow code from https://openlayers.org/en/v8.1.0/examples/overlay.html 
+	to create pins. Pins are not appearing...
+	
+###### index.html
+	Currently attempting to follow code from https://openlayers.org/en/v8.1.0/examples/overlay.html 
+	to create pins. Pins are not appearing...
+
+###### package.json
+	Currently attempting to follow code from https://openlayers.org/en/v8.1.0/examples/overlay.html 
+	to create pins. Pins are not appearing...
+
 
 
 Part 1 Scripts
