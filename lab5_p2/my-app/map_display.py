@@ -19,14 +19,17 @@ def connect_to_database(host, user, password, database):
         sys.exit(1)
 
 
-def run_map_js(latitude, longitude):
-    with open("main.js", "r") as file:
+def run_map_js(well_name, latitude, longitude, address, well_status, well_type, closest_city, barrels_of_oil, barrels_of_gas):
+    with open("test.js", "r") as file:
         js_code = file.read()
     context = execjs.compile(js_code)
-    result = context.call("coordinates", latitude, longitude)
-    print(result)
-
-
+    #result = context.call("coordinates", latitude, longitude) # works for only long, lat data
+    result = context.call("get_info", well_name, latitude, longitude, address, well_status, well_type, closest_city, barrels_of_oil, barrels_of_gas)
+    print(result[1])
+   
+   
+   
+   
 
 if __name__ == "__main__":
     host = 'localhost'
@@ -67,6 +70,6 @@ if __name__ == "__main__":
     finally:
         cursor.close()
         connection.close()
-    #print(json.dumps(longitude))
-    run_map_js(latitude, longitude)
+    #run_map_js(latitude, longitude)# works for only long, lat data
+    run_map_js(well_name, latitude, longitude, address, well_status, well_type, closest_city, barrels_of_oil, barrels_of_gas)
     print("Run this command to see the map: npm start")

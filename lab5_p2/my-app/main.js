@@ -33,6 +33,7 @@ const features = wellData.map((data, index) => {
   const point = new Point(place);
   const feature = new Feature(point);
   feature.setProperties(data);
+  console.log("feature", feature);
   return feature;
 });
 
