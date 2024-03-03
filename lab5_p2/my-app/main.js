@@ -34,9 +34,15 @@ useGeographic();
 //  ],
 //});
 
-const places = [
-  [103.35, 48.02],  
-  [-110, 45],       
+const places = [  
+  [-103.73, 48.11],
+  [-103.7329, 48.1094], 
+  [103.602608, 48.03581],
+  [-103.728, 48.109], 
+  [-103.728, 48.109], 
+  [103.35, 48.02], 
+  [-103.73, 48.11], 
+  [-103.7312, 48.1094]  
 ];
 
 const features = places.map(place => {
@@ -48,7 +54,7 @@ const map = new Map({
   target: 'map',
   view: new View({
     center: places[0],  // initial point 
-    zoom: 1.5, // set zoom look out and see many points
+    zoom: 13., // set zoom look out and see many points
   }),
   layers: [
     new TileLayer({
@@ -75,12 +81,21 @@ const popup = new Overlay({
 });
 map.addOverlay(popup);
 
+
+
 function formatCoordinate(coordinate) {
   return `
     <table>
       <tbody>
-        <tr><th>lon</th><td>${coordinate[0].toFixed(2)}</td></tr>
-        <tr><th>lat</th><td>${coordinate[1].toFixed(2)}</td></tr>
+        <tr><th>well name</th><td>NA</td></tr>
+        <tr><th>longitude</th><td>${coordinate[0].toFixed(2)}</td></tr>
+        <tr><th>latitude</th><td>${coordinate[1].toFixed(2)}</td></tr>
+        <tr><th>address</th><td>NA</td></tr>
+        <tr><th>well status</th><td>NA</td></tr>
+        <tr><th>well type</th><td>NA</td></tr>
+        <tr><th>closest city</th><td>NA</td></tr>
+        <tr><th>barrel of oil</th><td>NA</td></tr>
+        <tr><th>barrels of gas</th><td>NA</td></tr>
       </tbody>
     </table>`;
 }
