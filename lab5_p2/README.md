@@ -13,17 +13,20 @@ In your terminal, run the following
 The following scripts are inside the my-app folder.
 
 
+###### map_display.py
+	** underconstruction **
+	Script connects to the MySQL database to retrieve well data information,
+	then push the information to main.js to create pins on Map.
+	Currently gets syntax error about modules / import in main.js.
+
 ###### main.js
-	Currently attempting to follow code from https://openlayers.org/en/v8.1.0/examples/overlay.html 
-	to create pins. Pins are not appearing...
+	creates map, pins, and map information via OpenLayers
 	
 ###### index.html
-	Currently attempting to follow code from https://openlayers.org/en/v8.1.0/examples/overlay.html 
-	to create pins. Pins are not appearing...
+	HTML doc that allows the map, pins, and information appear.
 
 ###### package.json
-	Currently attempting to follow code from https://openlayers.org/en/v8.1.0/examples/overlay.html 
-	to create pins. Pins are not appearing...
+	json file that contains dependencies for the map code to work
 
 
 
