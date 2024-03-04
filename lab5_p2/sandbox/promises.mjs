@@ -19,11 +19,11 @@ const fetchDataFromDB = async () => {
         const results = await query(query2);
 
         results.forEach(row => {
-            well_info.push({ longitude: row.longitude, latitude: row.latitude });
+            well_info.push(row.longitude, row.latitude);
         });
 
-        console.log("results from promises", results);
-        console.log("well_info from promises", well_info);
+        //console.log("results from promises", results);
+        //console.log("well_info from promises", well_info);
         return well_info;
 
     } catch (error) {

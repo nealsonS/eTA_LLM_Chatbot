@@ -1,5 +1,11 @@
-// import well_info array from promise.js
-const well_info = require('./promises.js');
+//import { fetchDataFromDB } from './promises.js'; //get commonJS error
+import pkg from './promises.js';
+const { fetchDataFromDB } = pkg;
 
-console.log("well_info in promises.js:", well_info);
+const fetchData = async () => {
+    const well_info = await fetchDataFromDB();
+    console.log("well_info in connect.js:", well_info);
+};
+
+fetchData();
 
