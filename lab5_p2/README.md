@@ -18,9 +18,22 @@ The following scripts are inside the my-app folder.
 	Script connects to the MySQL database to retrieve well data information,
 	then push the information to main.js to create pins on Map.
 	Currently gets syntax error about modules / import in main.js.
+	Considering to not use this at all
 
 ###### main.js
 	creates map, pins, and map information via OpenLayers
+	
+###### needs_work_main.js
+	tries to combine main.js with promises.js, and is not working
+	
+###### promises.js
+	js code that connects to MySQL database and saves the collected data into an array to be processed and displayed in main.js.
+	currently is not connecting.
+	A working version of promises.js is in the SANDBOX folder and should be run using connect.js.
+
+###### connect.js
+	js code that exports the data promises.js is able to get.
+	A working version of connect.js is in the SANDBOX folder. Run this to see how promises.js is supposed to work
 	
 ###### index.html
 	HTML doc that allows the map, pins, and information appear.
