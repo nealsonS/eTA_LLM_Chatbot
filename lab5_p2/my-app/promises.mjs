@@ -1,5 +1,5 @@
-import mysql from 'mysql2/promise'; 
-import util from 'util';
+
+import mysql from 'mysql2/promise';
 
 const dbConfig = {
     host: 'localhost',
@@ -8,29 +8,29 @@ const dbConfig = {
     database: 'demo1'
 };
 
-const connection = mysql.createConnection(dbConfig);
-const query = util.promisify(connection.query).bind(connection);
-
+// Removed util.promisify since mysql2/promise already supports promises
 const fetchDataFromDB = async () => {
     let well_info = [];
     try {
-        await connection.connect();
+        const connection = await mysql.createConnection(dbConfig);
+        console.log('Successfully connected to the MySQL server.'); // Log connection success
+        
         const query2 = "SELECT longitude, latitude FROM well_data WHERE longitude != 'Unknown' and latitude != 'Unknown'";
-        const results = await query(query2);
+        const [results] = await connection.query(query2);
 
         results.forEach(row => {
-            well_info.push(row.longitude, row.latitude);
+            well_info.push({longitude: row.longitude, latitude: row.latitude});
         });
 
-        //console.log("results from promises", results);
-        //console.log("well_info from promises", well_info);
+        console.log("Results from SQL database:", well_info); // Log fetched data
         return well_info;
 
     } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error('Error fetching data from MySQL:', error);
     } finally {
-        await connection.end();
+        if (connection) await connection.end();
     }
 };
 
 export default { fetchDataFromDB };
+
