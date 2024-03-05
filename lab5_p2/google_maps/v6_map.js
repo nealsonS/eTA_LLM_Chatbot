@@ -6,12 +6,13 @@ fetch('http://localhost:3000/api/wells') // Make sure this URL matches your setu
     //addMarkers(filteredWells);
     // Optionally, adjust the map view here based on the fetched markers
     console.log(places);
+    initMap(places);
   })
   .catch(error => console.error('Error fetching data:', error));
 
 
 
-async function initMap() {
+async function initMap(places) {
   // Request needed libraries.
   const { Map } = await google.maps.importLibrary("maps");
   const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
@@ -26,7 +27,9 @@ async function initMap() {
     const AdvancedMarkerElement = new google.maps.marker.AdvancedMarkerElement({
       map,
       content: buildContent(place),
-      position: place.position,
+      position: new google.maps.LatLng(place.latitude, place.longitude),
+      //position:{lat: place.latitude, lng: place.longitude}
+      //position: place.position,
       title: place.well_name,
     });
 
@@ -215,6 +218,4 @@ const places1 = [
   },
 ];
 
-
-initMap();
 
