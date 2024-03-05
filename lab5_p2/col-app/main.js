@@ -8,7 +8,7 @@ import VectorSource from 'ol/source/Vector';
 import Feature from 'ol/Feature';
 import Point from 'ol/geom/Point';
 import {fromLonLat} from 'ol/proj';
-import {Icon, Style} from 'ol/style';
+import {Circle as CircleStyle, Fill, Stroke, Style} from 'ol/style';
 import Overlay from 'ol/Overlay';
 
 // Initialize the map
@@ -29,6 +29,16 @@ const map = new Map({
 const vectorSource = new VectorSource();
 const vectorLayer = new VectorLayer({
   source: vectorSource,
+  style: new Style({
+    image: new CircleStyle({
+      radius: 7,
+      fill: new Fill({color: 'red'}),
+      stroke: new Stroke({
+        color: 'white',
+        width: 2,
+      }),
+    }),
+  }),
 });
 
 map.addLayer(vectorLayer);
@@ -36,25 +46,21 @@ map.addLayer(vectorLayer);
 // Create an overlay for popups
 const overlayContainerElement = document.createElement('div');
 overlayContainerElement.className = 'overlay-container';
-const overlayLayer = new Overlay({
+const overlayContentElement = document.createElement('div');
+overlayContainerElement.appendChild(overlayContentElement);
+const overlay = new Overlay({
   element: overlayContainerElement,
   autoPan: true,
 });
-map.addOverlay(overlayLayer);
+map.addOverlay(overlay);
 
 // Function to add markers
 function addMarkers(wells) {
   wells.forEach(well => {
     const feature = new Feature({
-      geometry: new Point(fromLonLat([well.longitude, well.latitude])),
-      name: well.name,
+      geometry: new Point(fromLonLat([parseFloat(well.longitude), parseFloat(well.latitude)])),
+      ...well
     });
-    feature.setStyle(new Style({
-      image: new Icon({
-        src: '/path/to/marker-icon.png', // Use your marker icon
-        scale: 0.05, // Adjust as necessary
-      }),
-    }));
     vectorSource.addFeature(feature);
   });
 }
@@ -74,10 +80,28 @@ map.on('singleclick', function (evt) {
     return feature;
   });
   if (clickedFeature) {
-    const featureProps = clickedFeature.getProperties();
-    overlayContainerElement.innerHTML = `<div class="popup-content">Name: ${featureProps.name}</div>`; // Customize as needed
-    overlayLayer.setPosition(evt.coordinate);
+    const {
+      well_name,
+      api_number,
+      well_status,
+      well_type,
+      closest_city,
+      barrels_of_oil,
+      barrels_of_gas
+    } = clickedFeature.getProperties();
+
+    const popupContentHtml = `
+      <h2>${well_name}</h2>
+      <p><strong>API Number:</strong> ${api_number}</p>
+      <p><strong>Status:</strong> ${well_status}</p>
+      <p><strong>Type:</strong> ${well_type}</p>
+      <p><strong>Closest City:</strong> ${closest_city}</p>
+      <p><strong>Barrels of Oil:</strong> ${barrels_of_oil}</p>
+      <p><strong>Barrels of Gas:</strong> ${barrels_of_gas}</p>
+    `;
+    overlayContentElement.innerHTML = popupContentHtml;
+    overlay.setPosition(evt.coordinate);
   } else {
-    overlayLayer.setPosition(undefined);
+    overlay.setPosition(undefined);
   }
 });
