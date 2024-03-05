@@ -10,8 +10,7 @@
   },
   "scripts": {
     "start": "vite",
-    "build": "vite build",
-    "execute": "node --experimental-modules main.mjs"
+    "build": "vite build"
   },
   "type": "module"
 }
