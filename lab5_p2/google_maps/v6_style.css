@@ -29,7 +29,7 @@ body {
  */
 .place {
   align-items: center;
-  background-color: #FFFFFF;
+  background-color: #FFC0CB;
   border-radius: 50%;
   color: #263238;
   display: flex;
@@ -47,7 +47,7 @@ body {
 .place::after {
   border-left: 9px solid transparent;
   border-right: 9px solid transparent;
-  border-top: 9px solid #FFFFFF;
+  border-top: 9px solid #FFC0CB;
   content: "";
   height: 0;
   left: 50%;
@@ -63,7 +63,7 @@ body {
   align-items: center;
   display: flex;
   justify-content: center;
-  color: #FFFFFF;
+  color: #FFC0CB;
 }
 
 .place .icon svg {
@@ -78,7 +78,7 @@ body {
 }
 
 .place .address {
-  color: #9E9E9E;
+  color: #000000;
   font-size: 10px;
   margin-bottom: 10px;
   margin-top: 5px;
@@ -106,7 +106,7 @@ body {
  * Property styles in highlighted state.
  */
 .place.highlight {
-  background-color: #FFFFFF;
+  background-color: #FFC0CB;
   border-radius: 8px;
   box-shadow: 10px 10px 5px rgba(0, 0, 0, 0.2);
   height: 80px;
@@ -128,15 +128,15 @@ body {
 }
 
 .place .closest_city {
-  color: #FFA000;
+  color: #FF9800;
 }
 
 .place .barrels_of_oil {
-  color: #03A9F4;
+  color: #0288D1;
 }
 
 .place .barrels_of_gas {
-  color: #388E3C;
+  color: #558B2F;
 }
 
 /*
