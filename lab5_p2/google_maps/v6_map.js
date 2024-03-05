@@ -85,7 +85,8 @@ function buildContent(place) {
   return content;
 }
 
-const new_places = [
+# This is hardcoded from existing mysql table
+const hardcoded_places = [
   {
     address: '1001 Fannin,Sulte 1 500',
     well_name: 'Lewis Federal 5300 11-31 3B',
