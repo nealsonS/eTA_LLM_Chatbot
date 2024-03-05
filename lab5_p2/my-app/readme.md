@@ -10,6 +10,10 @@ Check that the install was successful by querying node for its version number:
 
     node -v
 
+Install npm:
+
+    sudo apt install npm
+    
 Then change into your new `my-app` directory and start a development server (available at http://localhost:5173):
 
     cd my-app
