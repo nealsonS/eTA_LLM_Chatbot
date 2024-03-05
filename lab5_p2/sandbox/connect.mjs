@@ -24,6 +24,7 @@ const main = async () => { // write all the code in this function
         console.log("barrels_of_gas:", place.barrels_of_gas);
     });  
     
+    
 };
 
 
