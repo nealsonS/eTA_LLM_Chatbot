@@ -13,5 +13,5 @@
     "mysql": "^2.18.1",
     "ol": "latest"
   },
-  "type": "my-sql"
+  "type": "module"
 }
