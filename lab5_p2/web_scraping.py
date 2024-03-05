@@ -39,7 +39,8 @@ def check_and_create_table(cursor):
         "well_type": "VARCHAR(255)",
         "closest_city": "VARCHAR(255)",
         "barrels_of_oil": "VARCHAR(255)",
-        "barrels_of_gas": "VARCHAR(255)"
+        "barrels_of_gas": "VARCHAR(255)",
+        "operator": "VARCHAR(255)"
     }
     
     for column_name, column_type in new_columns.items():
@@ -105,6 +106,8 @@ def fetch_well_details(url):
     well_type = details.get("Well Type", "Not available")
     closest_city = details.get("Closest City", "Not available")
     well_name = details.get("Well Name", "Not available")
+    operator = details.get("Operator", "Not available")
+    print(operator)
     
     return {
         "barrels_of_oil": barrels_of_oil,
@@ -112,7 +115,8 @@ def fetch_well_details(url):
         "well_status": well_status,
         "well_type": well_type,
         "closest_city": closest_city,
-        "well_name": well_name
+        "well_name": well_name,
+        "operator": operator
     }
 
 
@@ -128,7 +132,8 @@ def update_well_in_db(cursor, api_number, well_details):
         closest_city = %s,
         barrels_of_oil = %s,
         barrels_of_gas = %s,
-        well_name = %s
+        well_name = %s,
+        operator = %s
     WHERE api_number = %s
     """
     
@@ -140,6 +145,7 @@ def update_well_in_db(cursor, api_number, well_details):
         well_details.get('barrels_of_oil', 'N/A'),
         well_details.get('barrels_of_gas', 'N/A'),
         well_details.get('well_name','N/A'),
+        well_details.get('operator', 'N/A'),
         api_number,
     )
     
