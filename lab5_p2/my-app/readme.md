@@ -7,6 +7,7 @@ To get started, install node.js:
     sudo apt update
     sudo apt install nodejs
 Check that the install was successful by querying node for its version number:
+
     node -v
 
 Then change into your new `my-app` directory and start a development server (available at http://localhost:5173):
