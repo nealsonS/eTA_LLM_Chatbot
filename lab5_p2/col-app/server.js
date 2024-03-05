@@ -9,8 +9,8 @@ app.use(cors()); // Use CORS to allow requests from your frontend
 const db = mysql.createConnection({
   host: 'localhost',
   user: 'root',
-  password: 'password',
-  database: 'lab5'
+  //password: 'password',
+  database: 'demo1'
 });
 
 // Endpoint to fetch well data
