@@ -5,61 +5,36 @@ Script Brief Overview:
 
 Part 2 Scripts
 
+### conn_db (folder)
+	In your terminal in your folder, run 
+	"node server.js"
+	This code should continue running in your background.
 
-### google_maps
+###### server.js
+	working js code that exports the data from mysql.
+	also listens for front-end to output this data.
+	
+
+### google_maps (folder)
 	Please use Google Chrome to display the map
 	In your terminal, run 
 	"python3 -m http.server & xdg-open http://localhost:8000/v6_index.html"
 
-
 	
-### my-app
-In your terminal, run the following
-	npm create ol-app my-app
-	cd my-app
-	npm start
-The following scripts are inside the my-app folder.
-
-###### map_display.py
-	** underconstruction **
-	Script connects to the MySQL database to retrieve well data information,
-	then push the information to main.js to create pins on Map.
-	Currently gets syntax error about modules / import in main.js.
-	Considering to not use this at all
-	
-###### index.html
+###### v6_index.html
 	HTML doc that allows the map, pins, and information appear.
 
+###### v6_map.js
+	creates map, pins, and map information via Google Maps API
+	
+###### v6_style.css
+	styles for v6_map.js
+	
 ###### package.json
 	json file that contains dependencies for the map code to work
 
 
-###### main.js
-	creates map, pins, and map information via OpenLayers
-	
-###### needs_work_main.js
-	tries to combine main.js with promises.js, and is not working
 
-### sandbox folder
-	The following scrips are in the sandbox folder
-
-###### promises.mjs
-	working js code that connects to MySQL database and saves the collected data into an array to be processed and displayed in main.js.
-	run  "node connect.mjs".
-	
-###### connect.mjs
-	working js code that exports the data promises.mjs is able to get.
-	run  "node connect.mjs".
-
-
-###### V1_ignore promises.js
-	js code that connects to MySQL database and saves the collected data into an array to be processed and displayed in main.js.
-	currently is not connecting.
-	A working version of promises.js is in the SANDBOX folder and should be run using connect.js.
-
-###### V1_ignore connect.js
-	js code that exports the data promises.js is able to get.
-	A working version of connect.js is in the SANDBOX folder. Run this to see how promises.js is supposed to work
 	
 	
 	
