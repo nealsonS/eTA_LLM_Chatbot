@@ -9,7 +9,7 @@ Part 2 Scripts
 ### google_maps
 	Please use Google Chrome to display the map
 	In your terminal, run 
-	"python3 -m http.server & xdg-open http://localhost:8000/v4_index.html"
+	"python3 -m http.server & xdg-open http://localhost:8000/v6_index.html"
 
 
 	
