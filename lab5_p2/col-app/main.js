@@ -66,10 +66,11 @@ function addMarkers(wells) {
 }
 
 // Fetch and display oil wells data
-fetch('http://localhost:3000/api/wells') // Update with the correct URL
+fetch('http://localhost:3000/api/wells') // Make sure this URL matches your setup
   .then(response => response.json())
   .then(data => {
-    addMarkers(data);
+    const filteredWells = data.filter(well => well.longitude !== 'Unknown' && well.latitude !== 'Unknown');
+    addMarkers(filteredWells);
     // Optionally, adjust the map view here based on the fetched markers
   })
   .catch(error => console.error('Error fetching data:', error));
