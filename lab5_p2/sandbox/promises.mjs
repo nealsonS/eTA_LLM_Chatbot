@@ -15,13 +15,12 @@ const fetchDataFromDB = async () => {
     let well_info = [];
     try {
         await connection.connect();
-        const query2 = "SELECT longitude, latitude FROM well_data WHERE longitude != 'Unknown' and latitude != 'Unknown'";
-        const results = await query(query2);
+        const query1 = "SELECT longitude, latitude, well_name, address, well_status, well_type, closest_city, barrels_of_oil, barrels_of_gas FROM well_data WHERE longitude != 'Unknown' and latitude != 'Unknown'";
+        const results = await query(query1);
 
         results.forEach(row => {
-            well_info.push(row.longitude, row.latitude);
-        });
-
+            well_info.push({"longitude": row.longitude, "latitude": row.latitude, "well_name": row.well_name, "address": row.address, "well_status": row.well_status, "well_type": row.well_type, "closest_city": row.closest_city, "barrels_of_oil": row.barrels_of_oil, "barrels_of_gas": row.barrels_of_gas});
+	});
         //console.log("results from promises", results);
         //console.log("well_info from promises", well_info);
         return well_info;
