@@ -1,10 +1,13 @@
 # OpenLayers + Vite
 
-This example demonstrates how the `ol` package can be used with [Vite](https://vitejs.dev/).
+This app is modified from the following example, it demonstrates how the `ol` package can be used with [Vite](https://vitejs.dev/).
 
-To get started, run the following (requires Node 14+):
+To get started, install node.js:
 
-    npx create-ol-app my-app --template vite
+    sudo apt update
+    sudo apt install nodejs
+Check that the install was successful by querying node for its version number:
+    node -v
 
 Then change into your new `my-app` directory and start a development server (available at http://localhost:5173):
 
