@@ -5,6 +5,7 @@ Before running these code, make sure to install the following packages:
 - pip install python-dotenv
 - pip install langchain
 - pip install -U langchain-community
+- pip install -U langchain-openai
 
 
 To run the code, go into the drive folder and run
