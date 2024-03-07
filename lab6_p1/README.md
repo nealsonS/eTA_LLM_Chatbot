@@ -13,6 +13,10 @@ Part 1 Scripts
 
 Inside "drive" folder:
 
+### main.py
+	script that incorporates all other code so the user only needs to run this file
+
+
 ### app.py
 	skeleton code from Lab 6 Google folder
 	
