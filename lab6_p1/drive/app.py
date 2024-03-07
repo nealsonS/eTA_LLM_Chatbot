@@ -1,15 +1,22 @@
 import streamlit as st
 from dotenv import load_dotenv
 from PyPDF2 import PdfReader
-from langchain.text_splitter import CharacterTextSplitter
-from langchain.embeddings import OpenAIEmbeddings, HuggingFaceEmbeddings
-from langchain.vectorstores import FAISS
-from langchain.chat_models import ChatOpenAI
 from langchain.memory import ConversationBufferMemory
 from langchain.chains import ConversationalRetrievalChain
 from htmlTemplates import css, bot_template, user_template
-from langchain import HuggingFacePipeline
-from langchain.llms import LlamaCpp
+from langchain.text_splitter import CharacterTextSplitter
+from langchain_community.embeddings import OpenAIEmbeddings,  HuggingFaceEmbeddings
+from langchain_community.vectorstores import FAISS
+from langchain_community.chat_models import ChatOpenAI
+from langchain_community.llms import LlamaCpp
+from langchain.llms.huggingface_pipeline import HuggingFacePipeline
+
+# older import versions
+#from langchain.embeddings import OpenAIEmbeddings, HuggingFaceEmbeddings 
+#from langchain.vectorstores import FAISS
+#from langchain.chat_models import ChatOpenAI
+#from langchain.llms import LlamaCpp
+#from langchain import HuggingFacePipeline
 
 
 def get_pdf_text(pdf_docs):
