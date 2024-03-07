@@ -1,5 +1,9 @@
 Script Brief Overview
 
+NOTE TO TEAM: Please don't edit app.py directly with your code! 
+Make a copy and work on your part, then we'll piece them together 
+afterwards (trying to avoid merges and collisions)
+
 Before running these code, make sure to install the following packages:
 - pip install streamlit
 - pip install python-dotenv
