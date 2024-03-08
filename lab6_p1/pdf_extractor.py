@@ -1,23 +1,18 @@
 import os
-import re
 import sys
-import PyPDF2
-from PyPDF2 import PdfReader
-import pytesseract
-from ocrmypdf import ocr
 import mysql.connector
 from mysql.connector import errorcode
+import fitz  # PyMuPDF
 
-
-
-# Get MySQL username and password
-def get_user_password():
+global_figure_counter = -0
+# Get MySQL username, password, database
+def get_mysql():
+    host = 'localhost'
     user = input("Please enter your MySQL user:\nLeave Blank if it is root\n")
     user = user or 'root'  # Defaults to 'root' if left blank
     password = input("Please enter your MySQL password:\n")
-    return user, password
-
-
+    database = input("Please enter your MySQL database:\n")
+    return host, user, password, database
 
 # Establish MySQL connection
 def connect_to_database(host, user, password, database):
@@ -33,42 +28,53 @@ def connect_to_database(host, user, password, database):
         print("Error connecting to MySQL:", err)
         sys.exit(1)
 
-
-
-# Extract text content from PDF
-def extract_text_from_pdf(pdf_path):
+# Extract text content and images from PDF using PyMuPDF
+def extract_content_from_pdf(pdf_path):
     try:
-        pdf_file = open(pdf_path, 'rb')
-        reader = PyPDF2.PdfReader(pdf_file)
+        doc = fitz.open(pdf_path)
         text_pages = []
-        for page in reader.pages:
-            try:
-                text_pages.append(str(page.extract_text() + " "))
-            except KeyError:
-                print(f"Skipping a page in {pdf_path} due to extraction issues.")
-        for page in range(len(text_pages)):
-            print("PAGE", page, "-------", text_pages[page])   
-        return text_pages
+        image_paths = []
+
+        for page_number in range(doc.page_count):
+            page = doc[page_number]
+            text_pages.append(page.get_text("text") + " ")
+
+            # Extract images and save to a file
+            images = page.get_images(full=True)
+            page_image_paths = []  # list to store all image paths for one page
+            image_number = 1   
+            for img_index, img in enumerate(images):
+                image_index = img[0] 
+                base_image = doc.extract_image(image_index)
+                image_bytes = base_image["image"]
+                
+                # Save the image to a file
+                image_path = f'./images/page_{page_number+1}_image_{image_number}.png' 
+                with open(image_path, 'wb') as image_file:
+                    image_file.write(image_bytes)
+
+                page_image_paths.append(image_path)
+                image_number += 1
+            
+            image_paths.append(page_image_paths)
+
+        return text_pages, image_paths
+
     finally:
-        pdf_file.close()
-
-
+        doc.close()
 
 # have text column and image column?
-def parse_details(page, text_page):
+def parse_details(page, text, image):
     details = {
         "page": "Unknown",
-        "text_content": "Unknown",
-        #"longitude": "Unknown",
-        #"latitude": "Unknown",
-        #"address": "Unknown"
+        "text_content": "None",
+        "image_path": "None",
     }
-    details["page"] = str(page)
-    details["text_content"] = text_page
-    print(details["page"])
+    details["page"] = str(page+1)
+    details["text_content"] = text
+    details["image_path"] = image #make sure have all images on page
+    #print(details["page"])
     return details
-
-
 
 # Create MySQL table in database
 def check_and_create_table(cursor):
@@ -76,53 +82,52 @@ def check_and_create_table(cursor):
     CREATE TABLE IF NOT EXISTS cookbook (
         id INT AUTO_INCREMENT PRIMARY KEY,
         page VARCHAR(255),
-        text_content TEXT
+        text_content TEXT,
+        image_path VARCHAR(255)
     )
     """
     cursor.execute(create_table_sql)
 
-
-
 # Insert data into database
 def insert_data_into_db(cursor, details):
     check_and_create_table(cursor)  # Ensure table exists
-    insert_sql = """
-    INSERT INTO cookbook (page, text_content) 
-    VALUES (%s, %s)
-    """
-    cursor.execute(insert_sql, (details["page"], details["text_content"]))
-    
-
+    for image_path in details["image_path"]:
+        insert_sql = """
+        INSERT INTO cookbook (page, text_content, image_path) 
+        VALUES (%s, %s, %s)
+        """
+        cursor.execute(insert_sql, (details["page"], details["text_content"], image_path))
 
 # Combine all scripts
 def main():
-    host = 'localhost'
+    #host = 'localhost'
     #user = 'root'
     #password = ''
-    #database = 'demo'  
-    user, password = get_user_password()
-    database = input("Please enter your MySQL database:\n")
+    #database = 'demo1'
+    host, user, password, database = get_mysql()
     connection = connect_to_database(host, user, password, database)
-    cursor = connection.cursor()  
-    
-   #get_pdf_text('./')
-    pdf_directory = '/home/vboxuser/0/lab6/drive'
+    cursor = connection.cursor()
+
+    #pdf_directory = '/home/vboxuser/0/lab6/drive'
+    pdf_directory = input("Please enter the path to the  pdf file:\n")
     for filename in os.listdir(pdf_directory):
         if filename.endswith('.pdf'):
             pdf_path = os.path.join(pdf_directory, filename)
-            extracted_text = extract_text_from_pdf(pdf_path)
-            print(f"Extracted for '{filename}'")
-            
+
+            # Extract text content and images
+            extracted_text, extracted_images = extract_content_from_pdf(pdf_path)
+            print(f"Extracted text and image for '{filename}'")
+
             for e in range(len(extracted_text)):
-            	details = parse_details(e, extracted_text[e])
-            	insert_data_into_db(cursor, details)
+                details = parse_details(e, extracted_text[e], extracted_images[e])
+                insert_data_into_db(cursor, details)
+
     print(f"Uploaded to '{database}' database")
-    
+
     connection.commit()
     cursor.close()
     connection.close()
 
-
-
 if __name__ == '__main__':
     main()
+
