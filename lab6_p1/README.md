@@ -9,15 +9,23 @@ Before running these code, make sure to follow all of the instructions in the RE
 *****
 
 
+In addition to the packages needed for the app.py, please also install:
+- PyMuPDF Pillow
+
+
 To run the code, go into the /drive folder and run
 "streamlit run app.py"
 
 
 Part 1 Scripts 
 
-### pdf_extractor.py
-	working code for extracting pdf content and putting data into MySQL database.
-	(needs to be fine tuned)
+### pdf_extractor.py (complete)
+	This extracts text and image content from PDF and inserts the data into MySQL database. Create a database and create a folder named "images" before running the script.
+	Input:
+	1. It asks user to input MySQL credentials and the path to the PDF file.
+	Output:
+	1. It puts all the extracted images into PNG format into /images.
+	2. It inserts text content and image path files for each page into the database.
 
 
 Inside /drive:
