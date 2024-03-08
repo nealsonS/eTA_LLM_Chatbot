@@ -97,11 +97,11 @@ def insert_data_into_db(cursor, details):
 # Combine all scripts
 def main():
     host = 'localhost'
-    user = 'root'
-    password = ''
-    database = 'demo'  
-    #user, password = get_user_password()
-    #database = input("Please enter your MySQL database:\n")
+    #user = 'root'
+    #password = ''
+    #database = 'demo'  
+    user, password = get_user_password()
+    database = input("Please enter your MySQL database:\n")
     connection = connect_to_database(host, user, password, database)
     cursor = connection.cursor()  
     
