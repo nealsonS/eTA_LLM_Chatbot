@@ -1,5 +1,6 @@
 import os
 import sys
+import shutil
 import mysql.connector
 from mysql.connector import errorcode
 import fitz  # PyMuPDF
@@ -34,7 +35,7 @@ def extract_content_from_pdf(pdf_path):
         doc = fitz.open(pdf_path)
         text_pages = []
         image_paths = []
-
+        
         for page_number in range(doc.page_count):
             page = doc[page_number]
             text_pages.append(page.get_text("text") + " ")
@@ -43,11 +44,12 @@ def extract_content_from_pdf(pdf_path):
             images = page.get_images(full=True)
             page_image_paths = []  # list to store all image paths for one page
             image_number = 1   
+
             for img_index, img in enumerate(images):
                 image_index = img[0] 
                 base_image = doc.extract_image(image_index)
                 image_bytes = base_image["image"]
-                
+
                 # Save the image to a file
                 image_path = f'./images/page_{page_number+1}_image_{image_number}.png' 
                 with open(image_path, 'wb') as image_file:
@@ -98,6 +100,44 @@ def insert_data_into_db(cursor, details):
         """
         cursor.execute(insert_sql, (details["page"], details["text_content"], image_path))
 
+def create_or_delete_contents_of_folder(path):
+
+    # create folder if not exist
+    if os.path.exists(path):
+        folder_contents = os.listdir(path)
+
+        is_empty = len(folder_contents) == 0
+
+        if not is_empty:
+            print('Image folder is not empty!\nProceed Anyways?')
+            img_action = input('Type Y to proceed or N to stop execution or R to remove its contents:\n').strip().upper()
+
+            while img_action not in ['Y', 'N', 'R']:
+                print('Invalid input!')
+                img_action = input('Type Y to proceed or N to stop execution or R to remove its contents:\n').strip().upper()
+
+            if img_action == 'N':
+                sys.exit(1)
+
+            if img_action == 'R':
+                for file_path in folder_contents:
+                    parent, fname = os.path.split(file_path)
+                    _, img_folder = os.path.split(parent)
+                    try:
+                        if os.path.isfile(file_path) or os.path.islink(file_path):
+                            os.unlink(file_path)
+                        elif os.path.isdir(file_path):
+                            shutil.rmtree(file_path)
+                    except Exception as e:
+                        print(f'Failed to delete {os.path.join(img_folder, fname)} for reason: {e}')
+
+    else:
+        os.makedirs(path)
+
+
+
+
+
 # Combine all scripts
 def main():
     #host = 'localhost'
@@ -108,8 +148,16 @@ def main():
     connection = connect_to_database(host, user, password, database)
     cursor = connection.cursor()
 
+
     #pdf_directory = '/home/vboxuser/0/lab6/drive'
-    pdf_directory = input("Please enter the path to the  pdf file:\n")
+    pdf_directory = input("Please enter the path to the folder that contains the pdf file:\n")
+    img_folder_path = os.path.join('.', 'images')
+
+
+    # create folder if not exist
+    # if there are contents in folder, ask what to do with it
+    create_or_delete_contents_of_folder(img_folder_path)
+
     for filename in os.listdir(pdf_directory):
         if filename.endswith('.pdf'):
             pdf_path = os.path.join(pdf_directory, filename)
@@ -123,6 +171,9 @@ def main():
                 insert_data_into_db(cursor, details)
 
     print(f"Uploaded to '{database}' database")
+
+    # delete img folder after execution
+    #shutil.rmtree(img_folder_path)
 
     connection.commit()
     cursor.close()
