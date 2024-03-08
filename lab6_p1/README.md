@@ -27,11 +27,18 @@ Part 1 Scripts
 	1. It puts all the extracted images into PNG format into /images.
 	2. It inserts text content and image path files for each page into the database.
 
+### chunk.py
+	Initial testing of chunk. Still WIP
+	Input:
+	1. no input, make sure MySQL credentials are correct before running
+	Output:
+	1. text chunks of data
 
 Inside /drive:
 
 ### app.py
 	skeleton code from Lab 6 Google folder
+	NOTE: we should put all of our working code here!
 	
 	
 ### htmlTemplates.py
