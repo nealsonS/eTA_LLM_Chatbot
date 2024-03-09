@@ -6,6 +6,7 @@ from mysql.connector import errorcode
 import fitz  # PyMuPDF
 
 global_figure_counter = -0
+
 # Get MySQL username, password, database
 def get_mysql():
     host = 'localhost'
@@ -100,7 +101,7 @@ def insert_data_into_db(cursor, details):
         """
         cursor.execute(insert_sql, (details["page"], details["text_content"], image_path))
 
-def create_or_delete_contents_of_folder(path):
+def create_or_delete_contents_of_folder(path, folder_name):
 
     # create folder if not exist
     if os.path.exists(path):
@@ -109,7 +110,7 @@ def create_or_delete_contents_of_folder(path):
         is_empty = len(folder_contents) == 0
 
         if not is_empty:
-            print('Image folder is not empty!\nProceed Anyways?')
+            print(f'{folder_name} folder is not empty!\nProceed Anyways?')
             img_action = input('Type Y to proceed or N to stop execution or R to remove its contents:\n').strip().upper()
 
             while img_action not in ['Y', 'N', 'R']:
@@ -134,10 +135,6 @@ def create_or_delete_contents_of_folder(path):
     else:
         os.makedirs(path)
 
-
-
-
-
 # Combine all scripts
 def main():
     #host = 'localhost'
@@ -156,7 +153,7 @@ def main():
 
     # create folder if not exist
     # if there are contents in folder, ask what to do with it
-    create_or_delete_contents_of_folder(img_folder_path)
+    create_or_delete_contents_of_folder(img_folder_path, 'Image')
 
     for filename in os.listdir(pdf_directory):
         if filename.endswith('.pdf'):

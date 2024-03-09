@@ -10,12 +10,13 @@ Before running these code, make sure to follow all of the instructions in the RE
 
 
 In addition to the packages needed for the app.py, please also install:
-- PyMuPDF Pillow
+- pip install PyMuPDF Pillow sentence-transformer faiss-cpu
 
 For this project, we will use Llama model because it's free.
 Download it from here:
 https://huggingface.co/TheBloke/LLaMa-7B-GGML/blob/main/llama-7b.ggmlv3.q4_1.bin and place it in the models folder
 
+For embedding, we use HuggingFace sentence-transformer
 **DISCLAIMER**:
 This model has been quantized in a GGML format, but llama-cpp-python package only supports 
 GGUF format past version 0.1.78.
