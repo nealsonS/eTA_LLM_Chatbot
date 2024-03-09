@@ -10,7 +10,7 @@ Before running these code, make sure to follow all of the instructions in the RE
 
 
 In addition to the packages needed for the app.py, please also install:
-- pip install PyMuPDF Pillow sentence-transformer faiss-cpu
+- pip install PyMuPDF Pillow sentence-transformers faiss-cpu
 
 For this project, we will use Llama model because it's free.
 Download it from here:
