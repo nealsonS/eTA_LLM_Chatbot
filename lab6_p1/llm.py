@@ -16,11 +16,13 @@ class LocalGPT2:
         input_ids = self.tokenizer.encode(prompt_text, return_tensors='pt')
         output_sequences = self.model.generate(
             input_ids,
-            max_length=150,
+            #max_length=100,
+            max_new_tokens = 50, 
             temperature=0.7,
             top_p=0.9,
             do_sample=True,
             num_return_sequences=1,
+            pad_token_id = 50256
         )
         generated_text = self.tokenizer.decode(output_sequences[0], skip_special_tokens=True)
         return generated_text[len(prompt_text):]
@@ -40,18 +42,24 @@ def connect_to_database(host, user, password, database):
             cursor.close()
             connection.close()
 
-def get_text_chunks(text_contents):
-    all_chunks = []
-    text_splitter = CharacterTextSplitter(separator="\n\n", chunk_size=500, chunk_overlap=100, length_function=len)
-    for text in text_contents:
+def get_text_chunks(text_content):
+    for t in text_content:
+        text = str(t)
+        text_splitter = CharacterTextSplitter(
+            separator="\n\n",
+            chunk_size=500, #must be 500
+            chunk_overlap=100,
+            length_function=len
+        )
         chunks = text_splitter.split_text(text)
-        all_chunks.extend(chunks)
-    return all_chunks
+    return chunks
 
 def embed_chunk_to_vectorstore(chunks):
     embedding_model = HuggingFaceEmbeddings()
+    print('Embed Model Initialized')
 
     vectorstore = FAISS.from_texts(chunks, embedding_model)
+    print('Stored embeddings in vector store!')
     return vectorstore
 
 def main():
@@ -81,7 +89,13 @@ def main():
         
         # Simplified use of vectorstore in conversation
         # Actual use would involve querying the vectorstore based on the user input
-        prompt = " ".join(vectorstore[:3]) + "\n" + user_input  # Using first 3 chunks as context for simplicity
+        num_chunks_for_context = 1
+        context_list = [x.page_content for x in vectorstore.similarity_search(user_input)[:num_chunks_for_context]]
+        context_str = " \n".join(context_list)
+        prompt =  f"""Context: \n{context_str}
+Question: {user_input}
+Answer: 
+        """ # Using first 3 chunks as context for simplicity
         response = llm.generate_response(prompt)
         print("AI:", response)
 
