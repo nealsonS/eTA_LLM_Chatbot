@@ -28,6 +28,14 @@ class LocalGPT2:
         return generated_text[len(prompt_text):]
 
 
+def get_mysql():
+    host = 'localhost'
+    user = input("Please enter your MySQL user:\nLeave Blank if it is root\n")
+    user = user or 'root'  # Defaults to 'root' if left blank
+    password = input("Please enter your MySQL password:\n")
+    database = input("Please enter your MySQL database:\n")
+    return host, user, password, database
+    
 
 def connect_to_database(host, user, password, database):
     try:
@@ -45,7 +53,6 @@ def connect_to_database(host, user, password, database):
             connection.close()
 
 
-
 def get_text_chunks(text_content):
     print(text_content)
     all_chunks = []
@@ -61,6 +68,7 @@ def get_text_chunks(text_content):
         all_chunks.extend(chunks)  
     return all_chunks
 
+
 def embed_chunk_to_vectorstore(chunks):
     embedding_model = HuggingFaceEmbeddings()
     print('Embed Model Initialized')
@@ -69,11 +77,13 @@ def embed_chunk_to_vectorstore(chunks):
     print('Stored embeddings in vector store!')
     return vectorstore
 
+
 def main():
-    host = 'localhost'
-    user = 'root'
-    password = ''
-    database = 'demo1'
+    #host = 'localhost'
+    #user = 'root'
+    #password = ''
+    #database = 'demo1'
+    host, user, password, database = get_mysql()
     
     # get raw text from the database
     raw_text = connect_to_database(host, user, password, database)
@@ -101,6 +111,8 @@ Answer:
         """ # using first 3 chunks as context for simplicity
         response = llm.generate_response(prompt)
         print(">>> AI:", response)
+
+
 
 if __name__ == '__main__':
     main()

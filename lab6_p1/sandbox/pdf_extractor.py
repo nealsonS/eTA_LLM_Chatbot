@@ -6,7 +6,7 @@ from mysql.connector import errorcode
 import fitz  # PyMuPDF
 
 
-# Get MySQL username, password, database
+
 def get_mysql():
     host = 'localhost'
     user = input("Please enter your MySQL user:\nLeave Blank if it is root\n")
@@ -15,7 +15,7 @@ def get_mysql():
     database = input("Please enter your MySQL database:\n")
     return host, user, password, database
 
-# Establish MySQL connection
+
 def connect_to_database(host, user, password, database):
     try:
         connection = mysql.connector.connect(
@@ -29,7 +29,8 @@ def connect_to_database(host, user, password, database):
         print("Error connecting to MySQL:", err)
         sys.exit(1)
 
-# Extract text content and images from PDF using PyMuPDF
+
+# extract text content and images from PDF using PyMuPDF
 def extract_content_from_pdf(pdf_path):
     doc = fitz.open(pdf_path)
     try:
@@ -51,7 +52,7 @@ def extract_content_from_pdf(pdf_path):
                 base_image = doc.extract_image(image_index)
                 image_bytes = base_image["image"]
 
-                # Save the image to a file
+                # save the image to png file
                 image_path = f'./images/page_{page_number+1}_image_{image_number}.png' 
                 with open(image_path, 'wb') as image_file:
                     image_file.write(image_bytes)
@@ -66,7 +67,8 @@ def extract_content_from_pdf(pdf_path):
     finally:
         doc.close()
 
-# have text column and image column?
+
+
 def parse_details(page, text, image):
     details = {
         "page": "Unknown",
@@ -76,10 +78,9 @@ def parse_details(page, text, image):
     details["page"] = str(page+1)
     details["text_content"] = text
     details["image_path"] = image #make sure have all images on page
-    #print(details["page"])
     return details
 
-# Create MySQL table in database
+
 def check_and_create_table(cursor):
     create_table_sql = """
     CREATE TABLE IF NOT EXISTS cookbook (
@@ -91,7 +92,7 @@ def check_and_create_table(cursor):
     """
     cursor.execute(create_table_sql)
 
-# Insert data into database
+
 def insert_data_into_db(cursor, details):
     check_and_create_table(cursor)  # Ensure table exists
     for image_path in details["image_path"]:
@@ -100,6 +101,7 @@ def insert_data_into_db(cursor, details):
         VALUES (%s, %s, %s)
         """
         cursor.execute(insert_sql, (details["page"], details["text_content"], image_path))
+
 
 def create_or_delete_contents_of_folder(path, folder_name):
 
@@ -145,12 +147,9 @@ def get_pdf_text():
     connection = connect_to_database(host, user, password, database)
     cursor = connection.cursor()
 
-
     #pdf_directory = '/home/vboxuser/0/lab6/drive'
     pdf_directory = input("Please enter the path to the folder that contains the pdf file:\n")
     img_folder_path = os.path.join('.', 'images')
-
-
     # create folder if not exist
     # if there are contents in folder, ask what to do with it
     create_or_delete_contents_of_folder(img_folder_path, 'Image')
@@ -159,7 +158,7 @@ def get_pdf_text():
         if filename.endswith('.pdf'):
             pdf_path = os.path.join(pdf_directory, filename)
 
-            # Extract text content and images
+            #extract text content and images
             extracted_text, extracted_images = extract_content_from_pdf(pdf_path)
             print(f"Extracted text and image for '{filename}'")
 
@@ -175,6 +174,7 @@ def get_pdf_text():
     connection.commit()
     cursor.close()
     connection.close()
+
 
 if __name__ == '__main__':
     get_pdf_text()
