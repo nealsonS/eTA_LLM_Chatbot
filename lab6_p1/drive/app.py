@@ -63,20 +63,19 @@ def extract_content_from_pdf(pdf_path):
     finally:
         doc.close()
 
-'''def get_text_chunks(text_content):
-    all_chunks = []
-
-    for t in text_content:
-        text = str(t)
-        text_splitter = CharacterTextSplitter(
-            separator="\n", 
-            chunk_size=500, #must be 500
-            chunk_overlap=200, #better performance than 100
-            length_function=len
-        )
-        chunks = (text_splitter.split_text(text))
-        all_chunks.extend(chunks)  # append chunks to the list
-    return chunks#all_chunks'''
+#'''def get_text_chunks(text_content):
+#    all_chunks = []
+#    for t in text_content:
+#        text = str(t)
+#        text_splitter = CharacterTextSplitter(
+#            separator="\n", 
+#            chunk_size=500, #must be 500
+#3            chunk_overlap=200, #better performance than 100
+#            length_function=len
+#        )
+#        chunks = (text_splitter.split_text(text))
+#        all_chunks.extend(chunks)  # append chunks to the list
+#    return chunks#all_chunks'''
 
 
 def get_text_chunks(text_list):
