@@ -19,44 +19,101 @@ from langchain.llms.huggingface_pipeline import HuggingFacePipeline
 #from langchain import HuggingFacePipeline
 
 
-def get_pdf_text(pdf_docs):
-    text = ""
-    for pdf in pdf_docs:
-        pdf_reader = PdfReader(pdf)
-        for page in pdf_reader.pages:
-            text += page.extract_text()
-    return text
+# extra packages for our code
+from transformers import GPT2Tokenizer, GPT2LMHeadModel
+from langchain_community.embeddings import HuggingFaceEmbeddings
+from langchain_community.vectorstores import FAISS
+import fitz  # PyMuPDF
+import os
 
 
-def get_text_chunks(text):
-    text_splitter = CharacterTextSplitter(
-        separator="\n",
-        chunk_size=500,
-        chunk_overlap=100,
-        length_function=len
-    )
-    chunks = text_splitter.split_text(text)
-    return chunks
+# our code to store pdf data into database, instead of skeleton code get_pdf_text() 
+def extract_content_from_pdf(pdf_path): 
+    doc = fitz.open(pdf_path)
+    try:
+        text_pages = []
+        image_paths = []
+        
+        for page_number in range(doc.page_count):
+            page = doc[page_number]
+            text_pages.append(page.get_text("text") + " ")
+
+            # extract images and save to a file
+            images = page.get_images(full=True)
+            page_image_paths = []  # list to store all image paths for one page
+            image_number = 1   
+
+            for img_index, img in enumerate(images):
+                image_index = img[0] 
+                base_image = doc.extract_image(image_index)
+                image_bytes = base_image["image"]
+
+                # save image to png file
+                image_path = f'./images/page_{page_number+1}_image_{image_number}.png' 
+                with open(image_path, 'wb') as image_file:
+                    image_file.write(image_bytes)
+
+                page_image_paths.append(image_path)
+                image_number += 1
+            
+            image_paths.append(page_image_paths)
+
+        return text_pages, image_paths
+
+    finally:
+        doc.close()
 
 
-def get_vectorstore(text_chunks):
-    embeddings = OpenAIEmbeddings()
-    # embeddings = HuggingFaceEmbeddings(
-    #     model_name="sentence-transformers/all-MiniLM-L6-v2")
-    vectorstore = FAISS.from_texts(texts=text_chunks, embedding=embeddings)
+
+def get_text_chunks(text_content):
+    all_chunks = []
+    for t in text_content:
+        text = str(t)
+        text_splitter = CharacterTextSplitter(
+            separator="\n", 
+            chunk_size=500, #must be 500
+            chunk_overlap=200, #better performance than 100
+            length_function=len
+        )
+        chunks = (text_splitter.split_text(text))
+        all_chunks.extend(chunks)  # append chunks to the list
+    return chunks#all_chunks
+
+
+
+# our code to put chunks into vector store instead of skeleton get_vectorstore(text_chunks). 
+# also using huggingface instead of openAI
+def embed_chunk_to_vectorstore(chunks):
+    embedding_model = HuggingFaceEmbeddings()
+    print('Embed Model Initialized')
+    print('Storing embeddings in vector store, please wait.')
+    vectorstore = FAISS.from_texts(chunks, embedding_model)
+    print('Stored embeddings in vector store!')
     return vectorstore
 
 
-def get_conversation_chain(vectorstore):
-    llm = ChatOpenAI()
-    # llm = HuggingFacePipeline.from_model_id(
-    #     model_id="lmsys/vicuna-7b-v1.3",
-    #     task="text-generation",
-    #     model_kwargs={"temperature": 0.01},
-    # )
-    # llm = LlamaCpp(
-    #     model_path="models/llama-2-7b-chat.ggmlv3.q4_1.bin",  n_ctx=1024, n_batch=512)
+def extra():
+    print("Let's chat! Type 'exit' to end the conversation.")
+    while True:
+        user_input = input(">>> You: ")
+        if user_input.lower() == 'exit':
+            break
+        # simplified use of vectorstore in conversation
+        # actual use would involve querying the vectorstore based on the user input
+        num_chunks_for_context = 1 # OG 1
+        context_list = [x.page_content for x in vectorstore.similarity_search(user_input)[:num_chunks_for_context]]
+        context_str = " \n".join(context_list)
+        prompt =  f"""Context: \n{context_str}
+Question: {user_input}
+Answer: 
+        """ # using first 3 chunks as context for simplicity
+        response = llm.generate_response(prompt)
+        print(">>> AI:", response)
 
+
+def get_conversation_chain(vectorstore):
+   # llm = LocalGPT2()
+    llm = HuggingFaceHub(repo_id="google/flan-t5-xxl", model_kwargs={"temperature":0.5, "max_length":512})
     memory = ConversationBufferMemory(
         memory_key='chat_history', return_messages=True)
     conversation_chain = ConversationalRetrievalChain.from_llm(
@@ -66,6 +123,7 @@ def get_conversation_chain(vectorstore):
         memory=memory,
     )
     return conversation_chain
+
 
 
 def handle_userinput(user_question):
@@ -81,6 +139,29 @@ def handle_userinput(user_question):
                 "{{MSG}}", message.content), unsafe_allow_html=True)
 
 
+class LocalGPT2:
+    def __init__(self):
+        self.tokenizer = GPT2Tokenizer.from_pretrained("gpt2")
+        self.model = GPT2LMHeadModel.from_pretrained("gpt2")
+        self.model.eval()  # Set the model to evaluation mode
+
+    def generate_response(self, prompt_text):
+        input_ids = self.tokenizer.encode(prompt_text, return_tensors='pt')
+        output_sequences = self.model.generate(
+            input_ids,
+            #max_length=100,
+            max_new_tokens = 50, 
+            temperature=0.7, # OG 0.7
+            top_p=1.0, # OG 0.9
+            do_sample=True,
+            num_return_sequences=1, # OG 1
+            pad_token_id = 50256
+        )
+        generated_text = self.tokenizer.decode(output_sequences[0], skip_special_tokens=True)
+        return generated_text[len(prompt_text):]
+
+
+
 def main():
     load_dotenv()
     st.set_page_config(page_title="Chat with PDFs",
@@ -88,7 +169,7 @@ def main():
     st.write(css, unsafe_allow_html=True)
 
     if "conversation" not in st.session_state:
-        st.session_state.conversation = None
+        st.session_state.conversation = None #not meant for users to have no PDF processed
     if "chat_history" not in st.session_state:
         st.session_state.chat_history = None
 
@@ -100,21 +181,24 @@ def main():
     with st.sidebar:
         st.subheader("Your documents")
         pdf_docs = st.file_uploader(
-            "Upload your PDFs here and click on 'Process'", accept_multiple_files=True)
+            "Upload your PDFs here and click on 'Process'", type=["pdf"], accept_multiple_files=True) 
+
+        temp_file_path = os.path.join(os.getcwd(), "uploaded_files.pdf")
+        for doc in pdf_docs:
+            with open(temp_file_path, "wb") as temp_file:
+                temp_file.write(doc.getvalue()) 
+                print(temp_file)   
         if st.button("Process"):
             with st.spinner("Processing"):
                 # get pdf text
-                raw_text = get_pdf_text(pdf_docs)
-
+                raw_text, raw_pics = extract_content_from_pdf(temp_file) # pdf_docs would work as a path
                 # get the text chunks
                 text_chunks = get_text_chunks(raw_text)
-
                 # create vector store
-                vectorstore = get_vectorstore(text_chunks)
-
+                vectorstore = embed_chunk_to_vectorstore(text_chunks)
                 # create conversation chain
-                st.session_state.conversation = get_conversation_chain(
-                    vectorstore)
+                st.session_state.conversation = get_conversation_chain(vectorstore)
+
 
 
 if __name__ == '__main__':
