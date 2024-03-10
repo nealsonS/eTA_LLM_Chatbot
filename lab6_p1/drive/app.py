@@ -63,10 +63,9 @@ def extract_content_from_pdf(pdf_path):
     finally:
         doc.close()
 
-
-
-def get_text_chunks(text_content):
+'''def get_text_chunks(text_content):
     all_chunks = []
+
     for t in text_content:
         text = str(t)
         text_splitter = CharacterTextSplitter(
@@ -77,8 +76,21 @@ def get_text_chunks(text_content):
         )
         chunks = (text_splitter.split_text(text))
         all_chunks.extend(chunks)  # append chunks to the list
-    return chunks#all_chunks
+    return chunks#all_chunks'''
 
+
+def get_text_chunks(text_list):
+
+    text_str = "".join(text_list)
+
+    text_splitter = CharacterTextSplitter(
+        separator="\n", 
+        chunk_size=500, #must be 500
+        chunk_overlap=200, #better performance than 100
+        length_function=len
+    )
+    chunks = (text_splitter.split_text(text_str))
+    return chunks
 
 
 # our code to put chunks into vector store instead of skeleton get_vectorstore(text_chunks). 
@@ -128,6 +140,7 @@ def get_conversation_chain(vectorstore):
 
     memory = ConversationBufferMemory(
         memory_key='chat_history', return_messages=True)
+    
     conversation_chain = ConversationalRetrievalChain.from_llm(
         llm=llm,
         retriever=vectorstore.as_retriever(
