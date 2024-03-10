@@ -8,7 +8,7 @@ from langchain.text_splitter import CharacterTextSplitter
 from langchain_community.embeddings import OpenAIEmbeddings,  HuggingFaceEmbeddings
 from langchain_community.vectorstores import FAISS
 from langchain_community.chat_models import ChatOpenAI
-from langchain_community.llms import LlamaCpp
+from langchain_community.llms import HuggingFaceHub
 from langchain.llms.huggingface_pipeline import HuggingFacePipeline
 
 # older import versions

@@ -8,7 +8,7 @@ from langchain.text_splitter import CharacterTextSplitter
 from langchain_community.embeddings import OpenAIEmbeddings,  HuggingFaceEmbeddings
 from langchain_community.vectorstores import FAISS
 from langchain_community.chat_models import ChatOpenAI
-from langchain_community.llms import LlamaCpp
+from langchain_community.llms import HuggingFaceHub
 from langchain.llms.huggingface_pipeline import HuggingFacePipeline
 
 # older import versions
@@ -20,7 +20,7 @@ from langchain.llms.huggingface_pipeline import HuggingFacePipeline
 
 
 # extra packages for our code
-from transformers import GPT2Tokenizer, GPT2LMHeadModel
+#from transformers import GPT2Tokenizer, GPT2LMHeadModel
 from langchain_community.embeddings import HuggingFaceEmbeddings
 from langchain_community.vectorstores import FAISS
 import fitz  # PyMuPDF
@@ -112,8 +112,20 @@ Answer:
 
 
 def get_conversation_chain(vectorstore):
-   # llm = LocalGPT2()
-    llm = HuggingFaceHub(repo_id="google/flan-t5-xxl", model_kwargs={"temperature":0.5, "max_length":512})
+    #llm = LocalGPT2()
+
+    llm = HuggingFaceHub(
+        repo_id="HuggingFaceH4/zephyr-7b-beta",
+        huggingfacehub_api_token = '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',
+        task="text-generation",
+        model_kwargs={
+            "max_new_tokens": 512,
+            "top_k": 30,
+            "temperature": 0.7,
+            "repetition_penalty": 1.03,
+        },
+    )
+
     memory = ConversationBufferMemory(
         memory_key='chat_history', return_messages=True)
     conversation_chain = ConversationalRetrievalChain.from_llm(
