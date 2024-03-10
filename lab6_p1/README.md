@@ -32,6 +32,7 @@ To run the code, go into the /drive folder and run
 	Our code built on the skeleton code from Lab 6 Google folder
 	Takes the PDF file, extracts information, chunks it, puts it into vector data store.
 	Allows users to ask questions about the PDF file they uploaded.
+	Note: if program does not run because missing a folder called "images", please go to /sandbox and run pdf_extractor.py to generate an /images folder, and copy that folder into this folder (/drive).
 	
 	
 ### htmlTemplates.py
