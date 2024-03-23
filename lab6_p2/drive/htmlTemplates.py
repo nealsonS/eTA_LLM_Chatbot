@@ -1,7 +1,7 @@
 css = '''
 <style>
 .stApp {
-    background-color:#f4faeb;
+    background-color: #899096;
 }
 
 .chat-message {

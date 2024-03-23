@@ -113,7 +113,7 @@ def get_conversation_chain(vectorstore):
         huggingfacehub_api_token = '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',
         task="text-generation",
         model_kwargs={
-            "max_new_tokens": 256, #OG 512,
+            "max_new_tokens": 512, 
             "top_k": 30,
             "temperature": 0.7,
             "repetition_penalty": 1.03, 
@@ -141,15 +141,15 @@ def handle_userinput(user_question):
         if i % 2 == 0:
             st.write(user_template.replace(
                 "{{MSG}}", message.content), unsafe_allow_html=True)
-            print(i, message.content)
+            #print(i, message.content)
         else:
             shrinked_message = ""
             for line in message.content.split("\n"):
                 if line.strip().startswith("Helpful Answer:"):
-                    shrinked_message = line.strip()
+                    shrinked_message = line.strip() # we only want the last "helpful answer" 
             st.write(bot_template.replace(
                 "{{MSG}}", shrinked_message), unsafe_allow_html=True)
-            print(i, shrinked_message)
+            #print(i, shrinked_message)
 
 
 class LocalGPT2:
@@ -180,6 +180,16 @@ def main():
     st.set_page_config(page_title="Chat with PDFs",
                        page_icon=":robot_face:")
     st.write(css, unsafe_allow_html=True)
+    
+    styl = f"""
+    <style>
+        .stTextInput {{
+          position: fixed;
+          bottom: 3rem;
+        }}
+    </style>
+    """
+    st.markdown(styl, unsafe_allow_html=True)
 
 
     if "conversation" not in st.session_state:
@@ -187,8 +197,8 @@ def main():
     if "chat_history" not in st.session_state:
         st.session_state.chat_history = None
 
-    st.header("Explore more in PDFs :mag_right:")
-    user_question = st.text_input("Ask questions about your documents:")
+    st.header("Gain more insights from your PDFs :mag_right:")
+    user_question = st.text_input("Ask anything about your document(s):")
     if user_question:
         handle_userinput(user_question)
 
