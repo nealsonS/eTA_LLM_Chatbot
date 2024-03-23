@@ -30,6 +30,7 @@ css = '''
   padding: 0 1.5rem;
   color: #000;
 }
+</style>
 '''
 
 bot_template = '''

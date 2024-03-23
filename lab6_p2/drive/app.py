@@ -64,25 +64,10 @@ def extract_content_from_pdf(pdf_path):
     finally:
         doc.close()
 
-#'''def get_text_chunks(text_content):
-#    all_chunks = []
-#    for t in text_content:
-#        text = str(t)
-#        text_splitter = CharacterTextSplitter(
-#            separator="\n", 
-#            chunk_size=500, #must be 500
-#3            chunk_overlap=200, #better performance than 100
-#            length_function=len
-#        )
-#        chunks = (text_splitter.split_text(text))
-#        all_chunks.extend(chunks)  # append chunks to the list
-#    return chunks#all_chunks'''
 
 
 def get_text_chunks(text_list):
-
     text_str = "".join(text_list)
-
     text_splitter = CharacterTextSplitter(
         separator="\n", 
         chunk_size=500, #must be 500
@@ -105,53 +90,6 @@ def embed_chunk_to_vectorstore(chunks):
 
 
 
-def get_conversation_chain(vectorstore):
-    #llm = LocalGPT2()
-
-    llm = HuggingFaceHub(
-        repo_id="HuggingFaceH4/zephyr-7b-beta",
-        huggingfacehub_api_token = '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',
-        task="text-generation",
-        model_kwargs={
-            "max_new_tokens": 512, 
-            "top_k": 30,
-            "temperature": 0.7,
-            "repetition_penalty": 1.03, 
-        },
-    )
-
-    memory = ConversationBufferMemory(
-        memory_key='chat_history', return_messages=True)
-    
-    conversation_chain = ConversationalRetrievalChain.from_llm(
-        llm=llm,
-        retriever=vectorstore.as_retriever(
-            search_type="similarity", search_kwargs={"k": 4}),
-        memory=memory,
-    )
-    return conversation_chain
-
-
-
-def handle_userinput(user_question):
-    response = st.session_state.conversation({'question': user_question})
-    st.session_state.chat_history = response['chat_history']
-
-    for i, message in enumerate(st.session_state.chat_history):
-        if i % 2 == 0:
-            st.write(user_template.replace(
-                "{{MSG}}", message.content), unsafe_allow_html=True)
-            #print(i, message.content)
-        else:
-            shrinked_message = ""
-            for line in message.content.split("\n"):
-                if line.strip().startswith("Helpful Answer:"):
-                    shrinked_message = line.strip() # we only want the last "helpful answer" 
-            st.write(bot_template.replace(
-                "{{MSG}}", shrinked_message), unsafe_allow_html=True)
-            #print(i, shrinked_message)
-
-
 class LocalGPT2:
     def __init__(self):
         self.tokenizer = GPT2Tokenizer.from_pretrained("gpt2")
@@ -171,7 +109,55 @@ class LocalGPT2:
             pad_token_id = 50256
         )
         generated_text = self.tokenizer.decode(output_sequences[0], skip_special_tokens=True)
-        return generated_text[len(prompt_text):]
+        return self
+
+
+
+def get_conversation_chain(vectorstore):
+    #llm = LocalGPT2()
+
+    llm = HuggingFaceHub(
+        repo_id="HuggingFaceH4/zephyr-7b-beta",
+        huggingfacehub_api_token = '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',
+        task="text-generation",
+        model_kwargs={
+            "max_new_tokens": 512,
+            "top_k": 40,
+            "temperature": 0.8,
+            "repetition_penalty": 1.03, 
+        },
+    )
+
+    memory = ConversationBufferMemory(
+        memory_key='chat_history', return_messages=True)
+    print(llm)
+    conversation_chain = ConversationalRetrievalChain.from_llm(
+        llm=llm,
+        retriever=vectorstore.as_retriever(
+            search_type="similarity", search_kwargs={"k": 4}),
+        memory=memory,
+    )
+    return conversation_chain
+
+
+
+def handle_userinput(user_question):
+    response = st.session_state.conversation({'question': user_question})
+    st.session_state.chat_history = response['chat_history']
+    for i, message in enumerate(st.session_state.chat_history):
+        if i % 2 == 0:
+            st.write(user_template.replace(
+                "{{MSG}}", message.content), unsafe_allow_html=True)
+            #print(i, message.content)
+        else:
+            shrinked_message = ""
+            for line in message.content.split("\n"):
+                if line.strip().startswith("Helpful Answer:"):
+                    shrinked_message = line.strip().replace("Helpful Answer:", "").strip() # we only want the last "helpful answer" 
+            st.write(bot_template.replace(
+                "{{MSG}}", shrinked_message), unsafe_allow_html=True)
+            #print(i, shrinked_message)
+
 
 
 
@@ -181,7 +167,7 @@ def main():
                        page_icon=":robot_face:")
     st.write(css, unsafe_allow_html=True)
     
-    styl = f"""
+    styl = f""" 
     <style>
         .stTextInput {{
           position: fixed;
@@ -189,7 +175,7 @@ def main():
         }}
     </style>
     """
-    st.markdown(styl, unsafe_allow_html=True)
+    st.markdown(styl, unsafe_allow_html=True) #moves text input box down 
 
 
     if "conversation" not in st.session_state:
@@ -203,7 +189,7 @@ def main():
         handle_userinput(user_question)
 
     with st.sidebar:
-        st.subheader("Your documents")
+        st.subheader("Documents")
         pdf_docs = st.file_uploader(
             "Upload your PDFs here and click 'Process'", type=["pdf"], accept_multiple_files=True) 
 
@@ -213,7 +199,7 @@ def main():
                 temp_file.write(doc.getvalue()) 
                 print(temp_file)   
         if st.button("Process"):
-            with st.spinner("Processing..."):
+            with st.spinner("Processing... Please wait"):
                 # get pdf text
                 raw_text, raw_pics = extract_content_from_pdf(temp_file) # pdf_docs would work as a path
                 # get the text chunks
