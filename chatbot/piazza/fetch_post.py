@@ -1,6 +1,5 @@
 from piazza_api import Piazza
 from html2text import HTML2Text
-import json
 import os
 import re
 
@@ -10,24 +9,16 @@ HTML_2_TEXT.ignore_links = True
 EMAIL = None
 PASSWORD = None
 
-if os.path.exists('credentials.json'):
-    with open('credentials.json') as f:
-        credentials = json.load(f)
-        EMAIL = credentials.get('email', None)
-        PASSWORD = credentials.get('password', None)
-else:
-    piazza = Piazza()
-    piazza.user_login()
-
 
 def main():
     piazza = Piazza()
-    piazza.user_login(email=EMAIL, password=PASSWORD)
+    piazza.user_login()
+    #piazza.user_login(email=EMAIL, password=PASSWORD)
     network_id = 'lr7e73kounllq' #piazza ID for DSCI 560
     #network_id = input("Input your course's Piazza network ID: ").strip()
     course = piazza.network(network_id)
     posts = course.iter_all_posts(limit=10)
-    filename = input("Name of the file to write Piazza posts to (don't add '.txt'):").strip()
+    filename = input("Name of the file to write Piazza posts to (don't add '.txt'): ").strip()
     filename = filename + ".txt"
     with open(filename, 'w') as f:
         for post in posts:
