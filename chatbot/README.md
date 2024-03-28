@@ -1,3 +1,5 @@
+*NOTE TO TEAM*: Additional materials on Google Drive: 
+
 Make sure to do the following first:
 
 ### Installations:
@@ -6,8 +8,9 @@ Make sure to do the following first:
 
 
 
-### Marine Biology Course Materials
-From http://drsticky.weebly.com/marine-biology.html 
-# Notes:
-1. Some lecture slides have images that do not appear on OfficeLibre but appear in Word Documents. Please make sure when working with slide material that you can see these images
-2. Assignments are done by chapters, and there was no homework for chapter 6 and chapters 10 - 19. Check syllabus to get an idea of what the class might have been doing at this time
+### NIH Principles of Clinical Pharmacology Course Materials
+Notes:
+- textbook is optional in this course
+
+Textbook: Arthur J. Atkinson Jr., Shiew-Mei Huang, Juan J.L. Lertora, Sanford P. Markey - Principles of Clinical Pharmacology, Third Edition-Academic Press (2012)
+Syllabus: PCP-Syllabus-2023-2024-FINAL
