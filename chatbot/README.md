@@ -12,6 +12,20 @@ Make sure to do the following first:
 - pip install transformers accelerate optimum  #for video transcription and time with HuggingFace
 
 
+### Course Materials
+Primary: NIH Principles of Clinical Pharmacology Course Materials
+
+Secondary: MIT OpenCourseWare Principles of Pharmacology
+
+There are currently no lecture videos in the local machine, but the videos we will be using are available here: https://www.youtube.com/playlist?list=PLokeFpXsus96lkVjFsQEMtT5a-yIJKDJt
+
+Textbook: Arthur J. Atkinson Jr., Shiew-Mei Huang, Juan J.L. Lertora, Sanford P. Markey - Principles of Clinical Pharmacology, Third Edition-Academic Press (2012)
+*Note:* textbook is optional in NIH course
+
+Supplemental Textbook (older version required by MIT course, but this is newer): David E. Golan MD PhD - Principles of Pharmacology_ The Pathophysiologic Basis of Drug Therapy-LWW (2016)
+
+Syllabus: copy of NIH's 2023-2024 syllabus
+
 
 ### Video & Transcription
 Contains codes for video
@@ -59,15 +73,10 @@ A. will only work for existing Piazza courses? Pharmacology does not seem to hav
 
 
 
-### Course Materials
-Primary: NIH Principles of Clinical Pharmacology Course Materials
+### LLM
+Currently uses Lab 6's OpenAI for LLM (do 'nano .env' to find OpenAI key.
 
-Secondary: MIT OpenCourseWare Principles of Pharmacology
 
-Notes:
-- textbook is optional in NIH course
 
-Textbook: Arthur J. Atkinson Jr., Shiew-Mei Huang, Juan J.L. Lertora, Sanford P. Markey - Principles of Clinical Pharmacology, Third Edition-Academic Press (2012)
 
-Supplemental Textbook (older version required by MIT course, but this is newer): David E. Golan MD PhD - Principles of Pharmacology_ The Pathophysiologic Basis of Drug Therapy-LWW (2016)
-Syllabus: PCP-Syllabus-2023-2024-FINAL
+
