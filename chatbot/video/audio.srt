@@ -1,0 +1,847 @@
+0
+00:00:01,090 --> 00:00:01,640
+<font color="#00ff00">Coronaviruses</font> are a type of virus.
+
+1
+00:00:01,640 --> 00:00:02,040
+Coronaviruses <font color="#00ff00">are</font> a type of virus.
+
+2
+00:00:02,040 --> 00:00:02,260
+Coronaviruses are <font color="#00ff00">a</font> type of virus.
+
+3
+00:00:02,260 --> 00:00:02,540
+Coronaviruses are a <font color="#00ff00">type</font> of virus.
+
+4
+00:00:02,540 --> 00:00:02,760
+Coronaviruses are a type <font color="#00ff00">of</font> virus.
+
+5
+00:00:02,760 --> 00:00:03,120
+Coronaviruses are a type of <font color="#00ff00">virus.</font>
+
+6
+00:00:03,980 --> 00:00:04,000
+<font color="#00ff00">The</font> one we're all talking about is new and it causes
+
+7
+00:00:04,000 --> 00:00:04,040
+The one we're all talking about is new and it causes
+
+8
+00:00:04,040 --> 00:00:04,160
+The <font color="#00ff00">one</font> we're all talking about is new and it causes
+
+9
+00:00:04,160 --> 00:00:04,380
+The one <font color="#00ff00">we're</font> all talking about is new and it causes
+
+10
+00:00:04,380 --> 00:00:04,500
+The one we're <font color="#00ff00">all</font> talking about is new and it causes
+
+11
+00:00:04,500 --> 00:00:04,600
+The one we're all <font color="#00ff00">talking</font> about is new and it causes
+
+12
+00:00:04,600 --> 00:00:04,740
+The one we're all talking about is new and it causes
+
+13
+00:00:04,740 --> 00:00:05,100
+The one we're all talking <font color="#00ff00">about</font> is new and it causes
+
+14
+00:00:05,100 --> 00:00:05,320
+The one we're all talking about <font color="#00ff00">is</font> new and it causes
+
+15
+00:00:05,320 --> 00:00:05,400
+The one we're all talking about is new and it causes
+
+16
+00:00:05,400 --> 00:00:05,560
+The one we're all talking about is <font color="#00ff00">new</font> and it causes
+
+17
+00:00:05,560 --> 00:00:05,700
+The one we're all talking about is new <font color="#00ff00">and</font> it causes
+
+18
+00:00:05,700 --> 00:00:05,960
+The one we're all talking about is new and it causes
+
+19
+00:00:05,960 --> 00:00:06,080
+The one we're all talking about is new and <font color="#00ff00">it</font> causes
+
+20
+00:00:06,080 --> 00:00:06,380
+The one we're all talking about is new and it <font color="#00ff00">causes</font>
+
+21
+00:00:06,380 --> 00:00:06,600
+<font color="#00ff00">a</font> disease called COVID-19.
+
+22
+00:00:06,600 --> 00:00:06,740
+a disease called COVID-19.
+
+23
+00:00:06,740 --> 00:00:06,960
+a <font color="#00ff00">disease</font> called COVID-19.
+
+24
+00:00:06,960 --> 00:00:07,440
+a disease <font color="#00ff00">called</font> COVID-19.
+
+25
+00:00:07,440 --> 00:00:07,880
+a disease called <font color="#00ff00">COVID</font>-19.
+
+26
+00:00:07,880 --> 00:00:08,560
+a disease called COVID<font color="#00ff00">-19.</font>
+
+27
+00:00:09,200 --> 00:00:09,300
+<font color="#00ff00">Now</font> most people will only be mildly affected by it,
+
+28
+00:00:09,300 --> 00:00:09,500
+Now <font color="#00ff00">most</font> people will only be mildly affected by it,
+
+29
+00:00:09,500 --> 00:00:09,720
+Now most people will only be mildly affected by it,
+
+30
+00:00:09,720 --> 00:00:09,820
+Now most <font color="#00ff00">people</font> will only be mildly affected by it,
+
+31
+00:00:09,820 --> 00:00:09,980
+Now most people <font color="#00ff00">will</font> only be mildly affected by it,
+
+32
+00:00:09,980 --> 00:00:10,280
+Now most people will <font color="#00ff00">only</font> be mildly affected by it,
+
+33
+00:00:10,280 --> 00:00:10,440
+Now most people will only <font color="#00ff00">be</font> mildly affected by it,
+
+34
+00:00:10,440 --> 00:00:10,720
+Now most people will only be <font color="#00ff00">mildly</font> affected by it,
+
+35
+00:00:10,720 --> 00:00:11,120
+Now most people will only be mildly <font color="#00ff00">affected</font> by it,
+
+36
+00:00:11,120 --> 00:00:11,340
+Now most people will only be mildly affected by it,
+
+37
+00:00:11,340 --> 00:00:11,640
+Now most people will only be mildly affected <font color="#00ff00">by</font> it,
+
+38
+00:00:11,640 --> 00:00:11,860
+Now most people will only be mildly affected by <font color="#00ff00">it,</font>
+
+39
+00:00:12,360 --> 00:00:12,460
+<font color="#00ff00">but</font> it can kill.
+
+40
+00:00:12,460 --> 00:00:12,820
+but <font color="#00ff00">it</font> can kill.
+
+41
+00:00:12,820 --> 00:00:13,100
+but it <font color="#00ff00">can</font> kill.
+
+42
+00:00:13,100 --> 00:00:13,540
+but it can <font color="#00ff00">kill.</font>
+
+43
+00:00:14,380 --> 00:00:14,480
+<font color="#00ff00">It</font> starts by infecting our upper respiratory tracks,
+
+44
+00:00:14,480 --> 00:00:14,680
+It <font color="#00ff00">starts</font> by infecting our upper respiratory tracks,
+
+45
+00:00:14,680 --> 00:00:14,960
+It starts <font color="#00ff00">by</font> infecting our upper respiratory tracks,
+
+46
+00:00:14,960 --> 00:00:15,500
+It starts by <font color="#00ff00">infecting</font> our upper respiratory tracks,
+
+47
+00:00:15,500 --> 00:00:15,600
+It starts by infecting <font color="#00ff00">our</font> upper respiratory tracks,
+
+48
+00:00:15,600 --> 00:00:15,820
+It starts by infecting our <font color="#00ff00">upper</font> respiratory tracks,
+
+49
+00:00:15,820 --> 00:00:15,880
+It starts by infecting our upper respiratory tracks,
+
+50
+00:00:15,880 --> 00:00:16,140
+It starts by infecting our upper <font color="#00ff00">respiratory</font> tracks,
+
+51
+00:00:16,140 --> 00:00:16,200
+It starts by infecting our upper respiratory tracks,
+
+52
+00:00:16,200 --> 00:00:16,880
+It starts by infecting our upper respiratory <font color="#00ff00">tracks,</font>
+
+53
+00:00:17,520 --> 00:00:17,620
+<font color="#00ff00">which</font> are the airways
+
+54
+00:00:17,620 --> 00:00:17,800
+which <font color="#00ff00">are</font> the airways
+
+55
+00:00:17,800 --> 00:00:17,940
+which are <font color="#00ff00">the</font> airways
+
+56
+00:00:17,940 --> 00:00:18,320
+which are the <font color="#00ff00">airways</font>
+
+57
+00:00:18,320 --> 00:00:18,580
+<font color="#00ff00">from</font> your nose just above your vocal cords.
+
+58
+00:00:18,580 --> 00:00:18,700
+from <font color="#00ff00">your</font> nose just above your vocal cords.
+
+59
+00:00:18,700 --> 00:00:18,960
+from your <font color="#00ff00">nose</font> just above your vocal cords.
+
+60
+00:00:18,960 --> 00:00:19,340
+from your nose <font color="#00ff00">just</font> above your vocal cords.
+
+61
+00:00:19,340 --> 00:00:19,640
+from your nose just <font color="#00ff00">above</font> your vocal cords.
+
+62
+00:00:19,640 --> 00:00:19,860
+from your nose just above <font color="#00ff00">your</font> vocal cords.
+
+63
+00:00:19,860 --> 00:00:20,080
+from your nose just above your <font color="#00ff00">vocal</font> cords.
+
+64
+00:00:20,080 --> 00:00:20,580
+from your nose just above your vocal <font color="#00ff00">cords.</font>
+
+65
+00:00:21,300 --> 00:00:21,400
+<font color="#00ff00">You</font> may develop a fever as your immune system
+
+66
+00:00:21,400 --> 00:00:21,520
+You <font color="#00ff00">may</font> develop a fever as your immune system
+
+67
+00:00:21,520 --> 00:00:21,720
+You may <font color="#00ff00">develop</font> a fever as your immune system
+
+68
+00:00:21,720 --> 00:00:21,940
+You may develop <font color="#00ff00">a</font> fever as your immune system
+
+69
+00:00:21,940 --> 00:00:22,160
+You may develop a <font color="#00ff00">fever</font> as your immune system
+
+70
+00:00:22,160 --> 00:00:22,760
+You may develop a fever <font color="#00ff00">as</font> your immune system
+
+71
+00:00:22,760 --> 00:00:22,880
+You may develop a fever as <font color="#00ff00">your</font> immune system
+
+72
+00:00:22,880 --> 00:00:23,100
+You may develop a fever as your <font color="#00ff00">immune</font> system
+
+73
+00:00:23,100 --> 00:00:23,540
+You may develop a fever as your immune <font color="#00ff00">system</font>
+
+74
+00:00:23,540 --> 00:00:23,900
+<font color="#00ff00">starts</font> to fight the virus
+
+75
+00:00:23,900 --> 00:00:24,100
+starts <font color="#00ff00">to</font> fight the virus
+
+76
+00:00:24,100 --> 00:00:24,240
+starts to fight the virus
+
+77
+00:00:24,240 --> 00:00:24,340
+starts to <font color="#00ff00">fight</font> the virus
+
+78
+00:00:24,340 --> 00:00:24,460
+starts to fight <font color="#00ff00">the</font> virus
+
+79
+00:00:24,460 --> 00:00:24,540
+starts to fight the virus
+
+80
+00:00:24,540 --> 00:00:24,840
+starts to fight the <font color="#00ff00">virus</font>
+
+81
+00:00:25,440 --> 00:00:25,540
+<font color="#00ff00">and</font> a dry cough.
+
+82
+00:00:25,540 --> 00:00:25,660
+and <font color="#00ff00">a</font> dry cough.
+
+83
+00:00:25,660 --> 00:00:25,840
+and a <font color="#00ff00">dry</font> cough.
+
+84
+00:00:25,840 --> 00:00:26,180
+and a dry <font color="#00ff00">cough.</font>
+
+85
+00:00:26,960 --> 00:00:27,140
+<font color="#00ff00">That's</font> one where you don't produce any slim.
+
+86
+00:00:27,140 --> 00:00:27,340
+That's <font color="#00ff00">one</font> where you don't produce any slim.
+
+87
+00:00:27,340 --> 00:00:27,640
+That's one <font color="#00ff00">where</font> you don't produce any slim.
+
+88
+00:00:27,640 --> 00:00:27,740
+That's one where <font color="#00ff00">you</font> don't produce any slim.
+
+89
+00:00:27,740 --> 00:00:27,980
+That's one where you <font color="#00ff00">don't</font> produce any slim.
+
+90
+00:00:27,980 --> 00:00:28,080
+That's one where you don't <font color="#00ff00">produce</font> any slim.
+
+91
+00:00:28,080 --> 00:00:28,220
+That's one where you don't produce any slim.
+
+92
+00:00:28,220 --> 00:00:28,500
+That's one where you don't produce <font color="#00ff00">any</font> slim.
+
+93
+00:00:28,500 --> 00:00:28,600
+That's one where you don't produce any slim.
+
+94
+00:00:28,600 --> 00:00:28,860
+That's one where you don't produce any <font color="#00ff00">slim.</font>
+
+95
+00:00:29,640 --> 00:00:29,740
+<font color="#00ff00">The</font> virus can then spread to the lungs,
+
+96
+00:00:29,740 --> 00:00:30,000
+The <font color="#00ff00">virus</font> can then spread to the lungs,
+
+97
+00:00:30,000 --> 00:00:30,300
+The virus <font color="#00ff00">can</font> then spread to the lungs,
+
+98
+00:00:30,300 --> 00:00:30,500
+The virus can <font color="#00ff00">then</font> spread to the lungs,
+
+99
+00:00:30,500 --> 00:00:30,740
+The virus can then <font color="#00ff00">spread</font> to the lungs,
+
+100
+00:00:30,740 --> 00:00:30,860
+The virus can then spread <font color="#00ff00">to</font> the lungs,
+
+101
+00:00:30,860 --> 00:00:30,940
+The virus can then spread to the lungs,
+
+102
+00:00:30,940 --> 00:00:31,040
+The virus can then spread to <font color="#00ff00">the</font> lungs,
+
+103
+00:00:31,040 --> 00:00:31,280
+The virus can then spread to the <font color="#00ff00">lungs,</font>
+
+104
+00:00:31,420 --> 00:00:31,780
+<font color="#00ff00">making</font> it harder for people to breathe
+
+105
+00:00:31,780 --> 00:00:31,920
+making <font color="#00ff00">it</font> harder for people to breathe
+
+106
+00:00:31,920 --> 00:00:32,220
+making it <font color="#00ff00">harder</font> for people to breathe
+
+107
+00:00:32,220 --> 00:00:32,520
+making it harder <font color="#00ff00">for</font> people to breathe
+
+108
+00:00:32,520 --> 00:00:32,800
+making it harder for <font color="#00ff00">people</font> to breathe
+
+109
+00:00:32,800 --> 00:00:32,920
+making it harder for people <font color="#00ff00">to</font> breathe
+
+110
+00:00:32,920 --> 00:00:33,080
+making it harder for people to breathe
+
+111
+00:00:33,080 --> 00:00:33,240
+making it harder for people to <font color="#00ff00">breathe</font>
+
+112
+00:00:33,800 --> 00:00:33,900
+<font color="#00ff00">and</font> it can cause pneumonia.
+
+113
+00:00:33,900 --> 00:00:33,980
+and <font color="#00ff00">it</font> can cause pneumonia.
+
+114
+00:00:33,980 --> 00:00:34,140
+and it <font color="#00ff00">can</font> cause pneumonia.
+
+115
+00:00:34,140 --> 00:00:34,480
+and it can <font color="#00ff00">cause</font> pneumonia.
+
+116
+00:00:34,480 --> 00:00:34,760
+and it can cause <font color="#00ff00">pneumonia.</font>
+
+117
+00:00:35,920 --> 00:00:36,020
+<font color="#00ff00">In</font> the most serious cases,
+
+118
+00:00:36,020 --> 00:00:36,100
+In <font color="#00ff00">the</font> most serious cases,
+
+119
+00:00:36,100 --> 00:00:36,220
+In the <font color="#00ff00">most</font> serious cases,
+
+120
+00:00:36,220 --> 00:00:36,620
+In the most <font color="#00ff00">serious</font> cases,
+
+121
+00:00:36,620 --> 00:00:37,040
+In the most serious <font color="#00ff00">cases,</font>
+
+122
+00:00:37,160 --> 00:00:37,700
+<font color="#00ff00">people</font> can die from the coronavirus.
+
+123
+00:00:37,700 --> 00:00:37,960
+people <font color="#00ff00">can</font> die from the coronavirus.
+
+124
+00:00:37,960 --> 00:00:38,240
+people can <font color="#00ff00">die</font> from the coronavirus.
+
+125
+00:00:38,240 --> 00:00:38,400
+people can die <font color="#00ff00">from</font> the coronavirus.
+
+126
+00:00:38,400 --> 00:00:38,540
+people can die from <font color="#00ff00">the</font> coronavirus.
+
+127
+00:00:38,540 --> 00:00:39,180
+people can die from the <font color="#00ff00">coronavirus.</font>
+
+128
+00:00:39,720 --> 00:00:39,820
+<font color="#00ff00">This</font> is because the immune system can go into overdrive and that can lead to organ failure.
+
+129
+00:00:39,820 --> 00:00:39,940
+This <font color="#00ff00">is</font> because the immune system can go into overdrive and that can lead to organ failure.
+
+130
+00:00:39,940 --> 00:00:40,180
+This is <font color="#00ff00">because</font> the immune system can go into overdrive and that can lead to organ failure.
+
+131
+00:00:40,180 --> 00:00:40,380
+This is because <font color="#00ff00">the</font> immune system can go into overdrive and that can lead to organ failure.
+
+132
+00:00:40,380 --> 00:00:40,540
+This is because the <font color="#00ff00">immune</font> system can go into overdrive and that can lead to organ failure.
+
+133
+00:00:40,540 --> 00:00:41,080
+This is because the immune <font color="#00ff00">system</font> can go into overdrive and that can lead to organ failure.
+
+134
+00:00:41,080 --> 00:00:41,360
+This is because the immune system <font color="#00ff00">can</font> go into overdrive and that can lead to organ failure.
+
+135
+00:00:41,360 --> 00:00:41,580
+This is because the immune system can <font color="#00ff00">go</font> into overdrive and that can lead to organ failure.
+
+136
+00:00:41,580 --> 00:00:41,720
+This is because the immune system can go <font color="#00ff00">into</font> overdrive and that can lead to organ failure.
+
+137
+00:00:41,720 --> 00:00:42,320
+This is because the immune system can go into <font color="#00ff00">overdrive</font> and that can lead to organ failure.
+
+138
+00:00:42,320 --> 00:00:43,040
+This is because the immune system can go into overdrive <font color="#00ff00">and</font> that can lead to organ failure.
+
+139
+00:00:43,040 --> 00:00:43,220
+This is because the immune system can go into overdrive and <font color="#00ff00">that</font> can lead to organ failure.
+
+140
+00:00:43,220 --> 00:00:43,420
+This is because the immune system can go into overdrive and that <font color="#00ff00">can</font> lead to organ failure.
+
+141
+00:00:43,420 --> 00:00:43,620
+This is because the immune system can go into overdrive and that can <font color="#00ff00">lead</font> to organ failure.
+
+142
+00:00:43,620 --> 00:00:43,760
+This is because the immune system can go into overdrive and that can lead <font color="#00ff00">to</font> organ failure.
+
+143
+00:00:43,760 --> 00:00:43,800
+This is because the immune system can go into overdrive and that can lead to organ failure.
+
+144
+00:00:43,800 --> 00:00:44,120
+This is because the immune system can go into overdrive and that can lead to <font color="#00ff00">organ</font> failure.
+
+145
+00:00:44,120 --> 00:00:44,460
+This is because the immune system can go into overdrive and that can lead to organ <font color="#00ff00">failure.</font>
+
+146
+00:00:45,420 --> 00:00:45,520
+<font color="#00ff00">So</font> we need to do what we can to stop this virus from spreading.
+
+147
+00:00:45,520 --> 00:00:45,600
+So <font color="#00ff00">we</font> need to do what we can to stop this virus from spreading.
+
+148
+00:00:45,600 --> 00:00:45,720
+So we <font color="#00ff00">need</font> to do what we can to stop this virus from spreading.
+
+149
+00:00:45,720 --> 00:00:45,840
+So we need <font color="#00ff00">to</font> do what we can to stop this virus from spreading.
+
+150
+00:00:45,840 --> 00:00:45,960
+So we need to <font color="#00ff00">do</font> what we can to stop this virus from spreading.
+
+151
+00:00:45,960 --> 00:00:46,100
+So we need to do <font color="#00ff00">what</font> we can to stop this virus from spreading.
+
+152
+00:00:46,100 --> 00:00:46,220
+So we need to do what <font color="#00ff00">we</font> can to stop this virus from spreading.
+
+153
+00:00:46,220 --> 00:00:46,500
+So we need to do what we <font color="#00ff00">can</font> to stop this virus from spreading.
+
+154
+00:00:46,500 --> 00:00:46,720
+So we need to do what we can <font color="#00ff00">to</font> stop this virus from spreading.
+
+155
+00:00:46,720 --> 00:00:46,880
+So we need to do what we can to stop this virus from spreading.
+
+156
+00:00:46,880 --> 00:00:46,980
+So we need to do what we can to <font color="#00ff00">stop</font> this virus from spreading.
+
+157
+00:00:46,980 --> 00:00:47,160
+So we need to do what we can to stop <font color="#00ff00">this</font> virus from spreading.
+
+158
+00:00:47,160 --> 00:00:47,420
+So we need to do what we can to stop this <font color="#00ff00">virus</font> from spreading.
+
+159
+00:00:47,420 --> 00:00:47,720
+So we need to do what we can to stop this virus <font color="#00ff00">from</font> spreading.
+
+160
+00:00:47,720 --> 00:00:48,100
+So we need to do what we can to stop this virus from <font color="#00ff00">spreading.</font>
+
+161
+00:00:49,000 --> 00:00:49,100
+<font color="#00ff00">As</font> it gets into your body by breathing it in or through your eyes and mouth,
+
+162
+00:00:49,100 --> 00:00:49,240
+As <font color="#00ff00">it</font> gets into your body by breathing it in or through your eyes and mouth,
+
+163
+00:00:49,240 --> 00:00:49,360
+As it <font color="#00ff00">gets</font> into your body by breathing it in or through your eyes and mouth,
+
+164
+00:00:49,360 --> 00:00:49,540
+As it gets <font color="#00ff00">into</font> your body by breathing it in or through your eyes and mouth,
+
+165
+00:00:49,540 --> 00:00:49,760
+As it gets into <font color="#00ff00">your</font> body by breathing it in or through your eyes and mouth,
+
+166
+00:00:49,760 --> 00:00:49,980
+As it gets into your <font color="#00ff00">body</font> by breathing it in or through your eyes and mouth,
+
+167
+00:00:49,980 --> 00:00:50,080
+As it gets into your body by breathing it in or through your eyes and mouth,
+
+168
+00:00:50,080 --> 00:00:50,180
+As it gets into your body <font color="#00ff00">by</font> breathing it in or through your eyes and mouth,
+
+169
+00:00:50,180 --> 00:00:50,480
+As it gets into your body by <font color="#00ff00">breathing</font> it in or through your eyes and mouth,
+
+170
+00:00:50,480 --> 00:00:50,700
+As it gets into your body by breathing <font color="#00ff00">it</font> in or through your eyes and mouth,
+
+171
+00:00:50,700 --> 00:00:50,940
+As it gets into your body by breathing it <font color="#00ff00">in</font> or through your eyes and mouth,
+
+172
+00:00:50,940 --> 00:00:51,140
+As it gets into your body by breathing it in or through your eyes and mouth,
+
+173
+00:00:51,140 --> 00:00:51,240
+As it gets into your body by breathing it in <font color="#00ff00">or</font> through your eyes and mouth,
+
+174
+00:00:51,240 --> 00:00:51,500
+As it gets into your body by breathing it in or <font color="#00ff00">through</font> your eyes and mouth,
+
+175
+00:00:51,500 --> 00:00:51,680
+As it gets into your body by breathing it in or through <font color="#00ff00">your</font> eyes and mouth,
+
+176
+00:00:51,680 --> 00:00:52,000
+As it gets into your body by breathing it in or through your <font color="#00ff00">eyes</font> and mouth,
+
+177
+00:00:52,000 --> 00:00:52,200
+As it gets into your body by breathing it in or through your eyes <font color="#00ff00">and</font> mouth,
+
+178
+00:00:52,200 --> 00:00:52,440
+As it gets into your body by breathing it in or through your eyes and <font color="#00ff00">mouth,</font>
+
+179
+00:00:52,940 --> 00:00:53,100
+<font color="#00ff00">the</font> best thing to do is wash your hand regularly
+
+180
+00:00:53,100 --> 00:00:53,240
+the best thing to do is wash your hand regularly
+
+181
+00:00:53,240 --> 00:00:53,340
+the <font color="#00ff00">best</font> thing to do is wash your hand regularly
+
+182
+00:00:53,340 --> 00:00:53,600
+the best <font color="#00ff00">thing</font> to do is wash your hand regularly
+
+183
+00:00:53,600 --> 00:00:53,740
+the best thing <font color="#00ff00">to</font> do is wash your hand regularly
+
+184
+00:00:53,740 --> 00:00:53,900
+the best thing to <font color="#00ff00">do</font> is wash your hand regularly
+
+185
+00:00:53,900 --> 00:00:54,320
+the best thing to do <font color="#00ff00">is</font> wash your hand regularly
+
+186
+00:00:54,320 --> 00:00:54,540
+the best thing to do is <font color="#00ff00">wash</font> your hand regularly
+
+187
+00:00:54,540 --> 00:00:54,780
+the best thing to do is wash <font color="#00ff00">your</font> hand regularly
+
+188
+00:00:54,780 --> 00:00:55,020
+the best thing to do is wash your <font color="#00ff00">hand</font> regularly
+
+189
+00:00:55,020 --> 00:00:55,420
+the best thing to do is wash your hand <font color="#00ff00">regularly</font>
+
+190
+00:00:56,060 --> 00:00:56,160
+<font color="#00ff00">and</font> properly for at least 20 seconds.
+
+191
+00:00:56,160 --> 00:00:56,540
+and <font color="#00ff00">properly</font> for at least 20 seconds.
+
+192
+00:00:56,540 --> 00:00:56,780
+and properly <font color="#00ff00">for</font> at least 20 seconds.
+
+193
+00:00:56,780 --> 00:00:57,180
+and properly for at least 20 seconds.
+
+194
+00:00:57,180 --> 00:00:57,280
+and properly for <font color="#00ff00">at</font> least 20 seconds.
+
+195
+00:00:57,280 --> 00:00:57,460
+and properly for at <font color="#00ff00">least</font> 20 seconds.
+
+196
+00:00:57,460 --> 00:00:57,820
+and properly for at least <font color="#00ff00">20</font> seconds.
+
+197
+00:00:57,820 --> 00:00:58,140
+and properly for at least 20 <font color="#00ff00">seconds.</font>
+
+198
+00:00:58,960 --> 00:00:59,100
+<font color="#00ff00">Catch</font> your colds and sneezes in a tissue
+
+199
+00:00:59,100 --> 00:00:59,280
+Catch <font color="#00ff00">your</font> colds and sneezes in a tissue
+
+200
+00:00:59,280 --> 00:00:59,620
+Catch your <font color="#00ff00">colds</font> and sneezes in a tissue
+
+201
+00:00:59,620 --> 00:00:59,680
+Catch your colds <font color="#00ff00">and</font> sneezes in a tissue
+
+202
+00:00:59,680 --> 00:01:00,180
+Catch your colds and <font color="#00ff00">sneezes</font> in a tissue
+
+203
+00:01:00,180 --> 00:01:00,360
+Catch your colds and sneezes <font color="#00ff00">in</font> a tissue
+
+204
+00:01:00,360 --> 00:01:00,400
+Catch your colds and sneezes in <font color="#00ff00">a</font> tissue
+
+205
+00:01:00,400 --> 00:01:00,680
+Catch your colds and sneezes in a <font color="#00ff00">tissue</font>
+
+206
+00:01:01,300 --> 00:01:01,400
+<font color="#00ff00">and</font> avoid touching your face.
+
+207
+00:01:01,400 --> 00:01:01,640
+and <font color="#00ff00">avoid</font> touching your face.
+
+208
+00:01:01,640 --> 00:01:01,780
+and avoid <font color="#00ff00">touching</font> your face.
+
+209
+00:01:01,780 --> 00:01:01,960
+and avoid touching your face.
+
+210
+00:01:01,960 --> 00:01:02,200
+and avoid touching <font color="#00ff00">your</font> face.
+
+211
+00:01:02,200 --> 00:01:02,400
+and avoid touching your <font color="#00ff00">face.</font>
