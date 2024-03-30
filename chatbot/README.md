@@ -1,7 +1,14 @@
 *NOTE TO TEAM*: Additional materials on Google Drive: https://drive.google.com/drive/folders/104F88GdLSjuGbi7pKkPo7mHvDKDiIlbI?usp=drive_link 
 
-Make sure to do the following first:
 
+####### TO DO (part 1): ########
+- scrape data from links in "websites_to_scrape.txt", PDFs in raw_course_materials and put into database
+- train and save LLM with current data
+- make a prototype website / app for chatbot to start answering questions based on current LLM model
+
+
+
+Make sure to do the following first:
 ### Installations:
 - pip install piazza-api #for piazza
 - pip install html2text 
