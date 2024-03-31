@@ -83,7 +83,9 @@ A. will only work for existing Piazza courses? Pharmacology does not seem to hav
 ### LLM
 Currently uses Lab 6's OpenAI for LLM (do 'nano .env' to find OpenAI key.
 
-
+## pdf_extractor.py
+Input folder path with PDFs. (sample one: /home/eTA_LLM_Chatbot/chatbot/raw_course_materials)
+Output extracted data into MySQL database and images into images folder (might remove images feature in the future)
 
 
 
