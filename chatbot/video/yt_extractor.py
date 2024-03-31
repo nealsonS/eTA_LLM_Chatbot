@@ -23,7 +23,6 @@ def yt_link_to_id(video_link):
         #print(match.group(1))
         return match.group(1)
 
-
 if __name__=="__main__":
     #video link: https://www.youtube.com/watch?v=ArFQdvF8vDE
     video_link = input("Enter YouTube video link:\n")
@@ -39,6 +38,14 @@ if __name__=="__main__":
     for i, line in enumerate(data):
         if search_word in line:
             start_time = transcript[i]['start']
-            time.append(start_time)
+
+            # to accomodate for start time not being the actual word
+            text = re.sub(r"(?<=:)([A-Z]+)", "", line).split(' ') # to remove stuff like: 'AUDIENCE: '
+            i_word = text.index(search_word) + 1
+            added_time = (i_word / len(text)) * transcript[i]['duration']
+            print(added_time)
+            final_time = start_time + added_time
+
+            time.append(final_time)
     print_time(search_word, time)
 
