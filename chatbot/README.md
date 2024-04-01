@@ -87,5 +87,14 @@ Currently uses Lab 6's OpenAI for LLM (do 'nano .env' to find OpenAI key.
 Input folder path with PDFs. (sample one: /home/eTA_LLM_Chatbot/chatbot/raw_course_materials)
 Output extracted data into MySQL database and images into images folder (might remove images feature in the future)
 
+## app.py
+Input PDF file
+Output AI response 
+(2 versions available to use, working on making it user friendly)
 
+## openai_cookbook_code.py
+Starter code using OpenAI cookbook, but with 1 documents
+
+## automated_openai.py
+Starter code using OpenAI cookbook, with a huge file containing pre-trained embeddings
 
