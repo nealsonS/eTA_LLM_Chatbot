@@ -1,15 +1,37 @@
 import streamlit as st
 from dotenv import load_dotenv
 from PyPDF2 import PdfReader
-from langchain.text_splitter import CharacterTextSplitter
-from langchain.embeddings import OpenAIEmbeddings, HuggingFaceEmbeddings
-from langchain.vectorstores import FAISS
-from langchain.chat_models import ChatOpenAI
 from langchain.memory import ConversationBufferMemory
 from langchain.chains import ConversationalRetrievalChain
 from htmlTemplates import css, bot_template, user_template
-from langchain import HuggingFacePipeline
-from langchain.llms import LlamaCpp
+from langchain.text_splitter import CharacterTextSplitter
+from langchain_community.embeddings import OpenAIEmbeddings,  HuggingFaceEmbeddings
+from langchain_community.vectorstores import FAISS
+from langchain_community.chat_models import ChatOpenAI
+from langchain_community.llms import HuggingFaceHub
+from langchain.llms.huggingface_pipeline import HuggingFacePipeline
+
+# older import versions
+#from langchain.embeddings import OpenAIEmbeddings, HuggingFaceEmbeddings 
+#from langchain.vectorstores import FAISS
+#from langchain.chat_models import ChatOpenAI
+#from langchain.llms import LlamaCpp
+#from langchain import HuggingFacePipeline
+
+
+# new imports!
+from langchain_openai import ChatOpenAI
+from langchain_openai import OpenAIEmbeddings
+
+
+# extra packages for our code
+#from transformers import GPT2Tokenizer, GPT2LMHeadModel
+from langchain_community.embeddings import HuggingFaceEmbeddings
+from langchain_community.vectorstores import FAISS
+import fitz  # PyMuPDF
+import os
+
+
 
 
 def get_pdf_text(pdf_docs):
@@ -24,8 +46,8 @@ def get_pdf_text(pdf_docs):
 def get_text_chunks(text):
     text_splitter = CharacterTextSplitter(
         separator="\n",
-        chunk_size=500,
-        chunk_overlap=100,
+        chunk_size=730, #700 better than 600 / 500, not sure if 730 better than 700
+        chunk_overlap=350, #since chunk size is 700, try to increase. 350 + 730 good, 700 + 200 good
         length_function=len
     )
     chunks = text_splitter.split_text(text)
@@ -34,21 +56,26 @@ def get_text_chunks(text):
 
 def get_vectorstore(text_chunks):
     embeddings = OpenAIEmbeddings()
-    # embeddings = HuggingFaceEmbeddings(
-    #     model_name="sentence-transformers/all-MiniLM-L6-v2")
+    #embeddings = HuggingFaceEmbeddings()
+    #embeddings = HuggingFaceEmbeddings(
+    #    model_name="sentence-transformers/all-MiniLM-L6-v2")
     vectorstore = FAISS.from_texts(texts=text_chunks, embedding=embeddings)
     return vectorstore
 
 
 def get_conversation_chain(vectorstore):
     llm = ChatOpenAI()
-    # llm = HuggingFacePipeline.from_model_id(
-    #     model_id="lmsys/vicuna-7b-v1.3",
-    #     task="text-generation",
-    #     model_kwargs={"temperature": 0.01},
-    # )
-    # llm = LlamaCpp(
-    #     model_path="models/llama-2-7b-chat.ggmlv3.q4_1.bin",  n_ctx=1024, n_batch=512)
+    #llm = HuggingFaceHub(
+    #    repo_id="HuggingFaceH4/zephyr-7b-beta",
+    #    huggingfacehub_api_token = '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',
+    #    task="text-generation",
+    #    model_kwargs={
+    #        "max_new_tokens": 512,
+    #        "top_k": 40,
+    #        "temperature": 0.8,
+    #        "repetition_penalty": 1.03, 
+    #    },
+    #)
 
     memory = ConversationBufferMemory(
         memory_key='chat_history', return_messages=True)
