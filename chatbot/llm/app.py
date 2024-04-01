@@ -99,7 +99,13 @@ def handle_userinput(user_question):
         else:
             st.write(bot_template.replace(
                 "{{MSG}}", message.content), unsafe_allow_html=True)
-
+        #else: # this version of 'else' is for huggingface vectorstore
+        #    shrinked_message = ""
+        #    for line in message.content.split("\n"):
+        #        if line.strip().startswith("Helpful Answer:"):
+        #            shrinked_message = line.strip().replace("Helpful Answer:", "").strip() # we only want the last "helpful answer" 
+        #    st.write(bot_template.replace(
+        #        "{{MSG}}", shrinked_message), unsafe_allow_html=True)
 
 def main():
     load_dotenv()
