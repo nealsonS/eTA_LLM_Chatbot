@@ -4,7 +4,9 @@ import re
 
 def remove_html_tags(text):
     pattern = re.compile('<.*?>')
-    return re.sub(pattern, '', text)
+    out_str = re.sub(pattern, '', text)
+    pattern2 = r'\[.*?\]'
+    return re.sub(pattern2, '', out_str)
 
 def get_soup(URL):
 	return BeautifulSoup(requests.get(URL).text, 'html.parser')
@@ -12,11 +14,12 @@ def get_soup(URL):
 def get_p_to_str(soup):
 	return [(remove_html_tags(p.get_text())) for p in main_soup.find_all('p')]
 
+
 if __name__ == '__main__':
 
 	URL = 'https://en.wikipedia.org/wiki/Clinical_pharmacology'
 	main_soup = get_soup(URL)
-	
+
 	# find branches
 	main_p = get_p_to_str(main_soup)
 	print(f'Scraping {URL}')
