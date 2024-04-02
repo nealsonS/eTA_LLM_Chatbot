@@ -8,6 +8,16 @@
 
 
 
+####### TO DO (part 2): ########
+1. Colin: work in connection with Piazza AND / OR work on separate website (ie. streamlit, php...)
+2. Nealson: work on scraping from Biology Forum - Pharmacology. work on database (mySQL --> ???)
+3. Deborah: work in LLM (connecting to database, training, saving, answering questions). work on video scraping
+- make timestamps an option for all of them
+- save these transcriptions into database (so far just mysql): one row per video? is that a lot? test with the longest NIH video
+- work on openai whisper
+
+
+
 Make sure to do the following first:
 ### Installations:
 - pip install piazza-api #for piazza
@@ -17,6 +27,9 @@ Make sure to do the following first:
 - pip install -U git+https://github.com/jianfch/stable-ts.git  #for video transcription and time
 - pip install accelerate  #for video transcription and time with HuggingFace 
 - pip install transformers accelerate optimum  #for video transcription and time with HuggingFace
+- pip install librosa # for audio transcription and time
+- pip install vosk # for audio transcription and time
+
 
 
 ### Course Materials
@@ -37,6 +50,13 @@ Syllabus: copy of NIH's 2023-2024 syllabus
 ### Video & Transcription
 Contains codes for video
  
+## all_video_transcription.py
+Combines former YouTube video transcription + timestamp code with former MP4-->WAV transcription code
+Inputs user desired mode and video source
+Outputs timestamps for searched word
+*Note:* It can handle the longest video in the NIH YT playlist, which is 1:29:55: https://www.youtube.com/watch?v=6efVpOoBjiw&list=PLokeFpXsus96lkVjFsQEMtT5a-yIJKDJt&index=15 
+ 
+ 
 ## frame_extractor.py
 Input local MP4 file.
 Output JPG files of video frames.
@@ -45,6 +65,7 @@ Output JPG files of video frames.
 ## text_extractor.py
 Input local MP4 file.
 Output WAV file, TXT file for transcription.
+*Note:* will delete later
 
 
 ## yt_extractor.py
@@ -52,8 +73,7 @@ Input YouTube link and search term.
 Output time stamps of all the times the transcribed search term appears.
 If we can get this to get video frames, we can avoid downloading lecture videos into local machine.
 The only caveat is that instructors would have to upload their lectures onto YouTube. 
-*Issues:* 
-A. currently time stamps are ahead by 2-3 seconds.
+*Note:* will delete later
 
 
 ## openai_whisper.py
@@ -86,6 +106,7 @@ Currently uses Lab 6's OpenAI for LLM (do 'nano .env' to find OpenAI key.
 ## pdf_extractor.py
 Input folder path with PDFs. (sample one: /home/eTA_LLM_Chatbot/chatbot/raw_course_materials)
 Output extracted data into MySQL database and images into images folder (might remove images feature in the future)
+*Note:* might be deleted later
 
 ## app.py
 Input PDF file
