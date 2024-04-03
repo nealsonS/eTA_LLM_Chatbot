@@ -10,6 +10,7 @@ audio.export("audio.wav", format="wav")
 
 # Initialize recognizer class (for recognizing the speech)
 r = sr.Recognizer()
+print("hello")
 
 # Open the audio file
 with sr.AudioFile("audio.wav") as source:
