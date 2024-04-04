@@ -10,7 +10,15 @@ from pydub import AudioSegment
 import os
 ## for audio duration
 import librosa
+## for vosk
+#import wave
+#import json
+#from vosk import Model, KaldiRecognizer, SetLogLevel
+import Word as custom_Word
+import vosk_transcription
 
+
+## make something that will clear pycache folder??
 
 def audio_transcriber(name_file):
     r = sr.Recognizer()
@@ -24,13 +32,21 @@ def audio_transcriber(name_file):
     return transcipt
 
 
+
 def mp4_transcriber(name_file):
     video = AudioSegment.from_file(name_file, format="mp4")
     audio = video.set_channels(1).set_frame_rate(16000).set_sample_width(2)
     audio_name_file = name_file.replace("mp4", "wav") #need to account for MP4
     audio.export(audio_name_file, format="wav")
     # initialize recognizer class (for recognizing the speech)
-    return audio_transcriber(audio_name_file)
+    transcript = []
+    
+    # vosk attempt -- unfortunately, keeps using too much memory...
+    #list_of_Words = vosk_transcription.audio_transcriber(audio_name_file)
+    #transcipt = [{'text': text, 'start': 0.00, 'duration': duration}]
+    #for word in list_of_Words:
+    #    transcript.append({'text': word.text, 'start': word.start, 'duration': word.duration})
+    print(list_of_Words)
 
 
 
@@ -93,16 +109,17 @@ if __name__=="__main__":
         transcript = yt_video()
     elif mode == "2":
         name_file = input("Name of file:\n")
-        transcript = mp4_transcriber(name_file) #needs to be in the same format as yta
-        print(transcript)
+        mp4_transcriber(name_file) 
+        #transcript = mp4_transcriber(name_file) #needs to be in the same format as yta
+        #print(transcript)
     elif mode == "3":
         name_file = input("Name of file:\n")
         transcript = audio_transcriber(name_file)  #needs to be in the same format as yta
-    data = [t['text'] for t in transcript]
-    data = [re.sub(r"[^a-zA-Z0–9-ışğöüçiIŞĞÖÜÇİ ]", "", line) for line in data]
-    print(data)
-    option = input("\nSearch for word and its timestamp(s)? Y/N\n")
-    if option.lower() == 'y':
-        search_word()
+#    data = [t['text'] for t in transcript]
+#    data = [re.sub(r"[^a-zA-Z0–9-ışğöüçiIŞĞÖÜÇİ ]", "", line) for line in data]
+#    print(data)
+#    option = input("\nSearch for word and its timestamp(s)? Y/N\n")
+#    if option.lower() == 'y':
+#        search_word()
 
 
