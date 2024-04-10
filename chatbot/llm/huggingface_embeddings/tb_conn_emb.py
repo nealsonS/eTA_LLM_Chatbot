@@ -5,6 +5,7 @@ import torch
 from datasets import load_dataset
 from sentence_transformers.util import semantic_search
 import fitz  # PyMuPDF
+import os
 
 
 def query(texts):
@@ -32,16 +33,17 @@ headers = {"Authorization": f"Bearer {hf_token}"}
 
 
 tb_embeddings = load_dataset('DHO560/practice_tb_embedding_dataset')
+#tb_embeddings = load_dataset('DHO560/course_mat_v1')
 dataset_embeddings = torch.from_numpy(tb_embeddings["train"].to_pandas().to_numpy()).to(torch.float)
 
 question = ["What are quality assessments for drug therapy?"]
 output = query(question)
-print(output)
+#print(output)
 
-print(type(output))
-print(type(torch.FloatTensor(output)))
+#print(type(output))
+#print(type(torch.FloatTensor(output)))
 query_embeddings = torch.FloatTensor(output)
-print(query_embeddings)
+#print(query_embeddings)
 
 hits = semantic_search(query_embeddings, dataset_embeddings, top_k=5)
 #print(hits[0]) #is a list. hits would give a list in a list
@@ -63,7 +65,7 @@ for filename in os.listdir(pdf_directory):
         print(f"Extracted text for '{filename}'")
 
 
-#texts = extract_content_from_pdf(pdf_path)
-#print([texts[hits[0][i]['corpus_id']] for i in range(len(hits[0]))])
-## values ​​in corpus_id allow us to index the list of texts we defined in the first section and get the five most similar FAQs
+texts = extract_content_from_pdf(pdf_path)
+print([texts[hits[0][i]['corpus_id']] for i in range(len(hits[0]))])
+# values ​​in corpus_id allow us to index the list of texts we defined in the first section and get the five most similar FAQs
 

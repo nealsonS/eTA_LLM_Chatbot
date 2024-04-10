@@ -18,6 +18,13 @@
 
 
 
+####### TO DO (part 3): ########
+1. Colin: work on website interface (ie. streamlit, php...)
+2. Nealson: work on scraping from Biology Forum - Pharmacology. work on database connection to Milvus
+3. Deborah: work in LLM (embedding from all materials, training, saving, answering questions). integrate video timestamps and textbook search with chatbot answer 
+
+
+
 Make sure to do the following first:
 ### Installations:
 - pip install piazza-api #for piazza
@@ -38,6 +45,7 @@ Primary: NIH Principles of Clinical Pharmacology Course Materials
 Secondary: MIT OpenCourseWare Principles of Pharmacology
 
 There are currently no lecture videos in the local machine, but the videos we will be using are available here: https://www.youtube.com/playlist?list=PLokeFpXsus96lkVjFsQEMtT5a-yIJKDJt
+The transcripts of these videos are in PDF format so that our PDF reader can scrape the data.
 
 Textbook: Arthur J. Atkinson Jr., Shiew-Mei Huang, Juan J.L. Lertora, Sanford P. Markey - Principles of Clinical Pharmacology, Third Edition-Academic Press (2012)
 *Note:* textbook is optional in NIH course
@@ -46,9 +54,19 @@ Supplemental Textbook (older version required by MIT course, but this is newer):
 
 Syllabus: copy of NIH's 2023-2024 syllabus
 
+Wikipedia of Pharmacology and related page links
+
+Forum: Biology Forum - Pharmacology !NOTE! Not yet scraped!!!
 
 ### Video & Transcription
 Contains codes for video
+ 
+## automated_yt_extractor.py
+Combines former YouTube video transcription to get transcriptions of all playlist videos into PDF format.
+Inputs video source
+Outputs PDF file of transcripts
+*Note:* It can handle the longest video in the NIH YT playlist, which is 1:29:55: https://www.youtube.com/watch?v=6efVpOoBjiw&list=PLokeFpXsus96lkVjFsQEMtT5a-yIJKDJt&index=15 
+
  
 ## all_video_transcription.py
 Combines former YouTube video transcription + timestamp code with former MP4-->WAV transcription code

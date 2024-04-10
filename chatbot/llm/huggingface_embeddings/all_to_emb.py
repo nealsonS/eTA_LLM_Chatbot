@@ -29,7 +29,7 @@ def extract_content_from_pdf(pdf_path):
 
 
 
-pdf_directory = '/home/vboxuser/chatbot/raw_course_materials/tb' #adjust as needed
+pdf_directory = '/home/vboxuser/chatbot/all_course_materials/' #adjust as needed
 
 all_materials = []
 
@@ -49,8 +49,16 @@ for texts in all_materials:
     print(len(output)) # should be 649, same number of pages as textbook.pdf
     all_outputs.append(output)
 
-embeddings = pd.DataFrame(output)
-print(type(embeddings))
+for a in range(len(all_outputs)): #need to fix this
+    if a == 0:
+        df = pd.DataFrame(all_outputs[a])
+        print(len(df))
+    elif a == len(all_outputs)-1: #the last thing to add
+        df_new_rows = pd.DataFrame(all_outputs[a])
+        embeddings = pd.concat([df, df_new_rows])
+        embeddings.to_csv("course_materials_embeddings_v2.csv", index=False)
+    else:
+        df_new_rows = pd.DataFrame(all_outputs[a])
+        embeddings = pd.concat([df, df_new_rows])       
 
-embeddings.to_csv("tb_embeddings_2.csv", index=False)
 
