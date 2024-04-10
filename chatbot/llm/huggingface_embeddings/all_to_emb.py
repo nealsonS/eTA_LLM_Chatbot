@@ -48,14 +48,14 @@ all_outputs = []
 for texts in all_materials:
     output = query(texts)
     #print(output)
-    print(len(output)) # should be same number of pages as each PDF
+    #print(len(output)) # should be same number of pages as each PDF
     all_outputs.append(output)
 
 print("Storing embeddings, DO NOT INTERRUPT...")
 for a in range(len(all_outputs)): #need to fix this
     if a == 0:
         df = pd.DataFrame(all_outputs[a])
-        print(len(df))
+        #print(len(df))
     else:
         df_new_rows = pd.DataFrame(all_outputs[a])
         df = pd.concat([df, df_new_rows])     
