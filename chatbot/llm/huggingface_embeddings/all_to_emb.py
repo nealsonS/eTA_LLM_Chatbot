@@ -41,7 +41,7 @@ for filename in os.listdir(pdf_directory):
         all_materials.append(texts)
         #print(f"Extracted text for '{filename}'")
 
-print("Creating embeddings...")
+print("Creating embeddings, DO NOT INTERRUPT...")
 all_outputs = []
 for texts in all_materials:
     output = query(texts)
@@ -50,14 +50,25 @@ for texts in all_materials:
     all_outputs.append(output)
 
 print("Storing embeddings, DO NOT INTERRUPT...")
-for a in range(len(all_outputs)): #need to fix this
-    if a == 0:
-        df = pd.DataFrame(all_outputs[a])
+#for a in range(len(all_outputs)): 
+#    if a == 0:
+#        df = pd.DataFrame(all_outputs[a])
         #print(len(df))
-    else:
-        df_new_rows = pd.DataFrame(all_outputs[a])
-        df = pd.concat([df, df_new_rows])     
-        if a == len(all_outputs)-1: #the last thing to add
-            df.to_csv("course_materials_embeddings_v3.csv", index=False)
+#    else:
+#        df_new_rows = pd.DataFrame(all_outputs[a])
+#        df = pd.concat([df, df_new_rows])     
+#        if a == len(all_outputs)-1: #the last thing to add
+#            df.to_csv("course_materials_embeddings_v3.csv", index=False)
+
+df = pd.DataFrame()
+for i in range(len(all_outputs)):
+    embedding_str = ', '.join(map(str, all_outputs[i]))
+    # Add the text and embedding string to a new DataFrame
+    df_new = pd.DataFrame({'text': all_materials[i], 'embedding': embedding_str})
+    # Concatenate the new DataFrame with the existing one
+    df = pd.concat([df, df_new])
+
+# Save the DataFrame to a CSV file
+df.to_csv("course_materials_embeddings_4_10.csv", index=False)
 
 print("Done.")

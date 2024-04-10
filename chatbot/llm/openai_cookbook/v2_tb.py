@@ -33,33 +33,7 @@ GPT_MODEL = "gpt-4"
 client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY", "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"))
 
 
-# For 1 TXT file
-# text from: https://en.wikipedia.org/wiki/Curling_at_the_2022_Winter_Olympics
-#with open("wikipedia_curling.txt", "r", encoding="utf-8") as file:
-#    article = file.read()
-
-## For 1 PDF
-#pdf_path = '/home/vboxuser/chatbot/llm/wikipedia_curling.pdf'
-#pdf_path = '/home/vboxuser/chatbot/all_course_materials/wikip.pdf' # too big for gpt-4! tokens, not num of words
-#pdf_path = '/home/vboxuser/chatbot/all_course_materials/textbook.pdf' # too big for gpt-4!
-#article = extract_content_from_pdf(pdf_path)
-
-
-## For folders of materials
-#pdf_directory = '/home/vboxuser/chatbot/llm/' #adjust as needed
-#all_materials = []
-#print("Extracting data from PDFs...")
-#for filename in os.listdir(pdf_directory):
-#    if filename.endswith('.pdf'):
-#        pdf_path = os.path.join(pdf_directory, filename)
-        #extract text content and images
-#        texts = extract_content_from_pdf(pdf_path)
-        #print(len(texts))
-#        for i in range(len(texts)):
-#            all_materials.append(texts[i])
-        #print(f"Extracted text for '{filename}'")
-
-embeddings_path = 'winter_olympics_2022.csv'
+embeddings_path = '/home/vboxuser/chatbot/llm/huggingface_embeddings/course_materials_embeddings_4_10.csv'
 df = pd.read_csv(embeddings_path)
 df['embedding'] = df['embedding'].apply(ast.literal_eval)
 
@@ -75,7 +49,7 @@ def strings_ranked_by_relatedness(
         model=EMBEDDING_MODEL,
         input=query,
     )
-    print(df)
+    #print(df)
     query_embedding = query_embedding_response.data[0].embedding
     strings_and_relatednesses = [
         (row["text"], relatedness_fn(query_embedding, row["embedding"]))
@@ -87,7 +61,7 @@ def strings_ranked_by_relatedness(
  
 
 # checks relatedness of documents
-strings, relatednesses = strings_ranked_by_relatedness("curling gold medal", df, top_n=5)
+strings, relatednesses = strings_ranked_by_relatedness("drug therapy", df, top_n=5)
 for string, relatedness in zip(strings, relatednesses):
     print(f"{relatedness=:.3f}")
     #print(string) 
@@ -107,11 +81,11 @@ def query_message(
 ) -> str:
     """Return a message for GPT, with relevant source texts pulled from a dataframe."""
     strings, relatednesses = strings_ranked_by_relatedness(query, df)
-    introduction = 'Use the below articles on the 2022 Winter Olympics to answer the subsequent question. If the answer cannot be found in the articles, write "I could not find an answer."'
+    introduction = 'Use the below articles to answer the subsequent question. If the answer cannot be found in the articles, write "I could not find an answer."'
     question = f"\n\nQuestion: {query}"
     message = introduction
     for string in strings:
-        next_article = f'\n\nWikipedia article section:\n"""\n{string}\n"""'
+        next_article = f'\n\nText:\n"""\n{string}\n"""'
         if (
             num_tokens(message + next_article + question, model=model)
             > token_budget
@@ -134,7 +108,7 @@ def ask(
     if print_message:
         print(message)
     messages = [
-        {"role": "system", "content": "You answer questions about the 2022 Winter Olympics."},
+        {"role": "system", "content": "You answer questions about clinical pharmacology."},
         {"role": "user", "content": message},
     ]
     response = client.chat.completions.create(
@@ -148,8 +122,8 @@ def ask(
 
 
 # testing
-#print("------- 1 ------")
-#print(ask('Which athletes won the gold medal in curling at the 2022 Winter Olympics?'))
+print("------- 1 ------")
+print(ask('What are the quality assessments for drug therapy?'))
 #print("------- 2 ------")
 #print(ask('How many records were set at the 2022 Winter Olympics?'))
 #print("------- 3 ------")
