@@ -32,8 +32,7 @@ api_url = f"https://api-inference.huggingface.co/pipeline/feature-extraction/{mo
 headers = {"Authorization": f"Bearer {hf_token}"}
 
 
-tb_embeddings = load_dataset('DHO560/practice_tb_embedding_dataset')
-#tb_embeddings = load_dataset('DHO560/course_mat_v1')
+tb_embeddings = load_dataset('DHO560/course_mat_v1')
 dataset_embeddings = torch.from_numpy(tb_embeddings["train"].to_pandas().to_numpy()).to(torch.float)
 
 question = ["What are quality assessments for drug therapy?"]
@@ -46,7 +45,7 @@ query_embeddings = torch.FloatTensor(output)
 #print(query_embeddings)
 
 hits = semantic_search(query_embeddings, dataset_embeddings, top_k=5)
-#print(hits[0]) #is a list. hits would give a list in a list
+print(hits[0]) #is a list. hits would give a list in a list
 ## util.semantic_search identifies how close each of the pages is to the customer query and returns a list of dictionaries with the top top_k 
 ## looks like
 ## [[{'corpus_id': 489, 'score': 0.6776377558708191}, 
@@ -55,25 +54,23 @@ hits = semantic_search(query_embeddings, dataset_embeddings, top_k=5)
 ## {'corpus_id': 196, 'score': 0.563490092754364}, 
 ## {'corpus_id': 25, 'score': 0.5421655178070068}]]
 
+pdf_directory = '/home/vboxuser/chatbot/all_course_materials/' #adjust as needed
+all_materials = []
+#print("Extracting data from PDFs...")
+for filename in os.listdir(pdf_directory):
+    if filename.endswith('.pdf'):
+        pdf_path = os.path.join(pdf_directory, filename)
+        #extract text content and images
+        texts = extract_content_from_pdf(pdf_path)
+        #print(len(texts))
+        for i in range(len(texts)):
+            all_materials.append(texts[i])
+        #print(f"Extracted text for '{filename}'")
 
-pdf_directory = '/home/vboxuser/chatbot/raw_course_materials/tb' #adjust as needed
-
-#all_materials = []
-
-#for filename in os.listdir(pdf_directory):
-##    if filename.endswith('.pdf'):
- #       pdf_path = os.path.join(pdf_directory, filename)
- ##       #extract text content and images
-  #      texts = extract_content_from_pdf(pdf_path)
-  #      all_materials.append(texts)
-  #      print(f"Extracted text for '{filename}'")
-
-pdf_path = '/home/vboxuser/chatbot/all_course_materials/textbook.pdf'
-texts = extract_content_from_pdf(pdf_path)
-print(len(texts))
-print(len(hits[0]))
+print(len(all_materials))
 for i in range(len(hits[0])):
     print(str(hits[0][i]['corpus_id']))
-    #print(texts[hits[0][i]['corpus_id']])
+    print(all_materials[hits[0][i]['corpus_id']]) #for textbook, this gives the entire page of the textbook. can shorten it and make it look neater (spacing is strange)
+    break #just want to see the top one
 # values ​​in corpus_id allow us to index the list of texts we defined in the first section and get the five most similar FAQs
 
