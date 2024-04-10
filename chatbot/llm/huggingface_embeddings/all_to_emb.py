@@ -33,32 +33,33 @@ pdf_directory = '/home/vboxuser/chatbot/all_course_materials/' #adjust as needed
 
 all_materials = []
 
+print("Extracting data from PDFs...")
 for filename in os.listdir(pdf_directory):
     if filename.endswith('.pdf'):
         pdf_path = os.path.join(pdf_directory, filename)
         #extract text content and images
         texts = extract_content_from_pdf(pdf_path)
-        print(len(texts)) # should be 649, same number of pages as textbook.pdf
+        #print(len(texts)) # should be 649, same number of pages as textbook.pdf
         all_materials.append(texts)
-        print(f"Extracted text for '{filename}'")
+        #print(f"Extracted text for '{filename}'")
 
+print("Creating embeddings...")
 all_outputs = []
 for texts in all_materials:
     output = query(texts)
     #print(output)
-    print(len(output)) # should be 649, same number of pages as textbook.pdf
+    print(len(output)) # should be same number of pages as each PDF
     all_outputs.append(output)
 
+print("Storing embeddings, DO NOT INTERRUPT...")
 for a in range(len(all_outputs)): #need to fix this
     if a == 0:
         df = pd.DataFrame(all_outputs[a])
         print(len(df))
-    elif a == len(all_outputs)-1: #the last thing to add
-        df_new_rows = pd.DataFrame(all_outputs[a])
-        embeddings = pd.concat([df, df_new_rows])
-        embeddings.to_csv("course_materials_embeddings_v2.csv", index=False)
     else:
         df_new_rows = pd.DataFrame(all_outputs[a])
-        embeddings = pd.concat([df, df_new_rows])       
+        df = pd.concat([df, df_new_rows])     
+        if a == len(all_outputs)-1: #the last thing to add
+            df.to_csv("course_materials_embeddings_v3.csv", index=False)
 
-
+print("Done.")
