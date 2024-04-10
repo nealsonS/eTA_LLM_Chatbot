@@ -30,9 +30,7 @@ def extract_content_from_pdf(pdf_path):
 
 
 pdf_directory = '/home/vboxuser/chatbot/all_course_materials/' #adjust as needed
-
 all_materials = []
-
 print("Extracting data from PDFs...")
 for filename in os.listdir(pdf_directory):
     if filename.endswith('.pdf'):
