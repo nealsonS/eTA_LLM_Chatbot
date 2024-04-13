@@ -19,7 +19,8 @@ if __name__ == '__main__':
 		collection_name = COLLECTION_NAME
 	).as_retriever()
 
-	llm = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0) 
+	#llm = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0) 
+	llm = ChatOpenAI(model_name="gpt-4", temperature=0) 
 
 
 	# code from https://milvus.io/docs/integrate_with_langchain.md
@@ -33,10 +34,13 @@ Helpful Answer:"""
 
 	rag_prompt = PromptTemplate.from_template(template)
 
-rag_chain = (
-    {"context": retriever, "question": RunnablePassthrough()}
-    | rag_prompt
-    | llm
-)
+	rag_chain = (
+ 	   {"context": retriever, "question": RunnablePassthrough()}
+	    | rag_prompt
+	    | llm
+	)
 
-print(rag_chain.invoke("What are quality assessments for drug therapy?"))
+	question = input("YOU: ")
+	#question = "What are quality assessments for drug therapy?"
+	output = rag_chain.invoke(question)
+	print("\nCHATBOT:", output.content, "\n")
