@@ -39,7 +39,15 @@ Helpful Answer:"""
 	    | llm
 	)
 
-	question = input("YOU: ")
-	#question = "What are quality assessments for drug therapy?"
-	output = rag_chain.invoke(question)
-	print("\nCHATBOT:", output.content, "\n")
+	while True:
+		question = input("YOU: ")
+		#question = "What are quality assessments for drug therapy?"
+		if question.lower() == 'quit':
+			print("\nCHATBOT: Good luck!")
+			break
+		output = rag_chain.invoke(question)
+		print("\nCHATBOT:", output.content, "\n")
+    
+
+
+

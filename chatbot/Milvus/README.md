@@ -44,7 +44,8 @@ Made this to quickly drop collections quickly for testing insertions. <br>
 
 ### rag_chain.py (TESTING, WIP)
 Quick basic implementation of RAG chatbot to check if vector database works. <br>
-Will be adjusting parameters. <br>
+Currently does not have memory of conversation.  <br>
+Will be adjusting parameters.  <br>
 
 ## Extra information
 Use the milvus_cli (command line interface) to see collections:
