@@ -11,129 +11,64 @@ from langchain.chains.conversation.memory import ConversationBufferWindowMemory
 from langchain.chains.conversation.memory import ConversationSummaryBufferMemory
 
 
+
 # testing from https://www.pinecone.io/learn/series/langchain/langchain-conversational-memory/
 def count_tokens(chain, query):
     with get_openai_callback() as cb:
         result = chain.run(query)
-        print(f'Spent a total of {cb.total_tokens} tokens')
+        print(f'>>> Spent a total of {cb.total_tokens} tokens')
+    return result #answer to query
 
-    return result
 
-
-def con_buf(llm): 
+# won't use this
+def con_buf(llm, queries): 
 	conversation_history = ConversationChain(
 		llm=llm,
 		memory=ConversationBufferMemory()
 	)
-	print("\n---1---")
-	print(count_tokens(
-		conversation_history, 
-		"Select the one lettered answer or statement completion that is BEST. It may be helpful to carry out dimensional analysis by including units in your calculations. Answers are provided in Appendix II. A 35-year-old woman is being treated with gentamicin for a urinary tract infection. The gentamicin plasma level is 4 mg/mL shortly after initial intravenous administration of an 80-mg dose of this drug. What is the answer to this question?"
-	))
-	print("\n---2---")
-	print(count_tokens(
-		conversation_history, 
-		"What is the answer again?"
-	))
+	for q in queries:
+		print(count_tokens(conversation_history, q))
 	print("\n---CONVO HISTORY---")
 	print(conversation_history.memory.buffer)
 
-
-def con_sum(llm):
+# won't use this
+def con_sum(llm, queries):
 	conversation_history = ConversationChain(
 		llm=llm,
 		memory=ConversationSummaryMemory(llm=llm)
 	)
-	print("\n---1---")
-	print(count_tokens(
-		conversation_history, 
-		"What are quality assessments for drug therapy?"
-	))
-	print("\n---2---")
-	print(count_tokens(
-		conversation_history, 
-		"What are macromolecules?"
-	))
-	print("\n---3---")
-	print(count_tokens(
-		conversation_history, 
-		"What is the answer to the previous question?"
-	))
-	print("\n---4---")
-	print(count_tokens(
-		conversation_history, 
-		"What is my previous question?"
-	))
+	for q in queries:
+		print(count_tokens(conversation_history, q))
 	print("\n---CONVO HISTORY---")
 	print(conversation_history.memory.prompt.template)
 	print("\n---CONVO SUMMARY---")
 	print(conversation_history.memory.buffer)
 
 
-
-def con_bufw(llm):
-	conversation_history = ConversationChain(
-		llm=llm,
-		memory=ConversationBufferWindowMemory(k=1) #change to 10 later
-	)
-	print("\n---1---")
-	print(count_tokens(
-		conversation_history, 
-		"What are quality assessments for drug therapy?"
-	))
-	print("\n---2---")
-	print(count_tokens(
-		conversation_history, 
-		"What are macromolecules?"
-	))
-	print("\n---3---")
-	print(count_tokens(
-		conversation_history, 
-		"What is the answer to the previous question?"
-	))
-	print("\n---4---")
-	print(count_tokens(
-		conversation_history, 
-		"What is my previous question?"
-	))
-	bufw_history = conversation_history.memory.load_memory_variables(
-	inputs=[]
-	)['history']
-	print("\n---CONVO HISTORY---")
-	print(bufw_history)
-
-
-def con_sum_bufw(llm):
+# won't use this
+def con_sum_bufw(llm, queries):
 	conversation_history = ConversationChain(
 	llm=llm, memory=ConversationSummaryBufferMemory(
 		llm=llm,
 		max_token_limit=650)
 	)
-	print("\n---1---")
-	print(count_tokens(
-		conversation_history, 
-		"What are quality assessments for drug therapy?"
-	))
-	print("\n---2---")
-	print(count_tokens(
-		conversation_history, 
-		"What are macromolecules?"
-	))
-	print("\n---3---")
-	print(count_tokens(
-		conversation_history, 
-		"What is the answer to the previous question?"
-	))
-	print("\n---4---")
-	print(count_tokens(
-		conversation_history, 
-		"What is my previous question?"
-	))
+	for q in queries:
+		print(count_tokens(conversation_history, q))
 	#not sure if this will work here...
-	bufw_history = conversation_history.memory.load_memory_variables(
-	inputs=[]
-	)['history']
+	bufw_history = conversation_history.memory.load_memory_variables(inputs=[])['history']
 	print("\n---CONVO HISTORY---")
+	print(bufw_history)
+
+
+def con_bufw(llm, queries):
+	conversation_history = ConversationChain(
+		llm=llm,
+		memory=ConversationBufferWindowMemory(k=2) #change to 10 later
+	)
+	for q in queries:
+		print(count_tokens(conversation_history, q))
+	print("\n---CONVO HISTORY---")
+	bufw_history = conversation_history.memory.load_memory_variables(inputs=[])['history']
 	print(bufw_history)
 
 
@@ -189,26 +124,33 @@ if __name__ == '__main__':
 	    | rag_prompt
 	    | llm
 	)
+	
+	questions=[
+	"What are quality assessments for drug therapy?",
+	"Select the one lettered answer or statement completion that is BEST. It may be helpful to carry out dimensional analysis by including units in your calculations. Answers are provided in Appendix II. A 35-year-old woman is being treated with gentamicin for a urinary tract infection. The gentamicin plasma level is 4 mg/mL shortly after initial intravenous administration of an 80-mg dose of this drug. What is the answer to this question?",
+	"What are macromolecules?",
+	"What is the answer to the previous question?",
+	"What is my previous question?"
+]
 
-#	while True:
-#		question = input("YOU: ")
+	while True:
+		question = input("YOU: ")
 		#question = "What are quality assessments for drug therapy?"
-#		if question.lower() == 'quit':
-#			print("\nCHATBOT: Good luck!")
-#			break
-#		output = rag_chain.invoke(question)
-#		print("\nCHATBOT:", output.content, "\n")
-#		print("----- MEMORY -----")
-#		print(get_conversation_chain(llm, question))
-	
+		if question.lower() == 'quit':
+			print("\nCHATBOT: Good luck!")
+			break
+		output = rag_chain.invoke(question)
+		print("\nCHATBOT:", output.content, "\n")
+		print("----- MEMORY -----")
+		#print(get_conversation_chain(llm, question))
+		con_bufw(llm, questions)
 
 	
-#	print("---WHOLE CONVO---")
+	# testing memory
 	#get_conversation_chain(llm)
-	#con_buf(llm)
-	#con_sum(llm)
-	#con_bufw(llm)
-	con_sum_bufw(llm)
+	#con_buf(llm, questions)
+	#con_sum(llm, questions)
+	#con_sum_bufw(llm, questions)
 
 
 
