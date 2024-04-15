@@ -1,4 +1,15 @@
-source code from https://medium.com/@thakermadhav/part-2-build-a-conversational-rag-with-langchain-and-mistral-7b-6a4ebe497185 
+#source code from https://medium.com/@thakermadhav/part-2-build-a-conversational-rag-with-langchain-and-mistral-7b-6a4ebe497185 
+# will need to look at this https://github.com/madhavthaker1/llm/blob/main/rag/simple_rag.ipynb
+
+
+# First question in my chat
+rag_chain.invoke("How is Mahomes doing?")
+rag_chain = ( 
+ {"context": retriever, "question": RunnablePassthrough()}
+    | llm_chain
+)
+rag_chain.invoke("Who are some good alternatives to him?")
+
 
 from transformers import pipeline
 from langchain.llms import HuggingFacePipeline

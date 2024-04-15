@@ -1,5 +1,7 @@
 from langchain.vectorstores.milvus import Milvus
 from langchain_community.embeddings import HuggingFaceEmbeddings
+from langchain_community.embeddings import OpenAIEmbeddings
+#from langchain_openai import OpenAIEmbedding
 from langchain_openai import ChatOpenAI
 from langchain_core.prompts import PromptTemplate
 from langchain.schema.runnable import RunnablePassthrough
@@ -10,6 +12,8 @@ from langchain.chains.conversation.memory import ConversationSummaryMemory
 from langchain.chains.conversation.memory import ConversationBufferWindowMemory
 from langchain.chains.conversation.memory import ConversationSummaryBufferMemory
 
+
+openai_api_key = "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"
 
 
 # testing from https://www.pinecone.io/learn/series/langchain/langchain-conversational-memory/
@@ -98,7 +102,7 @@ if __name__ == '__main__':
 	connection_args = { 'uri': URI }
 
 	embeddings = HuggingFaceEmbeddings()
-	#embeddings = OpenAIEmbeddings()
+	#embeddings = OpenAIEmbeddings(openai_api_key=openai_api_key)
 	retriever = Milvus(
 		embedding_function = embeddings,
 		connection_args=connection_args,
@@ -143,7 +147,7 @@ if __name__ == '__main__':
 		print("\nCHATBOT:", output.content, "\n")
 		print("----- MEMORY -----")
 		#print(get_conversation_chain(llm, question))
-		con_bufw(llm, questions)
+		con_bufw(llm, question)
 
 	
 	# testing memory
