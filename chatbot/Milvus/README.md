@@ -42,9 +42,9 @@ This is to avoid accidental deletion of collection.
 DANGEROUS: This scripts is the same as drop_collections.py but doesn't user to make sure. <br>
 Made this to quickly drop collections quickly for testing insertions. <br>
 
-### rag_chain.py (WIP)
+### rag_chain.py (TESTING, WIP)
 Quick basic implementation of RAG chatbot to check if vector database works. <br>
-WIP! <br>
+Will be adjusting parameters. <br>
 
 ## Extra information
 Use the milvus_cli (command line interface) to see collections:
