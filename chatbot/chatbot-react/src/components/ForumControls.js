@@ -4,7 +4,7 @@ import React from 'react';
 function ForumControls() {
     return (
         <div className="modal-trigger-wrapper border-bottom pb-2">
-            <div className="inner-main-header d-flex justify-content-between align-items-center bg-white p-3">
+            <div className="inner-main-header d-flex justify-content-between align-items-center bg-white p-3 mt-3">
                 <div>
                     <select className="custom-select custom-select-sm mr-1">
                         <option selected>Latest</option>

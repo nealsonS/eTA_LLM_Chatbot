@@ -9,7 +9,7 @@ function NewDiscussionModal() {
     <>
       {/* Center the button using Bootstrap grid system */}
       <div className="modal-trigger-wrapper border-bottom">
-        <div className="d-flex justify-content-center bg-white p-2">
+        <div className="d-flex justify-content-center bg-white p-2 mt-3">
             <button className="btn btn-primary btn-block font-weight-bold" onClick={toggleModal}>+ New Discussion</button>
         </div>
       </div>
