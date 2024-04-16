@@ -12,6 +12,7 @@ from langchain.chains.conversation.memory import ConversationBufferWindowMemory
 from langchain.chains.conversation.memory import ConversationSummaryBufferMemory
 from youtube_transcript_api import YouTubeTranscriptApi as yta
 import re
+import sys
 
 
 def word_in_doc(word_to_find, source_text):
@@ -20,13 +21,16 @@ def word_in_doc(word_to_find, source_text):
 	# If the word is found
 	if word_index != -1:
 		# Define the start and end indices for the substring
-		start_index = max(0, word_index - 50)
-		end_index = min(len(source_text), word_index + len(word_to_find) + 50)
+		start_index = max(0, word_index - 100)
+		end_index = min(len(source_text), word_index + len(word_to_find) + 100)
 		# Extract and print the substring
 		output_string = source_text[start_index:end_index]
-		print(output_string)
+		output_string = output_string.replace(word_to_find, "\033[1m\033[3m\033[4m"+word_to_find+"\033[0m")
+		print('\nText Excerpt:\n"'+ output_string + '"')
+		return True
 	else:
-		print("Word not found in the source text.")
+		return False
+		#print("Word not found in the source text.")
 
 
 def sim_search(query):
@@ -44,26 +48,35 @@ def sim_search(query):
 		source = i.metadata['source'].replace("/home/vboxuser/chatbot/all_course_materials/", "")
 		if "ytvid_" in source:
 			link = source[source.find(".pdf") - 11:source.find(".pdf")]
-			print(link)
 			if link not in vids:
-				vids.append(link)
+				in_vid = yt_time(link)
+				if in_vid:
+					vids.append(link)
 		elif ".pdf" in source:
-			print(source, i.metadata['page'])
-			word_in_doc("macromolecules", i.page_content)
-			if source not in docs:
+			in_doc = word_in_doc("drug therapy", i.page_content)
+			if source not in docs and in_doc:
+				print("Excerpt from", source, "pg.", i.metadata['page'])
 				docs.append(source)
-	print(f'The number of similar docs: {len(sim_docs)}')
-	return docs, vids
+	if len(vids) == 0:
+		print("\nNo applicable reference videos.")
+	if len(docs) == 0:
+		print("\nNo applicable reference notes.")
+	#print(f'The number of similar docs: {len(sim_docs)}')
+	return docs, vids # why return? should just display
 
 
 def print_time(search_word, time, video_id):
-    print(f"'{search_word}' was mentioned at: https://www.youtube.com/watch?v={video_id}")
-    # calculate the accurate time according to the video's duration
-    for t in time:
-        hours = int(t // 3600)
-        min = int((t // 60) % 60)
-        sec = int(t % 60)
-        print(f"{hours:02d}:{min:02d}:{sec:02d}")
+	# calculate the accurate time according to the video's duration
+	for t in time:
+		hours = int(t // 3600)
+		mins = int((t // 60) % 60)
+		secs = int(t % 60)
+		time_stamp = f"{hours:02d}:{mins:02d}:{secs:02d}"
+		l_hours, l_mins, l_secs = map(int, time_stamp.split(':'))
+		formatted_time_stamp = f"{l_hours}h{l_mins}m{l_secs}s"
+	print(f"\nVideo:\n'{search_word}' was mentioned at: \nhttps://www.youtube.com/watch?v={video_id}&t={formatted_time_stamp}\n{hours:02d}:{mins:02d}:{secs:02d}")
+
+
 
 
 def search_for_word(search_word, transcript, data, video_id):
@@ -71,7 +84,7 @@ def search_for_word(search_word, transcript, data, video_id):
 	for i, line in enumerate(data):
 		words = re.findall(r'\b\w+\b', line)  # split line into words for more accurate searching, rather than if word is a subset of the line
 		if search_word in words:
-			print(line)
+			#print(line) 
 			start_time = transcript[i]['start']
 			# to accomodate for start time not being the actual word
 		text = re.sub(r"(?<=:)([A-Z]+)", "", line).split(' ') # remove stuff like: 'AUDIENCE: '
@@ -84,9 +97,11 @@ def search_for_word(search_word, transcript, data, video_id):
 		final_time = start_time + added_time
 		time.append(final_time)
 	if len(time) == 0:
-		print("Word not found.")
+		return False
+		#print("Word not found in the source video.")=
 	else:
-		print_time(search_word, time, video_id)
+		print_time(search_word, time, video_id) #and the video link
+		return True
 
 
 def yt_time(video_id):
@@ -94,15 +109,15 @@ def yt_time(video_id):
 	data = [t['text'] for t in transcript]
 	data = [re.sub(r"[^a-zA-Z0–9-ışğöüçiIŞĞÖÜÇİ ]", "", line) for line in data]
 	search_word = "macromolecules" #how to figure out search word?
-	search_for_word(search_word, transcript, data, video_id)
+	return search_for_word(search_word, transcript, data, video_id)
 
 
 # testing from https://www.pinecone.io/learn/series/langchain/langchain-conversational-memory/
 def count_tokens(chain, query):
-    with get_openai_callback() as cb:
-        result = chain.invoke(query)
-        print(f'>>> Spent a total of {cb.total_tokens} tokens')
-    return result #answer to query
+	with get_openai_callback() as cb:
+		result = chain.invoke(query)
+		print(f'>>> Spent a total of {cb.total_tokens} tokens')		
+	return result #answer to query
 
 
 def con_bufw(llm, queries):
@@ -155,19 +170,18 @@ if __name__ == '__main__':
 	    | llm
 	)
 
-	while True:
-		question = input("YOU: ")
-		#question = "What are quality assessments for drug therapy?"
-		if question.lower() == 'quit':
-			print("\nCHATBOT: Good luck!")
-			break
-		docs, vids = sim_search(question)
-		for v in vids:
-			yt_time(v)
-		#output = rag_chain.invoke(question)
-		#print("\nCHATBOT:", output.content, "\n")
-		#print("----- MEMORY -----")
-		#con_bufw(llm, question)
+	arguments = sys.argv
+	#print(arguments[1:])
+	question = " ".join(arguments[1:])
+	#print(question)
+	print("YOU:", question)
+	#question = input("YOU: ")
+	#question = "What are quality assessments for drug therapy?"
+	output = rag_chain.invoke(question)
+	print("\nCHATBOT:", output.content, "\n\nCLASS RESOURCES")
+	docs, vids = sim_search(question)
+	print("\nGood luck & don't stay up all night! :D")
+
 
 
 
