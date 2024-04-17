@@ -19,7 +19,8 @@ function ForumItem({ data }) {
           </div>
           <div className="text-muted small text-center align-self-center">
             <span><i className="far fa-eye"></i> {data.views}</span>
-            <span><i className="far fa-comment ml-2"></i> {data.comments}</span>
+            {/* Ensure that we are rendering the length of the comments array, not the array itself */}
+            <span><i className="far fa-comment ml-2"></i> {data.comments.length}</span>
           </div>
         </div>
       </div>
