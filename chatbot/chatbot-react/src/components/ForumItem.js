@@ -1,5 +1,6 @@
 // src/components/ForumItem.js
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 function ForumItem({ data }) {
   return (
@@ -8,7 +9,9 @@ function ForumItem({ data }) {
         <div className="media">
           <img src={data.avatarUrl} className="mr-3 rounded-circle" width="50" alt="User" />
           <div className="media-body">
-            <h6 className="title">{data.title}</h6>
+            <h6>
+              <Link to={`/discussion/${data.id}`} className="title">{data.title}</Link>
+            </h6>
             <p className="content">{data.content}</p>
             <p className="user-info">
               <a href={`user/${data.user}`}>{data.user}</a> replied <span>{data.replyTime}</span>

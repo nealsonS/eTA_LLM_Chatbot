@@ -5,7 +5,7 @@ import ForumControls from './ForumControls'; // Import the new component
 
 
 // Example data array for forum discussions
-const discussions = [
+export const discussions = [
   {
     id: 1,
     title: 'Realtime fetching data',

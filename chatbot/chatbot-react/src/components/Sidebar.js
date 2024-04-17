@@ -15,8 +15,7 @@ function Sidebar() {
                 <div className="p-3 h-100" data-simplebar="init">
                     <nav className="nav nav-pills flex-column">
                         <a href="#" className={`nav-link nav-link-faded has-icon ${activeLink === 'allThreads' ? 'active' : ''}`} onClick={() => handleSetActive('allThreads')}>All Threads</a>
-                        <a href="#" className={`nav-link nav-link-faded has-icon ${activeLink === 'popularWeek' ? 'active' : ''}`} onClick={() => handleSetActive('popularWeek')}>Popular this week</a>
-                        <a href="#" className={`nav-link nav-link-faded has-icon ${activeLink === 'popularAllTime' ? 'active' : ''}`} onClick={() => handleSetActive('popularAllTime')}>Popular all time</a>
+                        <a href="#" className={`nav-link nav-link-faded has-icon ${activeLink === 'popularWeek' ? 'active' : ''}`} onClick={() => handleSetActive('popularWeek')}>Popular</a>
                         <a href="#" className={`nav-link nav-link-faded has-icon ${activeLink === 'solved' ? 'active' : ''}`} onClick={() => handleSetActive('solved')}>Solved</a>
                         <a href="#" className={`nav-link nav-link-faded has-icon ${activeLink === 'unsolved' ? 'active' : ''}`} onClick={() => handleSetActive('unsolved')}>Unsolved</a>
                         <a href="#" className={`nav-link nav-link-faded has-icon ${activeLink === 'noReplies' ? 'active' : ''}`} onClick={() => handleSetActive('noReplies')}>No replies yet</a>
