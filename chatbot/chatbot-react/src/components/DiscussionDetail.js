@@ -1,7 +1,7 @@
 // src/components/DiscussionDetail.js
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { discussions } from './ForumList';  // Ensure discussions are exported
+import { discussions } from '../mockData';  // Ensure discussions are exported
 
 function DiscussionDetail() {
   const { id } = useParams();
