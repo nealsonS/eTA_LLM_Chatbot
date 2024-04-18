@@ -13,3 +13,5 @@ Data exploration of Kaggle data
 -   Document summarization of Doc2Vec Reddit-scraped data
 ## Lab 5
 -   PDF scraping of oil well documents with PyTesseract
+## Lab 6 
+- Chatbot using OpenAI and HuggingFace embeddings, and has vectorstore and conversation memory
