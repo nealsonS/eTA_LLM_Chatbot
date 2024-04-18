@@ -21,6 +21,7 @@ Our chatbot runs on React
 
 ### Milvus (in 'Milvus' folder)
 Database that stores embeddings. 
+!!! NEED TO REDO EMBEDDINGS WITH BIOLOGY FORUM TEXT
 
 ## rag_res.py
 Inputs user questions, one at the time.
