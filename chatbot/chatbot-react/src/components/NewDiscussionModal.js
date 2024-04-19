@@ -28,13 +28,21 @@ function NewDiscussionModal({ addDiscussion }) {
 
     return (
         <>
-            <button className="btn btn-primary" onClick={toggleModal}>New Discussion</button>
+            <button 
+                className="btn btn-primary btn-lg btn-block shadow-sm"
+                style={{
+                    borderRadius: '0.5rem', // Rounded corners
+                    border: 'none',         // Remove default border
+                    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)' // Subtle shadow for depth
+                }}
+                onClick={toggleModal}>+ New Question
+            </button>
             {isOpen && (
                 <div className="modal fade show" style={{ display: 'block' }} tabIndex="-1" role="dialog">
                     <div className="modal-dialog modal-lg" role="document">
                         <div className="modal-content">
                             <div className="modal-header">
-                                <h5 className="modal-title">New Discussion</h5>
+                                <h5 className="modal-title">New Question</h5>
                                 <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={toggleModal}>
                                     <span aria-hidden="true">&times;</span>
                                 </button>
