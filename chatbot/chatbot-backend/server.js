@@ -4,18 +4,31 @@ const cors = require('cors');
 require('dotenv').config();
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 3800;
 
 app.use(cors());
 app.use(express.json()); // Middleware to parse JSON
 
-// MongoDB connection
-mongoose.connect(process.env.MONGODB_URI, {
+const password = '770sGrandAve7058';
+const MONGODB_URI = `mongodb+srv://ColinZWang:${password}@colinzwang-cluster.6civtdf.mongodb.net/?retryWrites=true&w=majority`;
+
+console.log("Attempting to connect to MongoDB...");
+
+mongoose.connect(MONGODB_URI, {
   useNewUrlParser: true,
-  useUnifiedTopology: true
-})
-.then(() => console.log("MongoDB connection established"))
-.catch(err => console.error("Mongo connection error:", err));
+  useUnifiedTopology: true,
+  serverApi: {
+    version: '1',
+    strict: true,
+    deprecationErrors: true
+  }
+});
+
+mongoose.connection.once('open', function() {
+  console.log("Successfully connected to MongoDB.");
+}).on('error', function(error) {
+  console.log("Connection error:", error);
+});
 
 // Define a schema and model for Forum Discussions
 const discussionSchema = new mongoose.Schema({
