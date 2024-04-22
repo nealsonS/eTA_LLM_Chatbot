@@ -1,6 +1,7 @@
 # Testing React App
 First, make sure the latest version of node.js is installed. \
 If not, install it at https://nodejs.org/en/download/current \
+\
 Then in the project directory, you can run:
 
 ### `npm install`
