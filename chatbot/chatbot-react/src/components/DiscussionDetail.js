@@ -1,6 +1,8 @@
 // src/components/DiscussionDetail.js
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import { formatDate } from '../formatDate'; // Import the utility function
+
 
 function DiscussionDetail() {
   const [discussion, setDiscussion] = useState(null);
@@ -49,7 +51,7 @@ function DiscussionDetail() {
               <h5 className="mt-1">{discussion.title}</h5>
               <p>{discussion.content}</p>
               <div className="text-muted">
-                <a href="javascript:void(0)" className="text-secondary">{discussion.user}</a> replied <span className="font-weight-bold">{discussion.replyTime}</span>
+                <a href="javascript:void(0)" className="text-secondary">{formatDate(discussion.createdAt)}</a> 
               </div>
               {discussion.comments.map((comment, index) => (
                 <div className="media mt-3 forum-item" key={index}>
@@ -58,7 +60,7 @@ function DiscussionDetail() {
                     <h6 className="mt-1">{comment.user}</h6>
                     <p>{comment.content}</p>
                     <div className="text-muted">
-                      <small className="text-muted ml-2">{comment.replyTime}</small>
+                      <small className="text-muted ml-2">{formatDate(comment.replyTime)}</small>
                     </div>
                   </div>
                 </div>
