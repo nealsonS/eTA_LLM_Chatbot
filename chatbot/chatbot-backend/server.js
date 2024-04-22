@@ -1,5 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const mockReply = require('./mockReplies');
+
 
 const cors = require('cors');
 require('dotenv').config();
@@ -96,17 +98,27 @@ const discussionSchema = new mongoose.Schema({
     }
 });
 
-  
+
   app.post('/api/discussions', async (req, res) => {
-    const newDiscussion = new Discussion(req.body);
+    const newDiscussion = new Discussion({
+      ...req.body,
+      comments: [{
+        user: 'ETA',
+        avatarUrl: 'http://localhost:3000/ETA.png', // Adjust the URL if needed
+        content: mockReply,
+        replyTime: new Date().toLocaleString(), // Example to generate a "Just now" time string
+        views: 0
+      }]
+    });
     try {
       const savedDiscussion = await newDiscussion.save();
-      res.status(201).json(savedDiscussion);
+      res.json(savedDiscussion);
     } catch (error) {
       console.error('Failed to save new discussion:', error);
-      res.status(400).json({ message: 'Failed to add new discussion' });
+      res.status(500).send(error);
     }
   });
+  
   
   // Start the server
   app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
