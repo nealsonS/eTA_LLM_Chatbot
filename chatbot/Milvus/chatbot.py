@@ -12,6 +12,7 @@ from langchain.chains.conversation.memory import ConversationBufferWindowMemory
 from langchain.chains.conversation.memory import ConversationSummaryBufferMemory
 from youtube_transcript_api import YouTubeTranscriptApi as yta
 import re
+import sys
 
 
 def word_in_doc(word_to_find, source_text):
@@ -168,14 +169,13 @@ if __name__ == '__main__':
 	    | rag_prompt
 	    | llm
 	)
-	while True:
-		question = sys.argv[1] if len(sys.argv) > 1 else "Hello, how can I help you?"
-		#question = "What are quality assessments for drug therapy?"
-		if question.lower() == 'quit':
-			print("\nCHATBOT: Good luck & don't stay up all night! :D")
-			break
-		output = rag_chain.invoke(question)
-		print("\nCHATBOT:", output.content, "\n\nCLASS RESOURCES")
-		docs, vids = sim_search(question)
-		print()
+
+	question = sys.argv[1] if len(sys.argv) > 1 else "Hello, how can I help you?"
+	#question = "What are quality assessments for drug therapy?"
+	'''if question.lower() == 'quit':
+					print("\nCHATBOT: Good luck & don't stay up all night! :D")'''
+	output = rag_chain.invoke(question)
+	print("\nCHATBOT:", output.content, "\n\nCLASS RESOURCES")
+	docs, vids = sim_search(question)
+	print()
 
