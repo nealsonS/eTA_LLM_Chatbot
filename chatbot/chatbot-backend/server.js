@@ -53,6 +53,7 @@ const discussionSchema = new mongoose.Schema({
     avatarUrl: String,
     replyTime: String,
     views: Number,
+    createdAt: { type: Date, default: Date.now }, 
     comments: [{
       user: String,
       avatarUrl: String,
@@ -67,8 +68,8 @@ const discussionSchema = new mongoose.Schema({
   // API Routes
   app.get('/api/discussions', async (req, res) => {
     try {
-      const discussions = await Discussion.find();
-      res.json(discussions.map(discussion => ({
+        const discussions = await Discussion.find().sort({ createdAt: -1 }); // Sorting by creation time
+        res.json(discussions.map(discussion => ({
         id: discussion._id.toString(), // Convert ObjectId to string
         ...discussion.toObject(),
         comments: discussion.comments.map(comment => ({
