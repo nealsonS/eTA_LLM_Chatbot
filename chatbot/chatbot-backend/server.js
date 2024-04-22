@@ -1,8 +1,8 @@
 const express = require('express');
 const mongoose = require('mongoose');
-
-
+const { spawn } = require('child_process');  // To spawn Python process
 const cors = require('cors');
+
 require('dotenv').config();
 
 const app = express();
@@ -123,45 +123,78 @@ app.get('/api/discussions', async (req, res) => {
         res.status(500).json({ message: 'Failed to fetch discussion' });
     }
 });
-
-
-  app.post('/api/discussions', async (req, res) => {
-    const { question } = req.body; // extract question from request body
-    // get response from OpenAI
-    try {
-      const response = await generateResponse(question);
-    
-      const newDiscussion = new Discussion({
-        ...req.body,
-        comments: [{
-        user: 'ETA',
-        avatarUrl: 'http://localhost:3000/ETA.png', // Adjust the URL if needed
-        content: mockReply,
-        replyTime: new Date().toLocaleString(), 
-        views: 0
-      }]
-    });
-      const savedDiscussion = await newDiscussion.save();
-      res.json(savedDiscussion);
-    } catch (error) {
-      console.error('Failed to save new discussion:', error);
-      res.status(500).send(error);
-    }
-  });
+// Function to execute Python script and get the AI response
+function getAIResponse(userInput, callback) {
+    const python = spawn('python', ['./Milvus/chatbot.py', userInput]);
+    let output = '';
   
-  // new endpoint for handling chat interactions with OpenAI
-  app.post('/api/chat', async (req, res) => {
-    const { question } = req.body;
+    python.stdout.on('data', function (data) {
+      output += data.toString();
+    });
+  
+    python.on('close', (code) => {
+      if (code !== 0) {
+        return callback(new Error('Python script exited with code ' + code), null);
+      }
+      callback(null, output);
+    });
+  }
+  
+  app.post('/api/discussions', async (req, res) => {
+    const { title, content, user, avatarUrl } = req.body;
+  
+    getAIResponse(content, async (err, aiResponse) => {
+      if (err) {
+        console.error('Failed to get AI response:', err);
+        return res.status(500).send('Failed to get AI response');
+      }
+  
+      try {
+        const newDiscussion = new Discussion({
+          title,
+          content,
+          user,
+          avatarUrl,
+          replyTime: new Date().toLocaleString(),
+          views: 0,
+          comments: [{
+            user: 'ETA',
+            avatarUrl: 'http://localhost:3000/ETA.png',
+            content: aiResponse,
+            replyTime: new Date().toLocaleString(),
+            views: 0
+          }]
+        });
+  
+        const savedDiscussion = await newDiscussion.save();
+        res.status(201).json(savedDiscussion);
+      } catch (error) {
+        console.error('Failed to save new discussion:', error);
+        res.status(500).send(error.message);
+      }
+    });
+  });
 
-    try {
-        const response = await generateResponse(question);
-        res.json({ response });
-    } catch (error) {
-        console.error('Error generating chat response:', error);
-        res.status(500).json({ message: 'Failed to generate chat response' });
-    }
-});
-
+//   app.post('/api/discussions', async (req, res) => {
+//     const newDiscussion = new Discussion({
+//       ...req.body,
+//       comments: [{
+//         user: 'ETA',
+//         avatarUrl: 'http://localhost:3000/ETA.png', // Adjust the URL if needed
+//         content: mockReply,
+//         replyTime: new Date().toLocaleString(), // Example to generate a "Just now" time string
+//         views: 0
+//       }]
+//     });
+//     try {
+//       const savedDiscussion = await newDiscussion.save();
+//       res.json(savedDiscussion);
+//     } catch (error) {
+//       console.error('Failed to save new discussion:', error);
+//       res.status(500).send(error);
+//     }
+//   });
+  
   
   // start server
   app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
