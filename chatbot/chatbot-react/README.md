@@ -1,6 +1,6 @@
 # Testing React App
 
-If you have not run the backend, go to chatbot-backend and follow instructions there. Then come back.
+If you have not run the backend, go to chatbot-backend and follow instructions there. Then come back.\
 \
 First, make sure the latest version of node.js is installed. \
 If not, install it at https://nodejs.org/en/download/current \
