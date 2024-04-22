@@ -1,6 +1,8 @@
+// rename file to server.js if want to use ./mockReplies
+
 const express = require('express');
 const mongoose = require('mongoose');
-const openai = require('openai').default; 
+const mockReply = require('./mockReplies');
 
 
 const cors = require('cors');
@@ -10,7 +12,7 @@ const app = express();
 const PORT = process.env.PORT || 3800;
 
 app.use(cors());
-app.use(express.json()); // middleware to parse JSON
+app.use(express.json()); // Middleware to parse JSON
 
 const password = '770sGrandAve7058';
 const MONGODB_URI = `mongodb+srv://ColinZWang:${password}@colinzwang-cluster.6civtdf.mongodb.net/?retryWrites=true&w=majority`;
@@ -29,7 +31,7 @@ mongoose.connect(MONGODB_URI, {
 
 const fetchAndLogDiscussions = async () => {
     try {
-      const discussions = await Discussion.find(); // fetch all discussions
+      const discussions = await Discussion.find(); // Fetch all discussions
       console.log("Example Discussion in the Database:");
       console.log(discussions[0]);
     } catch (error) {
@@ -39,13 +41,13 @@ const fetchAndLogDiscussions = async () => {
   
   mongoose.connection.once('open', function() {
     console.log("Successfully connected to MongoDB.", "\n");
-    fetchAndLogDiscussions(); // fetch and log discussions once database connection is open
+    fetchAndLogDiscussions(); // Fetch and log discussions once the database connection is open
   }).on('error', function(error) {
     console.log("Connection error:", error);
   });
   
 
-// define schema and model for Forum Discussions
+// Define a schema and model for Forum Discussions
 const discussionSchema = new mongoose.Schema({
     title: String,
     content: String,
@@ -63,44 +65,18 @@ const discussionSchema = new mongoose.Schema({
     }]
   });
   
-const Discussion = mongoose.model('Discussion', discussionSchema);
+  const Discussion = mongoose.model('Discussion', discussionSchema);
   
-  // generate response using OpenAI
-async function generateResponse(question) {
+  // API Routes
+  app.get('/api/discussions', async (req, res) => {
     try {
-        const apiKey = process.env.OPENAI_API_KEY; 
-        const openaiInstance = new openai(apiKey);
-
-        const response = await fetch('https://api.openai.com/v1/chat/completions', {
-        //const response = await openaiInstance.completions.create({
-            model: 'gpt-4',
-            messages: [
-              {'role': 'user', 'content': 'Hello!'}
-            ],
-            temperature: 0   
-        });
-        // Extract the last message from the response as it contains the model's response
-        //const lastMessage = response.data.messages[response.data.messages.length - 1];
-        //return response.data.choices[0].text.trim();
-        
-        return response.choices[0].message.content;
-    } catch (error) {
-        console.error('Error generating response:', error);
-        return "I'm sorry, I encountered an error while generating a response.";
-    }
-}
-  
-  
-// API routes
-app.get('/api/discussions', async (req, res) => {
-    try {
-        const discussions = await Discussion.find().sort({ createdAt: -1 }); // sort by creation time
+        const discussions = await Discussion.find().sort({ createdAt: -1 }); // Sorting by creation time
         res.json(discussions.map(discussion => ({
-        id: discussion._id.toString(), // convert ObjectId to string
+        id: discussion._id.toString(), // Convert ObjectId to string
         ...discussion.toObject(),
         comments: discussion.comments.map(comment => ({
           ...comment,
-          id: comment._id.toString() // convert ObjectId to string for each comment
+          id: comment._id.toString() // Convert ObjectId to string for each comment
         }))
       })));
     } catch (error) {
@@ -127,21 +103,17 @@ app.get('/api/discussions', async (req, res) => {
 
 
   app.post('/api/discussions', async (req, res) => {
-    const { question } = req.body; // extract question from request body
-    // get response from OpenAI
-    try {
-      const response = await generateResponse(question);
-    
-      const newDiscussion = new Discussion({
-        ...req.body,
-        comments: [{
+    const newDiscussion = new Discussion({
+      ...req.body,
+      comments: [{
         user: 'ETA',
         avatarUrl: 'http://localhost:3000/ETA.png', // Adjust the URL if needed
         content: mockReply,
-        replyTime: new Date().toLocaleString(), 
+        replyTime: new Date().toLocaleString(), // Example to generate a "Just now" time string
         views: 0
       }]
     });
+    try {
       const savedDiscussion = await newDiscussion.save();
       res.json(savedDiscussion);
     } catch (error) {
@@ -150,19 +122,6 @@ app.get('/api/discussions', async (req, res) => {
     }
   });
   
-  // new endpoint for handling chat interactions with OpenAI
-  app.post('/api/chat', async (req, res) => {
-    const { question } = req.body;
-
-    try {
-        const response = await generateResponse(question);
-        res.json({ response });
-    } catch (error) {
-        console.error('Error generating chat response:', error);
-        res.status(500).json({ message: 'Failed to generate chat response' });
-    }
-});
-
   
-  // start server
+  // Start the server
   app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
