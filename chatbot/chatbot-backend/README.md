@@ -11,3 +11,7 @@ This command installs all required dependencies
 ### `node server.js`
 
 Backend should be running on [http://localhost:3800]. Now refresh your front end at [http://localhost:3000] to view it in your browser.
+
+### aiReponse.js and code in ./routes 
+
+WIP to integrate AI into chatbot
