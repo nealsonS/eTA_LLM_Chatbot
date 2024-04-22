@@ -5,24 +5,35 @@ import { useParams, Link } from 'react-router-dom';
 function DiscussionDetail() {
   const [discussion, setDiscussion] = useState(null);
   const { id } = useParams();  // Get the discussion ID from the URL
+  const [error, setError] = useState('');
+
 
   useEffect(() => {
     const fetchDiscussion = async () => {
       try {
         const response = await fetch(`http://localhost:3800/api/discussions/${id}`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch');
+      }
         const data = await response.json();
         setDiscussion(data);
       } catch (error) {
         console.error('Failed to fetch discussion:', error);
+        setError('Failed to load discussion');
       }
     };
 
     fetchDiscussion();
   }, [id]);  // Re-run this effect if the ID changes
 
+  
 
   if (!discussion) {
-    return <div className="alert alert-danger">Discussion not found!</div>;
+    return <div class="d-flex justify-content-center">
+              <div class="spinner-border" role="status">
+                <span class="sr-only">Loading...</span>
+              </div>
+            </div>;
   }
 
   return (

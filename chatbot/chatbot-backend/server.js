@@ -79,6 +79,23 @@ const discussionSchema = new mongoose.Schema({
       res.status(500).json({ message: 'Failed to fetch discussions' });
     }
   });
+
+  app.get('/api/discussions/:id', async (req, res) => {
+    try {
+        const discussion = await Discussion.findById(req.params.id);
+        if (!discussion) {
+            return res.status(404).json({ message: 'Discussion not found' });
+        }
+        res.json({
+            id: discussion._id.toString(),
+            ...discussion.toObject()
+        });
+    } catch (error) {
+        console.error('Failed to fetch discussion:', error);
+        res.status(500).json({ message: 'Failed to fetch discussion' });
+    }
+});
+
   
   app.post('/api/discussions', async (req, res) => {
     const newDiscussion = new Discussion(req.body);

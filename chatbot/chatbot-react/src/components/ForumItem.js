@@ -16,7 +16,7 @@ function ForumItem({ data }) {
               </div>
               <div className="col-8">
                 <h6 className="mb-1">
-                  <Link to={`/discussion/${data.id}`} className="text-dark">{data.title}</Link>
+                  <Link to={`/discussion/${data._id}`} className="text-dark">{data.title}</Link>
                 </h6>
                 <p className="text-muted small mb-0">{formatContentPreview(data.content)}</p>
               </div>
