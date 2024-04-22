@@ -43,7 +43,7 @@ function App() {
               <Routes>
                 <Route path="/" element={
                   <div className="text-center" style={{ maxWidth: "600px" }}>
-                    <img src="/ETA.png" alt="Welcome" className="img-fluid" style={{ maxWidth: "200px" }} />
+                    <img src="/UF.png" alt="Welcome" className="img-fluid" style={{ maxWidth: "200px" }} />
                     <h1>Welcome to UpAllNight Forums!</h1>
                     <p className="lead">Click 'New Question' to ask a question</p>
                     <p className="lead">or select a discussion to view details.</p>
