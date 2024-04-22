@@ -107,7 +107,7 @@ const discussionSchema = new mongoose.Schema({
         user: 'ETA',
         avatarUrl: 'http://localhost:3000/ETA.png', // Adjust the URL if needed
         content: mockReply,
-        replyTime: new Date().toLocaleString(), // Example to generate a "Just now" time string
+        replyTime: new Date().toLocaleString(), 
         views: 0
       }]
     });
