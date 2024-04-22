@@ -1,7 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const openai = require('openai').default; 
-const mockReply = require('./mockReplies');
 
 
 const cors = require('cors');
@@ -11,7 +10,7 @@ const app = express();
 const PORT = process.env.PORT || 3800;
 
 app.use(cors());
-app.use(express.json()); // Middleware to parse JSON
+app.use(express.json()); // middleware to parse JSON
 
 const password = '770sGrandAve7058';
 const MONGODB_URI = `mongodb+srv://ColinZWang:${password}@colinzwang-cluster.6civtdf.mongodb.net/?retryWrites=true&w=majority`;
@@ -30,7 +29,7 @@ mongoose.connect(MONGODB_URI, {
 
 const fetchAndLogDiscussions = async () => {
     try {
-      const discussions = await Discussion.find(); // Fetch all discussions
+      const discussions = await Discussion.find(); // fetch all discussions
       console.log("Example Discussion in the Database:");
       console.log(discussions[0]);
     } catch (error) {
@@ -40,13 +39,13 @@ const fetchAndLogDiscussions = async () => {
   
   mongoose.connection.once('open', function() {
     console.log("Successfully connected to MongoDB.", "\n");
-    fetchAndLogDiscussions(); // Fetch and log discussions once the database connection is open
+    fetchAndLogDiscussions(); // fetch and log discussions once database connection is open
   }).on('error', function(error) {
     console.log("Connection error:", error);
   });
   
 
-// Define a schema and model for Forum Discussions
+// define schema and model for Forum Discussions
 const discussionSchema = new mongoose.Schema({
     title: String,
     content: String,
@@ -66,18 +65,16 @@ const discussionSchema = new mongoose.Schema({
   
 const Discussion = mongoose.model('Discussion', discussionSchema);
   
-  // Function to generate a response to a question using OpenAI
+  // generate response using OpenAI
 async function generateResponse(question) {
     try {
-        // Initialize the OpenAI API instance with your API key
-        const apiKey = process.env.OPENAI_API_KEY; // Load your API key from environment variable
+        const apiKey = process.env.OPENAI_API_KEY; 
         const openaiInstance = new openai(apiKey);
 
-        // Make an API request to generate a response
         const response = await fetch('https://api.openai.com/v1/chat/completions', {
         //const response = await openaiInstance.completions.create({
             model: 'gpt-4',
-            messages: [ // Change the prompt parameter to messages parameter
+            messages: [
               {'role': 'user', 'content': 'Hello!'}
             ],
             temperature: 0   
@@ -86,7 +83,6 @@ async function generateResponse(question) {
         //const lastMessage = response.data.messages[response.data.messages.length - 1];
         //return response.data.choices[0].text.trim();
         
-        // Return the generated response
         return response.choices[0].message.content;
     } catch (error) {
         console.error('Error generating response:', error);
@@ -95,16 +91,16 @@ async function generateResponse(question) {
 }
   
   
-  // API Routes
+// API routes
 app.get('/api/discussions', async (req, res) => {
     try {
-        const discussions = await Discussion.find().sort({ createdAt: -1 }); // Sorting by creation time
+        const discussions = await Discussion.find().sort({ createdAt: -1 }); // sort by creation time
         res.json(discussions.map(discussion => ({
-        id: discussion._id.toString(), // Convert ObjectId to string
+        id: discussion._id.toString(), // convert ObjectId to string
         ...discussion.toObject(),
         comments: discussion.comments.map(comment => ({
           ...comment,
-          id: comment._id.toString() // Convert ObjectId to string for each comment
+          id: comment._id.toString() // convert ObjectId to string for each comment
         }))
       })));
     } catch (error) {
@@ -131,8 +127,8 @@ app.get('/api/discussions', async (req, res) => {
 
 
   app.post('/api/discussions', async (req, res) => {
-    const { question } = req.body; // Extract question from request body
-    // Generate response from OpenAI
+    const { question } = req.body; // extract question from request body
+    // get response from OpenAI
     try {
       const response = await generateResponse(question);
     
@@ -141,7 +137,7 @@ app.get('/api/discussions', async (req, res) => {
         comments: [{
         user: 'ETA',
         avatarUrl: 'http://localhost:3000/ETA.png', // Adjust the URL if needed
-        content: response, //mockReply,
+        content: response, 
         replyTime: new Date().toLocaleString(), // Example to generate a "Just now" time string
         views: 1
       }]
@@ -154,7 +150,7 @@ app.get('/api/discussions', async (req, res) => {
     }
   });
   
-  // New endpoint for handling chat interactions with OpenAI
+  // new endpoint for handling chat interactions with OpenAI
   app.post('/api/chat', async (req, res) => {
     const { question } = req.body;
 
@@ -168,5 +164,5 @@ app.get('/api/discussions', async (req, res) => {
 });
 
   
-  // Start the server
+  // start server
   app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
