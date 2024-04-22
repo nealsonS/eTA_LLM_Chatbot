@@ -25,7 +25,7 @@ function App() {
       body: JSON.stringify(newDiscussion)
     });
     const addedDiscussion = await response.json();
-    setDiscussions(prevDiscussions => [...prevDiscussions, addedDiscussion]);
+    setDiscussions(prevDiscussions => [ addedDiscussion, ...prevDiscussions]);
   };
 
   return (
