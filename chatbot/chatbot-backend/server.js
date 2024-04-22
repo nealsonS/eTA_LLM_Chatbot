@@ -1,6 +1,5 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const openai = require('openai').default; 
 
 
 const cors = require('cors');
