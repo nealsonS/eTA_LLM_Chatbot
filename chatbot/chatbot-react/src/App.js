@@ -1,28 +1,43 @@
-import React, { useState } from 'react';
+// src/App.js
+
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import ForumList from './components/ForumList';
 import DiscussionDetail from './components/DiscussionDetail';
 import NewDiscussionModal from './components/NewDiscussionModal';
-import { discussions as initialDiscussions } from './mockData'; // Adjust import path as needed
 
 function App() {
-  const [discussions, setDiscussions] = useState(initialDiscussions);
+  const [discussions, setDiscussions] = useState([]);
 
-  const addDiscussion = (newDiscussion) => {
-    console.log("Adding discussion:", newDiscussion);  // Log to see the data
-    setDiscussions(prevDiscussions => [...prevDiscussions, newDiscussion]);
-    console.log("Updated discussions:", discussions);  // Log to see if state updates
+  useEffect(() => {
+    const fetchDiscussions = async () => {
+      const response = await fetch('http://localhost:3800/api/discussions');
+      const data = await response.json();
+      setDiscussions(data);
+    };
+    fetchDiscussions();
+  }, []);
+
+  const addDiscussion = async (newDiscussion) => {
+    const response = await fetch('http://localhost:3800/api/discussions', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(newDiscussion)
+    });
+    const addedDiscussion = await response.json();
+    setDiscussions(prevDiscussions => [...prevDiscussions, addedDiscussion]);
   };
 
   return (
     <Router>
       <div className="App">
-        <div className="container-fluid h-100">
-          <div className="row h-100">
-            <div className="col-md-4 mt-2">
-              <div className='mt-2'>
-                <ForumList discussions={discussions} />
+        <div className="container-fluid">
+          <div className="row">
+            <div className="col-md-4">
+              <div className="m-3">
+              <NewDiscussionModal addDiscussion={addDiscussion} />
               </div>
+              <ForumList discussions={discussions} />
             </div>
             <div className="col-md-8 d-flex align-items-center justify-content-center">
               <Routes>

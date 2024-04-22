@@ -8,6 +8,8 @@ function ForumList({ discussions }) {
     const totalPages = Math.ceil(discussions.length / discussionsPerPage);
     const indexOfLastDiscussion = currentPage * discussionsPerPage;
     const indexOfFirstDiscussion = indexOfLastDiscussion - discussionsPerPage;
+    // src/components/ForumList.js
+
     const currentDiscussions = discussions.slice(indexOfFirstDiscussion, indexOfLastDiscussion);
 
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
@@ -16,9 +18,9 @@ function ForumList({ discussions }) {
 
     return (
         <div className="container">
-            <div className="mb-3">
+            {/* <div className="mb-3">
                 <NewDiscussionModal />
-            </div>
+            </div> */}
             {currentDiscussions.map((discussion) => (
                 <ForumItem key={discussion.id} data={discussion} />
             ))}

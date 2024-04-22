@@ -1,11 +1,25 @@
 // src/components/DiscussionDetail.js
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { discussions } from '../mockData';  // Ensure discussions are exported
 
 function DiscussionDetail() {
-  const { id } = useParams();
-  const discussion = discussions.find(d => d.id === parseInt(id));
+  const [discussion, setDiscussion] = useState(null);
+  const { id } = useParams();  // Get the discussion ID from the URL
+
+  useEffect(() => {
+    const fetchDiscussion = async () => {
+      try {
+        const response = await fetch(`http://localhost:3800/api/discussions/${id}`);
+        const data = await response.json();
+        setDiscussion(data);
+      } catch (error) {
+        console.error('Failed to fetch discussion:', error);
+      }
+    };
+
+    fetchDiscussion();
+  }, [id]);  // Re-run this effect if the ID changes
+
 
   if (!discussion) {
     return <div className="alert alert-danger">Discussion not found!</div>;

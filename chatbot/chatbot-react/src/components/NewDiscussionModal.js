@@ -1,3 +1,5 @@
+// src/components/NewDiscussionModal.js
+
 import React, { useState } from 'react';
 
 function NewDiscussionModal({ addDiscussion }) {
@@ -11,7 +13,6 @@ function NewDiscussionModal({ addDiscussion }) {
         e.preventDefault();
         // Create a new discussion object
         const newDiscussion = {
-            id: 10,
             title: title,
             content: content,
             user: 'Student',
