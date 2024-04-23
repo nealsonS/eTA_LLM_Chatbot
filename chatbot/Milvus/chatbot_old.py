@@ -14,7 +14,6 @@ from youtube_transcript_api import YouTubeTranscriptApi as yta
 import re
 import sys
 import json
-import time
 
 
 def word_in_doc(word_to_find, source_text):
@@ -153,8 +152,7 @@ if __name__ == '__main__':
 	).as_retriever()
 
 	#llm = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0) 
-	#llm = ChatOpenAI(model_name="gpt-4", temperature=0.0) 
-	llm = ChatOpenAI(model_name="gpt-4-turbo", temperature=0.0) 
+	llm = ChatOpenAI(model_name="gpt-4", temperature=0.0) 
 	# temp = 0.95 is good, for now 0.0 for testing
 
 	# code from https://milvus.io/docs/integrate_with_langchain.md
@@ -173,16 +171,17 @@ if __name__ == '__main__':
 	    | llm
 	)
 
-	start = time.time()
 	question = sys.argv[1] if len(sys.argv) > 1 else "Hello, how can I help you?"
 	#question = "What are quality assessments for drug therapy?"
 	'''if question.lower() == 'quit':
 					print("\nCHATBOT: Good luck & don't stay up all night! :D")'''
 	output = rag_chain.invoke(question)
-	print(output.content, "\n\nCLASS RESOURCES")
-	docs, vids = sim_search(question)
+	#print("\nCHATBOT:", output.content, "\n\nCLASS RESOURCES")
+	#docs, vids = sim_search(question)
+	#print()
 
-	end = time.time()
-	print(f'Time elapsed: {end-start}')
+	out_json = {'output': output.content}
+
+	print(json.dumps(out_json))
 
 
