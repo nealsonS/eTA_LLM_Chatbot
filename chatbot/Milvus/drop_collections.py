@@ -1,5 +1,6 @@
 from pymilvus import connections
 from pymilvus import utility
+import os
 
 if __name__ == '__main__':
 
@@ -38,5 +39,11 @@ if __name__ == '__main__':
 		for col in all_collections:
 			utility.drop_collection(col)
 			print(f'{col} dropped!')
+
+
+		FILE_DONE_PATH = 'files_inserted.txt'
+		if os.path.exists(FILE_DONE_PATH):
+			os.remove(FILE_DONE_PATH)
+		
 
 

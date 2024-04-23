@@ -125,7 +125,7 @@ app.get('/api/discussions', async (req, res) => {
 });
 // Function to execute Python script and get the AI response
 function getAIResponse(userInput, callback) {
-    const python = spawn('python', ['./Milvus/chatbot.py', userInput]);
+    const python = spawn('python3', ['../Milvus/chatbot.py', userInput]);
     let output = '';
   
     python.stdout.on('data', function (data) {

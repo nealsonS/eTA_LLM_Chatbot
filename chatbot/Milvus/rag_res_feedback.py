@@ -12,8 +12,6 @@ from langchain.chains.conversation.memory import ConversationBufferWindowMemory
 from langchain.chains.conversation.memory import ConversationSummaryBufferMemory
 from youtube_transcript_api import YouTubeTranscriptApi as yta
 import re
-import sys
-import json
 
 
 def word_in_doc(word_to_find, source_text):
@@ -132,7 +130,18 @@ def con_bufw(llm, queries):
 	bufw_history = conversation_history.memory.load_memory_variables(inputs=[])['history']
 	print(bufw_history)
 
+def insert_feedback(query, embeddings, feedback):
 
+	insert_query = f"""Query: {query}
+	Feedback: {feedback}
+	"""
+	FEEDBACK_COLLECTION = 'feedback'
+	vectorstore = Milvus(
+					embedding_function=embeddings,
+					connection_args=connection_args,
+					collection_name=FEEDBACK_COLLECTION,
+					drop_old=False,
+				).add_texts([insert_query])
 
 
 if __name__ == '__main__':
@@ -158,6 +167,8 @@ if __name__ == '__main__':
 	# code from https://milvus.io/docs/integrate_with_langchain.md
 	template = """Use the following pieces of context to answer the question at the end. 
 	If you don't know the answer, just say that you don't know, don't try to make up an answer. 
+	These are previous feedback to similar questions:
+	{previous_feedback}
 	Use three sentences maximum and keep the answer as concise as possible. 
 	{context}
 	Question: {question}
@@ -166,22 +177,27 @@ if __name__ == '__main__':
 	rag_prompt = PromptTemplate.from_template(template)
 
 	rag_chain = (
- 	   {"context": retriever, "question": RunnablePassthrough()}
+ 	   {"previous_feedback": RunnablePassthrough(),"context": retriever, "question": RunnablePassthrough()}
 	    | rag_prompt
 	    | llm
 	)
+	
+	while True:
+		question = input("YOU: ")
+		#question = "What are quality assessments for drug therapy?"
+		if question.lower() == 'quit':
+			print("\nCHATBOT: Good luck & don't stay up all night! :D")
+			break
+		if question.lower() == 'bad feedback':
+			print('Adding feedback')
+		output = rag_chain.invoke(question)
+		print("\nCHATBOT:", output.content, "\n\nCLASS RESOURCES")
+		docs, vids = sim_search(question)
+		print()
 
-	question = sys.argv[1] if len(sys.argv) > 1 else "Hello, how can I help you?"
-	#question = "What are quality assessments for drug therapy?"
-	'''if question.lower() == 'quit':
-					print("\nCHATBOT: Good luck & don't stay up all night! :D")'''
-	output = rag_chain.invoke(question)
-	#print("\nCHATBOT:", output.content, "\n\nCLASS RESOURCES")
-	#docs, vids = sim_search(question)
-	#print()
 
-	out_json = {'output': output.content}
 
-	print(json.dumps(out_json))
+
+
 
 

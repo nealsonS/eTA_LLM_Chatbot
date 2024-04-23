@@ -8,6 +8,10 @@ from pymilvus import connections, db
 import os
 import time 
 
+def write_out(f_path):
+	with open(FILE_DONE_PATH, 'a') as f_out:
+		f_out.write(f'{f_path}\n')
+
 def insert_pdfs_chunks(pdf_list, embedding_model, COLLECTION_NAME):
 	connection_args = { 'uri': URI }
 	text_splitter = CharacterTextSplitter(
@@ -19,22 +23,27 @@ def insert_pdfs_chunks(pdf_list, embedding_model, COLLECTION_NAME):
 	for f in pdf_list:
 		start = time.time() # for checking time
 
-		loader = PyPDFLoader(f)
-		pages = loader.load_and_split()
-		docs = text_splitter.split_documents(pages)
+		if f not in files_inserted_list:
+			print(f'Inserting {f}')
 
-		vectorstore = Milvus(
-				embedding_function=embedding_model,
-				connection_args=connection_args,
-				collection_name=COLLECTION_NAME,
-				drop_old=False,
-			).from_documents(
-				docs,
-				embedding=embedding_model,
-				collection_name=COLLECTION_NAME,
-				connection_args=connection_args,
-			)
+			loader = PyPDFLoader(f)
+			pages = loader.load_and_split()
+			docs = text_splitter.split_documents(pages)
 
+			vectorstore = Milvus(
+					embedding_function=embedding_model,
+					connection_args=connection_args,
+					collection_name=COLLECTION_NAME,
+					drop_old=False,
+				).from_documents(
+					docs,
+					embedding=embedding_model,
+					collection_name=COLLECTION_NAME,
+					connection_args=connection_args,
+				)
+			write_out(f)
+		else:
+			print(f'{f} is already inserted!')
 		num_pdfs -= 1
 		print(f'Inserted! {f}')
 		print(f'Duration: {time.time() - start}, PDFS left: {num_pdfs}\n')
@@ -52,23 +61,26 @@ def insert_text_chunks(text_list, delim, embedding_model, COLLECTION_NAME):
 
 	for f in text_list:
 		start = time.time()
-		loader = TextLoader(f)
-		text_str = loader.load_and_split()
+		if f not in files_inserted_list:
+			loader = TextLoader(f)
+			text_str = loader.load_and_split()
 
-		chunks = (text_splitter.split_documents(text_str))
+			chunks = (text_splitter.split_documents(text_str))
 
-		vectorstore = Milvus(
-			embedding_function=embedding_model,
-			connection_args=connection_args,
-			collection_name=COLLECTION_NAME,
-			drop_old=False,
-		).from_documents(
-			chunks,
-			embedding=embedding_model,
-			collection_name=COLLECTION_NAME,
-			connection_args=connection_args,
-			)
-
+			vectorstore = Milvus(
+				embedding_function=embedding_model,
+				connection_args=connection_args,
+				collection_name=COLLECTION_NAME,
+				drop_old=False,
+			).from_documents(
+				chunks,
+				embedding=embedding_model,
+				collection_name=COLLECTION_NAME,
+				connection_args=connection_args,
+				)
+			write_out(f)
+		else:
+			print(f'{f} is already inserted!')
 		num_texts -= 1
 		print(f'Inserted! {f}')
 		print(f'Duration: {time.time() - start}, texts left: {num_texts}\n')
@@ -107,6 +119,14 @@ if __name__ == '__main__':
 	host = 'localhost'
 	port = '19530'
 	URI = f'http://{host}:{port}' # connection address for milvus
+	FILE_DONE_PATH = 'files_inserted.txt'
+	files_inserted_list = []
+
+	if os.path.exists(FILE_DONE_PATH):
+		with open(FILE_DONE_PATH, 'r') as f_in:
+			files_inserted_list = f_in.read().strip().split('\n')
+
+	print(files_inserted_list)
 
 	connections.connect(
 		alias = 'default',
@@ -120,16 +140,15 @@ if __name__ == '__main__':
 
 	texts, pdfs, others = get_file_paths(FOLDER_PATH)
 
+	texts = [t for t in texts if t not in files_inserted_list]
+	pdfs = [t for t in pdfs if t not in files_inserted_list]
+
+
 	embedding_model = HuggingFaceEmbeddings()
 
-
-	COLLECTION_EXISTS = utility.has_collection(COLLECTION_NAME)
-	if not COLLECTION_EXISTS: # check if collection already exists
-
-		insert_text_chunks(texts, delim, embedding_model, COLLECTION_NAME)
-		insert_pdfs_chunks(pdfs, embedding_model, COLLECTION_NAME)
-	else:
-		print(f'{COLLECTION_NAME} already exists!\nExiting...')
+	print('Starting Embedding\n')
+	insert_text_chunks(texts, delim, embedding_model, COLLECTION_NAME)
+	insert_pdfs_chunks(pdfs, embedding_model, COLLECTION_NAME)
 
 
 
