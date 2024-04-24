@@ -49,21 +49,6 @@ function DiscussionDetail() {
             <div className="media-body">
               <h5 className="mt-1">{discussion.title}</h5>
               <p>{discussion.content}</p>
-              <iframe width="560" 
-              height="315" 
-              src="https://www.youtube.com/embed/V5hhrDFo8Vk?si=VTd0BnZXwvB7vCwJ&amp;start=30" 
-              title="YouTube video player" 
-              frameborder="0" 
-              allow="accelerometer; 
-              autoplay; 
-              clipboard-write; 
-              encrypted-media; 
-              gyroscope; 
-              picture-in-picture; 
-              web-share" 
-              referrerpolicy="strict-origin-when-cross-origin" 
-              allowfullscreen>
-              </iframe>
               <div className="text-muted">
                 <a href="javascript:void(0)" className="text-secondary">{formatDate(discussion.createdAt)}</a> 
               </div>
@@ -73,6 +58,21 @@ function DiscussionDetail() {
                   <div className="media-body">
                     <h6 className="mt-1">{comment.user}</h6>
                     <p>{comment.content}</p>
+                    <iframe width="560" 
+                      height="315" 
+                      src="https://www.youtube.com/embed/V5hhrDFo8Vk?si={discussion.YTEmbedLink}&amp;start=30" 
+                      title="YouTube video player" 
+                      frameborder="0" 
+                      allow="accelerometer; 
+                      autoplay; 
+                      clipboard-write; 
+                      encrypted-media; 
+                      gyroscope; 
+                      picture-in-picture; 
+                      web-share" 
+                      referrerpolicy="strict-origin-when-cross-origin" 
+                      allowfullscreen>
+                    </iframe>
                     <div className="text-muted">
                       <small className="text-muted ml-2">{formatDate(comment.replyTime)}</small>
                     </div>
