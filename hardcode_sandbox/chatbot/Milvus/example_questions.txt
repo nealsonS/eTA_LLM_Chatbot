@@ -1,0 +1,27 @@
+---- easy to search ----
+
+What are quality assessments for drug therapy?
+
+What are macromolecules?
+
+What are pharmacokinetic characteristics of macromolecules?
+
+What are some legal and regulatory requirements of clinical pharmacology?
+
+---- answering questions found in tb ----
+
+Select the one lettered answer or statement completion that is BEST. It may be helpful to carry out dimensional analysis by including units in your calculations. Answers are provided in Appendix II. A 35-year-old woman is being treated with gentamicin for a urinary tract infection. The gentamicin plasma level is 4 mg/mL shortly after initial intravenous administration of an 80-mg dose of this drug. What is the answer to this question?
+
+
+---- answering questions found in tb, different prompt words ----
+
+Digitoxin has an elimination half-life of approximately 7 days and its elimination is relatively unaffected by decreased renal function. For this latter reason, the decision is made to use this drug to control ventricular rate in a 60-year-old man with atrial fibrillation and a creatinine clearance of 25 mL/min. If no loading dose is administered and a maintenance dose of 0.1 mg/day is prescribed, how many days would be required for digitoxin levels to reach 90% of their expected steady-state value? 
+
+Digitoxin has an elimination half-life of approximately 7 days and its elimination is relatively unaffected by decreased renal function. For this latter reason, the decision is made to use this drug to control ventricular rate in a 60-year-old man with atrial fibrillation and a creatinine clearance of 25 mL/min. If no loading dose is administered and a maintenance dose of 0.1 mg/day is prescribed, how many days would be required for digitoxin levels to reach 90% of their expected steady-state value? What is the answer to this question?
+
+Select the one lettered answer or statement completion that is BEST. Digitoxin has an elimination half-life of approximately 7 days and its elimination is relatively unaffected by decreased renal function. For this latter reason, the decision is made to use this drug to control ventricular rate in a 60-year-old man with atrial fibrillation and a creatinine clearance of 25 mL/min. If no loading dose is administered and a maintenance dose of 0.1 mg/day is prescribed, how many days would be required for digitoxin levels to reach 90% of their expected steady-state value? What is the answer to this question?
+
+Select the one lettered answer or statement completion that is BEST. It may be helpful to carry out dimensional analysis by including units in your calculations. Digitoxin has an elimination half-life of approximately 7 days and its elimination is relatively unaffected by decreased renal function. For this latter reason, the decision is made to use this drug to control ventricular rate in a 60-year-old man with atrial fibrillation and a creatinine clearance of 25 mL/min. If no loading dose is administered and a maintenance dose of 0.1 mg/day is prescribed, how many days would be required for digitoxin levels to reach 90% of their expected steady-state value? What is the answer to this question?
+
+
+Select the one lettered answer or statement completion that is BEST. It may be helpful to carry out dimensional analysis by including units in your calculations. Answers are provided in Appendix II. Digitoxin has an elimination half-life of approximately 7 days and its elimination is relatively unaffected by decreased renal function. For this latter reason, the decision is made to use this drug to control ventricular rate in a 60-year-old man with atrial fibrillation and a creatinine clearance of 25 mL/min. If no loading dose is administered and a maintenance dose of 0.1 mg/day is prescribed, how many days would be required for digitoxin levels to reach 90% of their expected steady-state value? What is the answer to this question?
