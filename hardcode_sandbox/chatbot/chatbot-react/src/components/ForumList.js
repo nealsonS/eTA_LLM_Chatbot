@@ -18,9 +18,6 @@ function ForumList({ discussions }) {
 
     return (
         <div className="container">
-            {/* <div className="mb-3">
-                <NewDiscussionModal />
-            </div> */}
             {currentDiscussions.map((discussion) => (
                 <ForumItem key={discussion.id} data={discussion} />
             ))}

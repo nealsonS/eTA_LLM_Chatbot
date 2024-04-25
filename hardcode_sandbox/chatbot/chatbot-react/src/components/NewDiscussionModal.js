@@ -16,7 +16,7 @@ function NewDiscussionModal({ addDiscussion }) {
             title: title,
             content: content,
             user: 'Student',
-            avatarUrl: 'https://bootdey.com/img/Content/avatar/avatar4.png',
+            avatarUrl: "https://banner2.cleanpng.com/20180419/uze/kisspng-usc-trojans-football-university-of-southern-califo-trojans-clipart-5ad8d67ec5d339.5791848115241601268103.jpg",
             replyTime: 'Just now',
             views: 0,
             comments: []
@@ -26,6 +26,8 @@ function NewDiscussionModal({ addDiscussion }) {
         setContent('');  // Reset content
         toggleModal();  // Close modal
     };
+
+
 
     return (
         <>
