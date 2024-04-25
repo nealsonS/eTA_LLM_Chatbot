@@ -57,6 +57,10 @@ const discussionSchema = new mongoose.Schema({
       user: String,
       avatarUrl: String,
       content: String,
+      YTEmbedLink: String,
+      YT_time: String,
+      Booksrc: String,
+      pageno: String,
       replyTime: String,
       views: Number
     }]
@@ -154,8 +158,6 @@ function getAIResponse(userInput, callback) {
         console.error('Failed to get AI response:', err);
         return res.status(500).send('Failed to get AI response');
       }
-
-      const embedURL = `https://www.youtube.com/embed/${aiResponse.vids}`
   
       try {
         const newDiscussion = new Discussion({
@@ -169,12 +171,15 @@ function getAIResponse(userInput, callback) {
             user: 'ETA',
             avatarUrl: 'http://localhost:3000/ETA.png',
             content: aiResponse.response,
-            YTEmbedLink: embedURL,
+            YTEmbedLink: aiResponse.vids,
+            YT_time: aiResponse.vid_time,
+            Booksrc: aiResponse.docs,
+            pageno: aiResponse.pageno,
             replyTime: new Date().toLocaleString(),
             views: 0
           }]
         });
-  
+
         const savedDiscussion = await newDiscussion.save();
         res.status(201).json(savedDiscussion);
       } catch (error) {

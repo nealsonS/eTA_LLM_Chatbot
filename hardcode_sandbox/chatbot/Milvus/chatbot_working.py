@@ -133,9 +133,6 @@ def con_bufw(llm, queries):
 	bufw_history = conversation_history.memory.load_memory_variables(inputs=[])['history']
 	print(bufw_history)
 
-
-
-
 if __name__ == '__main__':
 
 	COLLECTION_NAME = 'db_560'

@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { formatDate } from '../formatDate'; // Import the utility function
+import examplePdf from '../textbook.pdf';
 
 
 function DiscussionDetail() {
@@ -58,21 +59,34 @@ function DiscussionDetail() {
                   <div className="media-body">
                     <h6 className="mt-1">{comment.user}</h6>
                     <p>{comment.content}</p>
-                    <iframe width="560" 
-                      height="315" 
-                      src="https://www.youtube.com/embed/V5hhrDFo8Vk?si={discussion.YTEmbedLink}&amp;start=30" 
-                      title="YouTube video player" 
-                      frameborder="0" 
-                      allow="accelerometer; 
-                      autoplay; 
-                      clipboard-write; 
-                      encrypted-media; 
-                      gyroscope; 
-                      picture-in-picture; 
-                      web-share" 
-                      referrerpolicy="strict-origin-when-cross-origin" 
-                      allowfullscreen>
-                    </iframe>
+                    <div>
+                      {comment.Booksrc.length > 0 && (
+                      <iframe
+                        src={`${examplePdf}#page=${comment.pageno}`}
+                        width="100%"
+                        height="500px"
+                        frameborder="0"
+                        allow="fullscreen;"
+                      >
+                      <p>Your browser does not support PDFs. <a href="/path/to/document.pdf">Download the PDF</a>.</p>
+                      </iframe>
+                      )}
+
+                    </div>
+                    <div>
+                      {comment.YTEmbedLink.length > 0 && (
+                        <iframe
+                          width="560"
+                          height="315"
+                          src={`https://www.youtube.com/embed/${comment.YTEmbedLink}?start=${comment.YT_time}`}
+                          title="YouTube video player"
+                          frameBorder="0"
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                          referrerPolicy="strict-origin-when-cross-origin"
+                          allowFullScreen
+                        ></iframe>
+                      )}
+                    </div>
                     <div className="text-muted">
                       <small className="text-muted ml-2">{formatDate(comment.replyTime)}</small>
                     </div>
