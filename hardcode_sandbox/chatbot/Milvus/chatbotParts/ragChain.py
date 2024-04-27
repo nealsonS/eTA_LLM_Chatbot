@@ -12,22 +12,12 @@ from langchain.chains.conversation.memory import ConversationBufferWindowMemory
 from langchain.chains.conversation.memory import ConversationSummaryBufferMemory
 
 
-def embed_and_rag(question):
-	return "chatbot response"
 
-
-def embed_and_rag_real(question):
-	COLLECTION_NAME = 'db_560'
-	host = 'localhost'
-	port = '19530'
-	URI = f'http://{host}:{port}' # connection address for milvus
-	connection_args = { 'uri': URI }
-
-	embeddings = HuggingFaceEmbeddings()
-	#embeddings = OpenAIEmbeddings() # is different shape from HFE, which breaks Milvus
+def ai_answer(question, embeddings, connection_args, COLLECTION_NAME):
+	
 	retriever = Milvus(
 		embedding_function = embeddings,
-		connection_args=connection_args,
+		connection_args = connection_args,
 		collection_name = COLLECTION_NAME
 	).as_retriever()
 
@@ -43,13 +33,11 @@ def embed_and_rag_real(question):
 	Helpful Answer:"""
 
 	rag_prompt = PromptTemplate.from_template(template)
-
 	rag_chain = (
  	   {"context": retriever, "question": RunnablePassthrough()}
 	    | rag_prompt
 	    | llm
 	)
-	
 	output = rag_chain.invoke(question)
 	return output.content
 

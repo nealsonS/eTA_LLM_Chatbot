@@ -1,10 +1,6 @@
 
-def word_in_doc():
-	return "word_in_doc imported"
 
-
-def word_in_doc_real(word_to_find, source_text):
-	
+def word_in_doc(word_to_find, source_text):
 	word_index = source_text.find(word_to_find)
 	# if word found
 	if word_index != -1:
@@ -14,8 +10,8 @@ def word_in_doc_real(word_to_find, source_text):
 		# extract substring
 		output_string = source_text[start_index:end_index]
 		output_string = output_string.replace(word_to_find, "\033[1m\033[3m\033[4m"+word_to_find+"\033[0m")
-		print('\nText Excerpt:\n"'+ output_string + '"')
-		return True
+		#print('\nText Excerpt:\n"'+ output_string + '"')
+		return True, output_string
 	else:
-		return False
-		#print("Word not found in the source text.")
+		output_string = "No references in notes"
+		return False, output_string
