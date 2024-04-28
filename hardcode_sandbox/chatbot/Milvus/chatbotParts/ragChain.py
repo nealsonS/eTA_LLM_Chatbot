@@ -1,5 +1,6 @@
 from langchain.vectorstores.milvus import Milvus
-from langchain_community.embeddings import HuggingFaceEmbeddings
+#from langchain_community.embeddings import HuggingFaceEmbeddings
+from langchain_voyageai import VoyageAIEmbeddings
 from langchain_openai import ChatOpenAI
 from langchain_core.prompts import PromptTemplate
 from langchain.schema.runnable import RunnablePassthrough

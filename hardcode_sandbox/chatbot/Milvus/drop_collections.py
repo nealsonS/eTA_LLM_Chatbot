@@ -4,7 +4,7 @@ import os
 
 if __name__ == '__main__':
 
-	host = 'localhost'
+	host = '35.215.73.196'
 	port = '19530'
 	URI = f'http://{host}:{port}' # connection address for milvus
 

@@ -1,5 +1,6 @@
 from langchain.text_splitter import CharacterTextSplitter
-from langchain_community.embeddings import HuggingFaceEmbeddings
+#from langchain_community.embeddings import HuggingFaceEmbeddings
+from langchain_voyageai import VoyageAIEmbeddings
 from langchain.vectorstores.milvus import Milvus
 from langchain_community.document_loaders import PyPDFLoader, TextLoader
 from pymilvus import utility
@@ -116,7 +117,7 @@ def get_file_paths(FOLDER_PATH):
 if __name__ == '__main__':
 
 	COLLECTION_NAME = 'db_560'
-	host = 'localhost'
+	host = '35.215.73.196'
 	port = '19530'
 	URI = f'http://{host}:{port}' # connection address for milvus
 	FILE_DONE_PATH = 'files_inserted.txt'
@@ -144,7 +145,11 @@ if __name__ == '__main__':
 	pdfs = [t for t in pdfs if t not in files_inserted_list]
 
 
-	embedding_model = HuggingFaceEmbeddings()
+	#embedding_model = HuggingFaceEmbeddings()
+	embedding_model = VoyageAIEmbeddings(
+		voyage_api_key = "pa-cLlD2gK4qGD_AtnXz5A6vqLXjUDIrC4yACyxehLgXd4",
+		model = 'voyage-lite-02-instruct'
+	)
 
 	print('Starting Embedding\n')
 	insert_text_chunks(texts, delim, embedding_model, COLLECTION_NAME)
