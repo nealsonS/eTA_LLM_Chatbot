@@ -32,11 +32,12 @@ def sim_search(query, embeddings, connection_args, COLLECTION_NAME):
 						vids.append(link)
 		elif ".pdf" in source:
 			for word in keywords:
-				in_doc, output_string = word_in_doc(word, i.page_content)
+				in_doc, output_string, page_number = word_in_doc(word, i.page_content, source)
 				if source not in docs and in_doc:
 					#print(output_string)
 					#print("For {word},\nExcerpt from", source, "pg.", i.metadata['pk'])
 					docs.append(source)
+					doc_pages.append(page_number)
 	#if len(vids) == 0:
 	#	print("\nNo applicable reference videos.")
 	#if len(docs) == 0:
