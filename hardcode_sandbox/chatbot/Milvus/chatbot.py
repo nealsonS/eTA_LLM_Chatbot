@@ -36,12 +36,10 @@ if __name__ == '__main__':
 	
 	reply = {question: {'output': output,'docs': docs[0], 'pageno': doc_pages[0], 'vids': vids[0], 'vid_time': vid_times[0], 'time': 5.0}}
 
-
 	q_dict = reply[question.lower()]
 	time.sleep(q_dict['time'])
 
 	out_json = {'response': q_dict['output'], 'docs': q_dict['docs'], 'vid_time': q_dict['vid_time'], 'pageno': q_dict['pageno'], 'vids': q_dict['vids']}
-	# Good luck & don't stay up all night! :D
 
 	print(json.dumps(out_json))
 	end = time.time()
