@@ -1,5 +1,6 @@
 from langchain.text_splitter import CharacterTextSplitter
-#from langchain_community.embeddings import HuggingFaceEmbeddings
+from langchain_community.embeddings import HuggingFaceEmbeddings
+from langchain_openai import OpenAIEmbeddings
 from langchain_voyageai import VoyageAIEmbeddings
 from langchain.vectorstores.milvus import Milvus
 from langchain_community.document_loaders import PyPDFLoader, TextLoader
@@ -116,7 +117,8 @@ def get_file_paths(FOLDER_PATH):
 
 if __name__ == '__main__':
 
-	COLLECTION_NAME = 'db_560'
+
+	COLLECTION_NAME = 'GPT4'
 	host = '35.215.73.196'
 	port = '19530'
 	URI = f'http://{host}:{port}' # connection address for milvus
@@ -146,10 +148,11 @@ if __name__ == '__main__':
 
 
 	#embedding_model = HuggingFaceEmbeddings()
-	embedding_model = VoyageAIEmbeddings(
+	'''embedding_model = VoyageAIEmbeddings(
 		voyage_api_key = "pa-cLlD2gK4qGD_AtnXz5A6vqLXjUDIrC4yACyxehLgXd4",
 		model = 'voyage-lite-02-instruct'
-	)
+	)'''
+	embedding_model = OpenAIEmbeddings(model="text-embedding-3-large")
 
 	print('Starting Embedding\n')
 	insert_text_chunks(texts, delim, embedding_model, COLLECTION_NAME)

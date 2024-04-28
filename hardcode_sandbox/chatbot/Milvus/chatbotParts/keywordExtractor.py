@@ -1,7 +1,7 @@
 from rake_nltk import Rake
 import nltk
-nltk.download('stopwords')
-nltk.download('punkt')
+nltk.download('stopwords', quiet=True)
+nltk.download('punkt', quiet=True)
 
 
 def find_keywords(query):

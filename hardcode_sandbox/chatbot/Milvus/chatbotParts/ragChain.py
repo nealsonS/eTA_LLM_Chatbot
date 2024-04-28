@@ -23,7 +23,7 @@ def ai_answer(question, embeddings, connection_args, COLLECTION_NAME):
 	).as_retriever()
 
 	#llm = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0) 
-	llm = ChatOpenAI(model_name="gpt-4", temperature=0.0) 
+	llm = ChatOpenAI(model_name="gpt-4", temperature=0.95) 
 	# temp = 0.95 is good, for now 0.0 for testing
 
 	template = """Use the following pieces of context to answer the question at the end. 

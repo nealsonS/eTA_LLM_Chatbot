@@ -26,13 +26,13 @@ if __name__ == '__main__':
 	# take the 1st items in these lists (top resource?)
 	# if there are none, append 1 
 	if len(docs) == 0:
-		docs.append("none")
+		docs.append("")
 	if len(doc_pages) == 0:
-		doc_pages.append("none")
+		doc_pages.append("")
 	if len(vids) == 0:
-		vids.append("none")
+		vids.append("")
 	if len(vid_times) == 0:
-		vid_times.append("none")
+		vid_times.append("")
 	
 	reply = {question: {'output': output,'docs': docs[0], 'pageno': doc_pages[0], 'vids': vids[0], 'vid_time': vid_times[0], 'time': 5.0}}
 
