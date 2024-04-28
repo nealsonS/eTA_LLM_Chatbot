@@ -1,7 +1,7 @@
 from langchain.vectorstores.milvus import Milvus
+#from langchain_community.embeddings import HuggingFaceEmbeddings
 #from langchain_voyageai import VoyageAIEmbeddings
 from langchain_openai import OpenAIEmbeddings
-#from langchain_community.embeddings import HuggingFaceEmbeddings
 
 
 
