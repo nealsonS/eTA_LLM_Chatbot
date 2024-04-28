@@ -35,13 +35,7 @@ if __name__ == '__main__':
 		vid_times.append("none")
 	
 	reply = {question: {'output': output,'docs': docs[0], 'pageno': doc_pages[0], 'vids': vids[0], 'vid_time': vid_times[0], 'time': 5.0}}
-	#print(hard_coded_questions)
 
-	# HARDCODE FOR DEMO PURPOSES!
-	#hard_coded_questions = {'what are macromolecules?': {'output': "Macromolecules are large molecules with a molecular mass in kilodaltons (kDa), such as proteins, glycoproteins, or monoclonal antibodies, either as intact immunoglobulins or as their fragments. These molecules are significant in biotechnology and medicine, often used in targeted therapies and as diagnostic aids. The term encompasses both naturally occurring and synthetic molecules used in various applications, including drug development and disease treatment."
-	#,'docs': '', 'pageno': 0, 'vids': 'HzeICXXGB-Q', 'vid_time': 734, 'time': 7.585682153701782},
-	#'what are quality assessments of drug therapy?': {'output': 'Quality assessments of drug therapy involve evaluating and improving the use of medications within healthcare settings to optimize patient outcomes and minimize risks such as medication errors and adverse drug events. These assessments focus on the entire medication-use process, from selection and administration to monitoring and ongoing evaluation, using tools like benchmarking, guidelines, and quality improvement programs. The goal is to ensure safe, effective, and economical medication use.', 
-	#'docs': '../all_course_materials/principles_clinical_pharmacology.pdf', 'pageno': 503, 'vids': '', 'vid_time': 0, 'time': 5.448596477508545}}
 
 	q_dict = reply[question.lower()]
 	time.sleep(q_dict['time'])

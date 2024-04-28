@@ -4,16 +4,6 @@ from chatbotParts.pdfExcerpt import word_in_doc
 
 from langchain.vectorstores.milvus import Milvus
 from langchain_community.embeddings import HuggingFaceEmbeddings
-#from langchain_openai import ChatOpenAI
-#from langchain_core.prompts import PromptTemplate
-#from langchain.schema.runnable import RunnablePassthrough
-#from langchain.chains import ConversationChain
-#from langchain.chains.conversation.memory import ConversationBufferMemory
-#from langchain.callbacks import get_openai_callback
-#from langchain_community.callbacks import get_openai_callback
-#from langchain.chains.conversation.memory import ConversationSummaryMemory
-#from langchain.chains.conversation.memory import ConversationBufferWindowMemory
-#from langchain.chains.conversation.memory import ConversationSummaryBufferMemory
 
 
 def sim_search(query, embeddings, connection_args, COLLECTION_NAME):
