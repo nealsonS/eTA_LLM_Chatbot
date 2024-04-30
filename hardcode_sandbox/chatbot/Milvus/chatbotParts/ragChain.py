@@ -9,6 +9,7 @@ from langchain_community.callbacks import get_openai_callback
 from langchain.chains.conversation.memory import ConversationSummaryMemory
 from langchain.chains.conversation.memory import ConversationBufferWindowMemory
 from langchain.chains.conversation.memory import ConversationSummaryBufferMemory
+import os
 
 
 
@@ -21,6 +22,7 @@ def ai_answer(question, embeddings, connection_args, COLLECTION_NAME):
 	).as_retriever()
 
 	#llm = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0) 
+	os.environ['OPENAI_API_KEY'] = 'sk-proj-CPHp04nMoMj4vJ3EvYFVT3BlbkFJpnFyy8xjVtcx9tGwpdvc'
 	llm = ChatOpenAI(model_name="gpt-4", temperature=0.95) 
 	# temp = 0.95 is good, for now 0.0 for testing
 

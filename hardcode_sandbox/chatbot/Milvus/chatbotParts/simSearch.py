@@ -4,6 +4,7 @@ from chatbotParts.pdfExcerpt import word_in_doc
 
 from langchain.vectorstores.milvus import Milvus
 from langchain_community.embeddings import HuggingFaceEmbeddings
+import os
 
 
 def sim_search(query, embeddings, connection_args, COLLECTION_NAME):
@@ -22,6 +23,10 @@ def sim_search(query, embeddings, connection_args, COLLECTION_NAME):
 		#print(i.metadata['source']) #format works
 		#print(i.metadata['pk'])
 		source = i.metadata['source'].replace("/home/vboxuser/chatbot", "..") #might need to replace this??
+		source = source.split(os.sep)
+		source = source[1].split('\\')
+		source = os.path.join('..', 'all_course_materials', source[1])
+			
 		if "ytvid_" in source:
 			link = source[source.find(".pdf") - 11:source.find(".pdf")]
 			if link not in vids:
