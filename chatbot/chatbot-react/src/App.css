@@ -14,7 +14,7 @@
 }
 
 .App-header {
-  background-color: #282c34;
+  background-color: #282c34; /*dark blue*/
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -25,7 +25,7 @@
 }
 
 .App-link {
-  color: #61dafb;
+  color: #61dafb; /*neon blue*/
 }
 
 @keyframes App-logo-spin {
@@ -46,7 +46,7 @@
 }
 
 .nav-link.nav-link-faded {
-  color: #4a5568; /* Default color for all nav links */
+  color: #4a5568; /* Navy; Default color for all nav links */
   display: flex;
   align-items: center;
   border-radius: .25rem;
@@ -56,16 +56,16 @@
 .nav-link.nav-link-faded.active,
 .nav-link.nav-link-faded:active {
   color: #3367b5;
-  background-color: #c9d8f0;
+  background-color: #c9d8f0; /*light blue*/
 }
 
 .nav-pills .nav-link.active,
 .nav-pills .show>.nav-link {
   color: #fff;
-  background-color: #467bcb;
+  background-color: #467bcb; /*blue*/
 }
 
 .nav-link.active {
-  color: #467bcb; /* Overriding color for active links if necessary */
+  color: #467bcb; /* Blue; Overriding color for active links if necessary */
 }
 

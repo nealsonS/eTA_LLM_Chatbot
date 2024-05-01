@@ -88,8 +88,8 @@ function App() {
                 <Route path="/" element={
                   <div className="text-center" style={{ maxWidth: "600px" }}>
                     <img src="/UF.png" alt="Welcome" className="img-fluid" style={{ maxWidth: "200px" }} />
-                    <h1>Welcome to UpAllNight Forums!</h1>
-                    <p className="lead">Click 'New Question' to ask a question or select a discussion to view details.</p>
+                    <h1 style= {{color:'#faf3e6'}} >Welcome to UpAllNight Forums!</h1>
+                    <p className="lead" style= {{color:'#faf3e6'}}>Click 'New Question' to ask a question or select a discussion to view details.</p>
                   </div>
                 } />
                 <Route path="/discussion/:id" element={<DiscussionDetail />} />
