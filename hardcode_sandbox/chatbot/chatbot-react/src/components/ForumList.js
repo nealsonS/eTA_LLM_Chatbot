@@ -1,3 +1,4 @@
+// src/components/ForumList.js
 import React, { useState } from 'react';
 import ForumItem from './ForumItem';
 import NewDiscussionModal from './NewDiscussionModal'; // Ensure this is properly imported
@@ -8,8 +9,6 @@ function ForumList({ discussions }) {
     const totalPages = Math.ceil(discussions.length / discussionsPerPage);
     const indexOfLastDiscussion = currentPage * discussionsPerPage;
     const indexOfFirstDiscussion = indexOfLastDiscussion - discussionsPerPage;
-    // src/components/ForumList.js
-
     const currentDiscussions = discussions.slice(indexOfFirstDiscussion, indexOfLastDiscussion);
 
     const paginate = (pageNumber) => setCurrentPage(pageNumber);

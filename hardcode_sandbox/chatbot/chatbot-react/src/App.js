@@ -57,7 +57,6 @@ function App() {
       <div className="App">
         <div className="container-fluid">
           <div className="row">
-
             <div className="col-md-4">
               {isLoggedIn ? (
                 <>
@@ -70,15 +69,17 @@ function App() {
                   </div>
                 </>
               ) : (
-                <div className="m-3">
-                  {showLogin ? (
-                    <LoginForm onUserLoggedIn={handleUserLoggedIn} />
-                  ) : (
-                    <RegistrationForm onRegistrationSuccess={handleRegistrationSuccess} />
-                  )}
-                  <button className="btn btn-link" onClick={() => setShowLogin(!showLogin)}>
-                    {showLogin ? 'Need an account? Register' : 'Already have an account? Login'}
-                  </button>
+                <div>
+                  <div className="m-3">
+                    {showLogin ? (
+                      <LoginForm onUserLoggedIn={handleUserLoggedIn} />
+                    ) : (
+                      <RegistrationForm onRegistrationSuccess={handleRegistrationSuccess} />
+                    )}
+                    <button className="btn btn-link" onClick={() => setShowLogin(!showLogin)}>
+                      {showLogin ? 'Need an account? Register' : 'Already have an account? Login'}
+                    </button>
+                  </div>
                 </div>
               )}
             </div>
