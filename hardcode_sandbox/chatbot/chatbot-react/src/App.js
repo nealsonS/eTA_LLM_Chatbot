@@ -63,9 +63,11 @@ function App() {
                 <>
                   <div className="m-3">
                     <NewDiscussionModal addDiscussion={addDiscussion} />
-                    <button className="btn btn-danger" onClick={handleUserLoggedOut}>Logout</button>
                   </div>
                   <ForumList discussions={discussions} />
+                  <div className="fixed-bottom mb-3 ml-3">
+                    <button className="btn btn-danger" onClick={handleUserLoggedOut}>Logout</button>
+                  </div>
                 </>
               ) : (
                 <div className="m-3">
