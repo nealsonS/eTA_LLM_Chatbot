@@ -67,6 +67,15 @@ const discussionSchema = new mongoose.Schema({
   });
   
 const Discussion = mongoose.model('Discussion', discussionSchema);
+
+// User-Password Schema
+const userSchema = new mongoose.Schema({
+  username: { type: String, required: true, unique: true },
+  password: { type: String, required: true }, // Note: Storing plain text passwords is highly insecure.
+  createdAt: { type: Date, default: Date.now }
+});
+
+const User = mongoose.model('User', userSchema);
   
   
   
@@ -166,6 +175,32 @@ function getAIResponse(userInput, callback) {
       }
     });
   });
+
+  app.post('/api/register', async (req, res) => {
+      try {
+          const { username, password } = req.body;
+          const user = new User({ username, password });
+          await user.save();
+          res.status(201).send({ message: 'User created successfully', userId: user._id });
+      } catch (error) {
+          res.status(400).json({ message: 'Error creating user', error: error.message });
+      }
+  });
+
+  app.post('/api/login', async (req, res) => {
+      try {
+          const { username, password } = req.body;
+          const user = await User.findOne({ username, password });
+          if (!user) {
+              return res.status(401).send({ message: 'Invalid credentials' });
+          }
+          res.json({ message: 'Login successful', userId: user._id });
+      } catch (error) {
+          res.status(500).json({ message: 'Login error', error: error.message });
+      }
+  });
+
+  
 
   
   // start server

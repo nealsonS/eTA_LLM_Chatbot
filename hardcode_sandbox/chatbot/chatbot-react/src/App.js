@@ -1,13 +1,20 @@
 // src/App.js
 
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import ForumList from './components/ForumList';
 import DiscussionDetail from './components/DiscussionDetail';
 import NewDiscussionModal from './components/NewDiscussionModal';
+import LoginForm from './components/LoginForm';
+import RegistrationForm from './components/RegistrationForm';
 
 function App() {
   const [discussions, setDiscussions] = useState([]);
+  const [user, setUser] = useState(null);
+  const [showLogin, setShowLogin] = useState(true); // Toggle between Login and Register
+  const [message, setMessage] = useState('');
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+
 
   useEffect(() => {
     const fetchDiscussions = async () => {
@@ -16,7 +23,8 @@ function App() {
       setDiscussions(data);
     };
     fetchDiscussions();
-  }, []);
+  },[]);
+
 
   const addDiscussion = async (newDiscussion) => {
     const response = await fetch('http://localhost:3800/api/discussions', {
@@ -25,28 +33,61 @@ function App() {
       body: JSON.stringify(newDiscussion)
     });
     const addedDiscussion = await response.json();
-    setDiscussions(prevDiscussions => [ addedDiscussion, ...prevDiscussions]);
+    setDiscussions(prevDiscussions => [addedDiscussion, ...prevDiscussions]);
   };
+
+  const handleUserLoggedIn = (user) => {
+    setIsLoggedIn(true);
+    console.log('User logged in:', user);
+  };
+
+  const handleUserLoggedOut = () => {
+    setIsLoggedIn(false);
+    console.log('User logged out');
+  };
+
+  const handleRegistrationSuccess = () => {
+    setShowLogin(true);
+    console.log('Registration successful, switching to login');
+  };
+
 
   return (
     <Router>
       <div className="App">
         <div className="container-fluid">
           <div className="row">
+
             <div className="col-md-4">
-              <div className="m-3">
-              <NewDiscussionModal addDiscussion={addDiscussion} />
-              </div>
-              <ForumList discussions={discussions} />
+              {isLoggedIn ? (
+                <>
+                  <div className="m-3">
+                    <NewDiscussionModal addDiscussion={addDiscussion} />
+                    <button className="btn btn-danger" onClick={handleUserLoggedOut}>Logout</button>
+                  </div>
+                  <ForumList discussions={discussions} />
+                </>
+              ) : (
+                <div className="m-3">
+                  {showLogin ? (
+                    <LoginForm onUserLoggedIn={handleUserLoggedIn} />
+                  ) : (
+                    <RegistrationForm onRegistrationSuccess={handleRegistrationSuccess} />
+                  )}
+                  <button className="btn btn-link" onClick={() => setShowLogin(!showLogin)}>
+                    {showLogin ? 'Need an account? Register' : 'Already have an account? Login'}
+                  </button>
+                </div>
+              )}
             </div>
+
             <div className="col-md-8 d-flex align-items-center justify-content-center">
               <Routes>
                 <Route path="/" element={
                   <div className="text-center" style={{ maxWidth: "600px" }}>
                     <img src="/UF.png" alt="Welcome" className="img-fluid" style={{ maxWidth: "200px" }} />
                     <h1>Welcome to UpAllNight Forums!</h1>
-                    <p className="lead">Click 'New Question' to ask a question</p>
-                    <p className="lead">or select a discussion to view details.</p>
+                    <p className="lead">Click 'New Question' to ask a question or select a discussion to view details.</p>
                   </div>
                 } />
                 <Route path="/discussion/:id" element={<DiscussionDetail />} />
@@ -58,5 +99,6 @@ function App() {
     </Router>
   );
 }
+
 
 export default App;

@@ -65,7 +65,6 @@ function DiscussionDetail() {
                         src={`${examplePdf}#page=${comment.pageno}`}
                         width="100%"
                         height="500px"
-                        frameborder="0"
                         allow="fullscreen;"
                       >
                       <p>Your browser does not support PDFs. <a href="/path/to/document.pdf">Download the PDF</a>.</p>
@@ -80,7 +79,6 @@ function DiscussionDetail() {
                           height="315"
                           src={`https://www.youtube.com/embed/${comment.YTEmbedLink}?start=${comment.YT_time}`}
                           title="YouTube video player"
-                          frameBorder="0"
                           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                           referrerPolicy="strict-origin-when-cross-origin"
                           allowFullScreen
