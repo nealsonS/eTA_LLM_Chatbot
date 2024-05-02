@@ -108,8 +108,8 @@ function DiscussionDetail({ user }) {
                         </div>
                       </div>
                       ): (
-                      <div class="spinner-grow" style={{width: 20, height: 20}} role="status">
-                        <span class="sr-only">Loading...</span>
+                      <div className="spinner-grow" style={{width: 20, height: 20}} role="status">
+                        <span className="sr-only">Loading...</span>
                       </div>
                       )}
                       
