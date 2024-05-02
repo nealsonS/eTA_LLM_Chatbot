@@ -25,8 +25,10 @@ function DiscussionDetail({ user }) {
       }
     };
     
-
     fetchDiscussion();
+
+    const intervalId = setInterval(fetchDiscussion, 1000);  // Poll every 1 seconds
+    return () => clearInterval(intervalId);  // Clean up the interval on component unmount
   }, [id]);  // Re-run this effect if the ID changes
 
   const handleVerify = async () => {
@@ -66,44 +68,55 @@ function DiscussionDetail({ user }) {
               <div className="text-muted">
                 <a href="javascript:void(0)" className="text-secondary">{formatDate(discussion.createdAt)}</a> 
               </div>
-              {discussion.comments.map((comment, index) => (
-                <div className="media mt-3 forum-item" key={index}>
-                  <img src={comment.avatarUrl} className="mr-3 rounded-circle" alt="Replier" width="50" />
-                  <div className="media-body">
-                    <h6 className="mt-1">{comment.user}</h6>
-                    <p>{comment.content}</p>
-                    <div>
-                      {comment.Booksrc.length > 0 && (
-                      <iframe
-                        src={`${examplePdf}#page=${comment.pageno}`}
-                        width="100%"
-                        height="500px"
-                        allow="fullscreen;"
-                      >
-                      <p>Your browser does not support PDFs. <a href="/path/to/document.pdf">Download the PDF</a>.</p>
-                      </iframe>
-                      )}
+              <div>
+                {discussion.comments.map((comment, index) => (
+                  <div className="media mt-3 forum-item" key={index}>
+                    <img src={comment.avatarUrl} className="mr-3 rounded-circle" alt="Replier" width="50" />
+                    <div className="media-body">
+                      <h6 className="mt-1">{comment.user}</h6>
+                      {comment.content.length > 0 ? (
+                      <div>
+                        <p>{comment.content}</p>
+                        <div>
+                          {comment.Booksrc.length > 0 && (
+                          <iframe
+                            src={`${examplePdf}#page=${comment.pageno}`}
+                            width="100%"
+                            height="500px"
+                            allow="fullscreen;"
+                          >
+                          <p>Your browser does not support PDFs. <a href="/path/to/document.pdf">Download the PDF</a>.</p>
+                          </iframe>
+                          )}
 
-                    </div>
-                    <div>
-                      {comment.YTEmbedLink.length > 0 && (
-                        <iframe
-                          width="560"
-                          height="315"
-                          src={`https://www.youtube.com/embed/${comment.YTEmbedLink}?start=${comment.YT_time}`}
-                          title="YouTube video player"
-                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                          referrerPolicy="strict-origin-when-cross-origin"
-                          allowFullScreen
-                        ></iframe>
+                        </div>
+                        <div className="mt-4">
+                          {comment.YTEmbedLink.length > 0 && (
+                            <iframe
+                              width="100%"
+                              height="500px"
+                              src={`https://www.youtube.com/embed/${comment.YTEmbedLink}?start=${comment.YT_time}`}
+                              title="YouTube video player"
+                              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                              referrerPolicy="strict-origin-when-cross-origin"
+                              allowFullScreen
+                            ></iframe>
+                          )}
+                        </div>
+                        <div className="text-muted">
+                          <small className="text-muted ml-2">{formatDate(comment.replyTime)}</small>
+                        </div>
+                      </div>
+                      ): (
+                      <div class="spinner-grow" style={{width: 20, height: 20}} role="status">
+                        <span class="sr-only">Loading...</span>
+                      </div>
                       )}
-                    </div>
-                    <div className="text-muted">
-                      <small className="text-muted ml-2">{formatDate(comment.replyTime)}</small>
+                      
                     </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           </div>
           <div className='m-3'>
