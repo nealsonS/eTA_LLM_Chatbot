@@ -58,34 +58,17 @@ function App() {
     <Router>
       <div className="App">
         <div className="container-fluid">
+        {isLoggedIn ? (
           <div className="row align-items-center justify-content-center" style={{ minHeight: '100vh' }}>
             <div className="col-md-4">
-              {isLoggedIn ? (
-                <>
-                  <div className="m-3">
-                    <NewDiscussionModal addDiscussion={addDiscussion} />
-                  </div>
-                  <ForumList discussions={discussions} />
-                  <div className="fixed-bottom mb-3 ml-3">
-                    <button className="btn btn-danger" onClick={handleUserLoggedOut}>Logout</button>
-                  </div>
-                </>
-              ) : (
-                <div>
-                  <div className="row-md-6 m-3">
-                    {showLogin ? (
-                      <LoginForm onUserLoggedIn={handleUserLoggedIn} />
-                    ) : (
-                      <RegistrationForm onRegistrationSuccess={handleRegistrationSuccess} />
-                    )}
-                    <button className="btn btn-link" onClick={() => setShowLogin(!showLogin)}>
-                      {showLogin ? 'Need an account? Register' : 'Already have an account? Login'}
-                    </button>
-                  </div>
-                </div>
-              )}
+              <div className="m-3">
+                <NewDiscussionModal addDiscussion={addDiscussion} />
+              </div>
+              <ForumList discussions={discussions} />
+              <div className="fixed-bottom mb-3 ml-3">
+                <button className="btn btn-danger" onClick={handleUserLoggedOut}>Logout</button>
+              </div>
             </div>
-
             <div className="col-md-8 d-flex align-items-center justify-content-center">
               <Routes>
                 <Route path="/" element={
@@ -99,6 +82,23 @@ function App() {
               </Routes>
             </div>
           </div>
+        ) : (
+          <div className="row align-items-center justify-content-center" style={{ minHeight: '100vh' }}>
+            <div className="row-md-6 m-3">
+              <div className='m-2'>
+                <img src="/UF.png" alt="Welcome" className="img-fluid" style={{ maxWidth: "200px" }} />
+              </div>
+              {showLogin ? (
+                <LoginForm onUserLoggedIn={handleUserLoggedIn} />
+              ) : (
+                <RegistrationForm onRegistrationSuccess={handleRegistrationSuccess} />
+              )}
+              <button className="btn btn-link" onClick={() => setShowLogin(!showLogin)}>
+                {showLogin ? 'Need an account? Register' : 'Already have an account? Login'}
+              </button>
+            </div>
+          </div>
+        )}
         </div>
       </div>
     </Router>
