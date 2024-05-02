@@ -24,18 +24,22 @@ Folder `Milvus` contains Python scripts that connect to our Milvus database.
 ## Course Materials 
 Folder `all_course_materials` contains the following materials: <br>
 
-Primary: NIH Principles of Clinical Pharmacology Course Materials <br>
+Primary: NIH Principles of Clinical Pharmacology Course Materials 
+1. Textbook: Arthur J. Atkinson Jr., Shiew-Mei Huang, Juan J.L. Lertora, Sanford P. Markey - Principles of Clinical Pharmacology, Third Edition-Academic Press (2012) 
+2. Syllabus: copy of NIH's 2023-2024 syllabus 
+3. YT video transcripts (There are currently no lecture videos in the local machine, but the videos we will be using are available here: `https://www.youtube.com/playlist?list=PLokeFpXsus96lkVjFsQEMtT5a-yIJKDJt` <br>
+The transcripts of these videos are in PDF format so that our PDF reader can scrape the data.)  
+<br>
 
 Secondary: MIT OpenCourseWare Principles of Pharmacology <br>
-
-There are currently no lecture videos in the local machine, but the videos we will be using are available here: `https://www.youtube.com/playlist?list=PLokeFpXsus96lkVjFsQEMtT5a-yIJKDJt` <br>
-The transcripts of these videos are in PDF format so that our PDF reader can scrape the data. <br>
-
-Textbook: Arthur J. Atkinson Jr., Shiew-Mei Huang, Juan J.L. Lertora, Sanford P. Markey - Principles of Clinical Pharmacology, Third Edition-Academic Press (2012)  <br>
-
-Supplemental Textbook (older version required by MIT course, but this is newer): David E. Golan MD PhD - Principles of Pharmacology_ The Pathophysiologic Basis of Drug Therapy-LWW (2016)  <br>
-
-Syllabus: copy of NIH's 2023-2024 syllabus <br>
+1. Supplemental Textbook (older version required by MIT course, but this is newer): David E. Golan MD PhD - Principles of Pharmacology_ The Pathophysiologic Basis of Drug Therapy-LWW (2016) 
+2. Assignments
+- downloaded from `https://ocw.mit.edu/courses/hst-151-principles-of-pharmacology-spring-2005/pages/assignments/`
+3. Practice exams
+- downloaded from `https://ocw.mit.edu/courses/hst-151-principles-of-pharmacology-spring-2005/pages/study-materials/`
+4. Lecture Notes
+- downloaded from `https://ocw.mit.edu/courses/hst-151-principles-of-pharmacology-spring-2005/pages/lecture-notes/`
+<br>
 
 Wikipedia of Pharmacology and related page links <br>
 
