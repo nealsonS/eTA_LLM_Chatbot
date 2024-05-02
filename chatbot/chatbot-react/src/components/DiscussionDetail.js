@@ -123,7 +123,7 @@ function DiscussionDetail({ user }) {
                 </div>}
             </p>
             {user && user.isTA && !discussion.isVerified && (
-              <button className="btn btn-success btn-sm" onClick={handleVerify}>Verify</button>
+              <button className="btn btn-primary btn-sm" onClick={handleVerify}>Verify</button>
             )}
           </div>
         </div>
