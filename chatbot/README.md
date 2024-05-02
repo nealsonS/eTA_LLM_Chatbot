@@ -38,17 +38,6 @@ Testing conversation memory of chatbot.
 
 
 
-### LLM (in 'llm' folder)
-Currently uses Lab 6's OpenAI for LLM (do 'nano .env' to find OpenAI key.
-
-## huggingface_embeddings (folder)
-Different scripts to test performance of Huggingface embeddings. These were not reused in final version
-
-## openai_cookbook (folder)
-Different scripts to test performance of OpenAI embeddings. This method was not reused in final version
-
-
-
 ### Course Materials (organized in 'organized_course_materials' folder and all together in 'all_course_materials' folder)
 Primary: NIH Principles of Clinical Pharmacology Course Materials
 

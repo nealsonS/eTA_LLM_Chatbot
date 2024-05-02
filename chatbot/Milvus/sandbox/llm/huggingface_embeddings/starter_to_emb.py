@@ -37,5 +37,5 @@ print(output)
 
 embeddings = pd.DataFrame(output)
 
-embeddings.to_csv("embeddings.csv", index=False)
+embeddings.to_csv("practice_embeddings_database.csv", index=False)
 
