@@ -194,18 +194,6 @@ function getAIResponse(userInput, callback) {
       }
   });
 
-  // app.post('/api/login', async (req, res) => {
-  //     try {
-  //         const { username, password } = req.body;
-  //         const user = await User.findOne({ username, password });
-  //         if (!user) {
-  //             return res.status(401).send({ message: 'Invalid credentials' });
-  //         }
-  //         res.json({ message: 'Login successful', userId: user._id });
-  //     } catch (error) {
-  //         res.status(500).json({ message: 'Login error', error: error.message });
-  //     }
-  // });
 
   app.post('/api/login', async (req, res) => {
       const { username, password } = req.body;
