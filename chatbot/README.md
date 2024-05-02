@@ -1,5 +1,3 @@
-*NOTE TO TEAM*: Additional materials on Google Drive: https://drive.google.com/drive/folders/104F88GdLSjuGbi7pKkPo7mHvDKDiIlbI?usp=drive_link 
-
 
 Make sure to do the following first:
 ### Installations:
