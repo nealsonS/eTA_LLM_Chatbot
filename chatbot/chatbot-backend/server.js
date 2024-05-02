@@ -72,7 +72,9 @@ const Discussion = mongoose.model('Discussion', discussionSchema);
 const userSchema = new mongoose.Schema({
   username: { type: String, required: true, unique: true },
   password: { type: String, required: true }, // Note: Storing plain text passwords is highly insecure.
-  createdAt: { type: Date, default: Date.now }
+  createdAt: { type: Date, default: Date.now },
+  isTA: { type: Boolean, default: false },
+  verificationCode: { type: String, default: '' }
 });
 
 const User = mongoose.model('User', userSchema);
@@ -178,10 +180,13 @@ function getAIResponse(userInput, callback) {
 
   app.post('/api/register', async (req, res) => {
       try {
-          const { username, password } = req.body;
-          const user = new User({ username, password });
+          const { username, password, isTA, verificationCode } = req.body;
+          if (isTA && verificationCode !== 'ExpectedCode') {
+            return res.status(400).json({ message: "Invalid verification code for TA." });
+          }
+          const user = new User({ username, password, isTA, verificationCode });
           await user.save();
-          res.status(201).send({ message: 'User created successfully', userId: user._id });
+          res.status(201).json({ message: 'User created successfully', userId: user._id });
       } catch (error) {
           res.status(400).json({ message: 'Error creating user', error: error.message });
       }
