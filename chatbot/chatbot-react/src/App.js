@@ -70,7 +70,7 @@ function App() {
                 </>
               ) : (
                 <div>
-                  <div className="m-3">
+                  <div className="row-md-6 m-3">
                     {showLogin ? (
                       <LoginForm onUserLoggedIn={handleUserLoggedIn} />
                     ) : (
