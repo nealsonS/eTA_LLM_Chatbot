@@ -10,11 +10,13 @@ Folder `chatbot-backend` contains JS code that handles the backend of our websit
 
 
 ## Parts 
-### chatbot.py
-Main Python script that connects with the backend to generate Chatbot's response.
-<br>
 Folder `chatbotParts` contains Python scripts that connects with the backend of our website and produces different parts of our Chatbot's responses. <br>
-`example_questions.txt` contains sample questions to ask our Chatbot for testing performance.
+
+### chatbot.py
+- Main Python script that connects with the backend to generate Chatbot's response.
+<br>
+
+- `example_questions.txt` contains sample questions to ask our Chatbot for testing performance.
 
 
 ## Milvus
