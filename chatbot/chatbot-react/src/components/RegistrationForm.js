@@ -31,12 +31,12 @@ function RegistrationForm({ onRegistrationSuccess }) {
         <div>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
-                    <label htmlFor="username">Username</label>
+                    <label htmlFor="username" style= {{color:'#faf3e6'}}>Username</label>
                     <input type="text" className="form-control" id="username" required
                            value={username} onChange={e => setUsername(e.target.value)} />
                 </div>
                 <div className="form-group">
-                    <label htmlFor="password">Password</label>
+                    <label htmlFor="password" style= {{color:'#faf3e6'}}>Password</label>
                     <input type="password" className="form-control" id="password" required
                            value={password} onChange={e => setPassword(e.target.value)} />
                 </div>

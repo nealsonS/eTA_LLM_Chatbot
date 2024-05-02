@@ -56,7 +56,7 @@ function App() {
     <Router>
       <div className="App">
         <div className="container-fluid">
-          <div className="row">
+          <div className="row align-items-center justify-content-center" style={{ minHeight: '100vh' }}>
             <div className="col-md-4">
               {isLoggedIn ? (
                 <>
