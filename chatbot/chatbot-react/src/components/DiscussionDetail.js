@@ -39,11 +39,11 @@ function DiscussionDetail() {
   }
 
   return (
-    <div className="container mt-5">
+    <div className="container mt-5" >
       <Link to="/" className="btn btn-light btn-sm mb-3 has-icon">
         <i className="fa fa-arrow-left mr-2"></i>Back
       </Link>
-      <div className="card mb-2">
+      <div className="card mb-2" style={{ backgroundColor: 'whitesmoke' }}>
         <div className="card-body">
           <div className="media forum-item">
             <img src={discussion.avatarUrl} className="mr-3 rounded-circle" alt="User" width="50" />

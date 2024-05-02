@@ -8,7 +8,7 @@ function ForumItem({ data }) {
     };
 
     return (
-        <div className="card mb-2" style={{ backgroundColor: 'lightgrey' }}>
+        <div className="card mb-2" style={{ backgroundColor: 'whitesmoke' }}>
           <div className="card-body p-2">
             <div className="row align-items-center">
               <div className="col-2 text-center">
