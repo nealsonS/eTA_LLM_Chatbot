@@ -14,8 +14,6 @@ Folder `chatbotParts` contains Python scripts that connects with the backend of 
 
 ### chatbot.py
 - Main Python script that connects with the backend to generate Chatbot's response.
-<br>
-
 - `example_questions.txt` contains sample questions to ask our Chatbot for testing performance.
 
 
