@@ -15,7 +15,7 @@ Precursor to `bio_forum.py`.
 
 
 ## bio_forum.py
-Scraper for url: https://biology-forums.com/index.php?board=84.0
+Scraper for url: https://biology-forums.com/index.php?board=84.0.
 1. Collect all subforums of main page using requests. Pages of these subforums are in sublinks.txt.
 2. Login using credentials using selenium
 3. For every subforum, collect the question and answer
