@@ -59,7 +59,7 @@ function App() {
       <div className="App">
         <div className="container-fluid">
         {isLoggedIn ? (
-          <div className="row align-items-center justify-content-center" style={{ minHeight: '100vh' }}>
+          <div className="row" style={{ minHeight: '100vh' }}>
             <div className="col-md-4">
               <div className="m-3">
                 <NewDiscussionModal addDiscussion={addDiscussion} />
