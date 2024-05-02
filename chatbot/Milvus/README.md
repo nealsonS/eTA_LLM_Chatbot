@@ -2,7 +2,7 @@
 Milvus is an open-source high-performance popular vector database solution. <br>
 It benchmarks quite fast, so it'd be perfect to use for our chatbot to speed up searches for context. <br>
 Since we have a large PDF collection and text files, it would be unfeasible to reload everything into the vector database everytime. <br>
-So, I proposed having a milvus server running on your machine and adding everything into it. Then after this, the chatbot connects to it via localhost:19530 (the default port and ip for localhost milvus) <br>
+So, we decided to have a milvus server running on your machine and adding everything into it. Then after this, the chatbot connects to it via localhost:19530 (the default port and ip for localhost milvus) <br>
 
 ## Requirements
 Please run on terminal on Ubuntu:
@@ -36,6 +36,10 @@ Then it asks you to type `YES_DELETE_ALL` to delete all the collections or `exit
 This is to avoid accidental deletion of collection.
 
 
+### files_inserted.txt
+All the files that were inputted into Milvus database.
+
+
 ## Extra information
 Use the milvus_cli (command line interface) to see collections:
 ```
@@ -58,6 +62,3 @@ sudo systemctl status milvus
 sudo systemctl status milvus-etcd
 sudo systemctl status milvus-minio
 ```
-
-
-
