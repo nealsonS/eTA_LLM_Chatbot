@@ -19,7 +19,7 @@ Precursor to `combined_video_transcription.py`.
 
 
 ## combined_video_transcription.py 
-Combines YouTube video transcription with timestamp code and  MP4 --> WAV transcription code.
+Combines YouTube video transcription with timestamp code and  MP4 --> WAV transcription code. <br>
 Precursor to `../chatbotParts/ytVideo.py`.
 1. Inputs user desired mode and video source
 2. Outputs timestamps for searched word

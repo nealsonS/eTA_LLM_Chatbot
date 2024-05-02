@@ -14,7 +14,7 @@ Script that transforms all PDF documents in `../all_course_materials` into embed
 
 
 ## tb_conn_emb.py
-Script to connect to HuggingFace database to retrieve textbook embeddings and answer queries.
+Script to connect to HuggingFace database to retrieve textbook embeddings and answer queries. <br>
 Precursor to `all_conn_emb.py`.
 1. Connects to HuggingFace database and retrieves textbook embeddings
 2. Outputs answer to inputted question
@@ -22,7 +22,7 @@ Precursor to `all_conn_emb.py`.
 
 
 ## tb_to_emb.py
-Script that transforms `textbook.pdf` into embeddings.
+Script that transforms `textbook.pdf` into embeddings. <br>
 Precursor to `all_to_emb.py`.
 1. Transforms textbook into embeddings
 2. Outputs embeddings into CSV file (sample output file in folder)

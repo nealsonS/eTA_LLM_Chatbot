@@ -29,23 +29,12 @@ This script asks for the folder path which contains text and pdf files. <br>
 Then for each pdf and text file, it embeds using HuggingFaceEmbedding model and adds it to a collection named: `db_560` <br>
 To avoid duplication of data, it will fail if the collection already exists <br>
 
-### sim_search.py
-Quick implementation to perform similarity search of user-inputted query. <br>
-It will pull the most similar texts in the collection. <br>
 
 ### drop_collections.py
 This scripts connects to your Milvus server, and list all the collections inside your server. <br>
 Then it asks you to type `YES_DELETE_ALL` to delete all the collections or `exit` to exit. <br>
 This is to avoid accidental deletion of collection.
 
-### quick_drop_collections.py (USE FOR TESTING ONLY)
-DANGEROUS: This scripts is the same as drop_collections.py but doesn't user to make sure. <br>
-Made this to quickly drop collections quickly for testing insertions. <br>
-
-### rag_chain.py 
-Quick basic implementation of RAG chatbot to check if vector database works. <br>
-Currently does not have memory of conversation.  <br>
-Will be adjusting parameters.  <br>
 
 ## Extra information
 Use the milvus_cli (command line interface) to see collections:
