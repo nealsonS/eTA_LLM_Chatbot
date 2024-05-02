@@ -181,7 +181,7 @@ function getAIResponse(userInput, callback) {
   app.post('/api/register', async (req, res) => {
       try {
           const { username, password, isTA, verificationCode } = req.body;
-          if (isTA && verificationCode !== 'ExpectedCode') {
+          if (isTA && verificationCode !== 'FightOn') {
             return res.status(400).json({ message: "Invalid verification code for TA." });
           }
           const user = new User({ username, password, isTA, verificationCode });
