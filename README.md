@@ -4,7 +4,7 @@ Part of DSCI 560- Data Science Practicum class <br>
 
 
 ## Chatbot
-Implementation of Chatbot
+Implementation of Chatbot <br>
 
 
 Preliminary labs before implementation of Chatbot: 
