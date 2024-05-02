@@ -85,8 +85,11 @@ function App() {
         ) : (
           <div className="row align-items-center justify-content-center" style={{ minHeight: '100vh' }}>
             <div className="row-md-6 m-3">
-              <div className='m-2'>
+              <div className='row align-items-center justify-content-center m-2'>
                 <img src="/UF.png" alt="Welcome" className="img-fluid" style={{ maxWidth: "200px" }} />
+              </div>
+              <div>
+                <h1 className="m-2 mb-4" style= {{color:'#faf3e6'}}>UpAllNight Forums</h1>
               </div>
               {showLogin ? (
                 <LoginForm onUserLoggedIn={handleUserLoggedIn} />
