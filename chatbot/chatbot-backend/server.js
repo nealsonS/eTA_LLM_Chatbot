@@ -63,7 +63,8 @@ const discussionSchema = new mongoose.Schema({
       pageno: String,
       replyTime: String,
       views: Number
-    }]
+    }],
+    isVerified:Boolean
   });
   
 const Discussion = mongoose.model('Discussion', discussionSchema);
@@ -166,7 +167,8 @@ function getAIResponse(userInput, callback) {
             pageno: aiResponse.pageno,
             replyTime: new Date().toLocaleString(),
             views: 0
-          }]
+          }],
+          isVerified:false
         });
 
         const savedDiscussion = await newDiscussion.save();
@@ -192,19 +194,50 @@ function getAIResponse(userInput, callback) {
       }
   });
 
+  // app.post('/api/login', async (req, res) => {
+  //     try {
+  //         const { username, password } = req.body;
+  //         const user = await User.findOne({ username, password });
+  //         if (!user) {
+  //             return res.status(401).send({ message: 'Invalid credentials' });
+  //         }
+  //         res.json({ message: 'Login successful', userId: user._id });
+  //     } catch (error) {
+  //         res.status(500).json({ message: 'Login error', error: error.message });
+  //     }
+  // });
+
   app.post('/api/login', async (req, res) => {
-      try {
-          const { username, password } = req.body;
-          const user = await User.findOne({ username, password });
-          if (!user) {
-              return res.status(401).send({ message: 'Invalid credentials' });
-          }
-          res.json({ message: 'Login successful', userId: user._id });
-      } catch (error) {
-          res.status(500).json({ message: 'Login error', error: error.message });
+      const { username, password } = req.body;
+      // Find user in the database
+      const user = await User.findOne({ username });
+      if (!user) {
+          return res.status(404).json({ message: 'User not found' });
       }
+      // Example password verification - replace with actual check!
+      if (password !== user.password) {
+          return res.status(401).json({ message: 'Incorrect password' });
+      }
+      // Send back user data, omitting sensitive info like password
+      res.json({
+          user: {
+              _id: user._id,
+              username: user.username,
+              isTA: user.isTA
+          }
+      });
   });
 
+
+  app.post('/api/discussions/verify/:id', async (req, res) => {
+    try {
+      const { isVerified } = req.body;
+      const discussion = await Discussion.findByIdAndUpdate(req.params.id, { isVerified }, { new: true });
+      res.json(discussion);
+    } catch (error) {
+      res.status(500).send("Failed to verify discussion");
+    }
+  });  
   
 
   

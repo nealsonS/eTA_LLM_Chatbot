@@ -38,11 +38,13 @@ function App() {
 
   const handleUserLoggedIn = (user) => {
     setIsLoggedIn(true);
+    setUser(user)
     console.log('User logged in:', user);
   };
 
   const handleUserLoggedOut = () => {
     setIsLoggedIn(false);
+    setUser(null)
     console.log('User logged out');
   };
 
@@ -93,7 +95,7 @@ function App() {
                     <p className="lead" style= {{color:'#faf3e6'}}>Click 'New Question' to ask a question or select a discussion to view details.</p>
                   </div>
                 } />
-                <Route path="/discussion/:id" element={<DiscussionDetail />} />
+                <Route path="/discussion/:id" element={<DiscussionDetail user={user} />} />
               </Routes>
             </div>
           </div>

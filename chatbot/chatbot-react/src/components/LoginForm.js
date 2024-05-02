@@ -16,10 +16,11 @@ function LoginForm({ onUserLoggedIn }) {
                 body: JSON.stringify({ username, password})
             });
             const data = await response.json();
-            if (response.ok) {
-                onUserLoggedIn(data.user); // Notify parent component about the login
+            if (data.user) {
+                onUserLoggedIn(data.user);  // Assuming 'user' contains the necessary data
+                console.log('Login successful:', data.user);
             } else {
-                setErrorMessage(data.message || 'Login failed: Incorrect username or password');
+                console.error('Login failed:', data.message);
             }
         } catch (error) {
             setErrorMessage('Network error: ' + error.message);
