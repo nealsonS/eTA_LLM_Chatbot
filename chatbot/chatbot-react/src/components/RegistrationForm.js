@@ -54,7 +54,7 @@ function RegistrationForm({ onRegistrationSuccess }) {
                         <input type="text" className="form-control" id="verificationCode" required value={verificationCode} onChange={e => setVerificationCode(e.target.value)} />
                     </div>
                 )}
-                <button type="submit" className="btn btn-success">Register</button>
+                <button type="submit" className="btn btn-success mt-2">Register</button>
             </form>
             {message && <div className="alert alert-info" role="alert">{message}</div>}
         </div>
