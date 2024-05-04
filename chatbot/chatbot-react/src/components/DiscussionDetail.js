@@ -58,15 +58,15 @@ function DiscussionDetail({ user }) {
       <Link to="/" className="btn btn-light btn-sm mb-3 has-icon">
         <i className="fa fa-arrow-left mr-2"></i>Back
       </Link>
-      <div className="card mb-2" style={{ backgroundColor: 'whitesmoke' }}>
+      <div className="card mb-2" style={{ backgroundColor: '#bcbdd0' }}>
         <div className="card-body">
           <div className="media forum-item">
             <img src={discussion.avatarUrl} className="mr-3 rounded-circle" alt="User" width="50" />
             <div className="media-body">
-              <h5 className="mt-1">{discussion.title}</h5>
+              <h5 className="mt-1" >{discussion.title}</h5>
               <p>{discussion.content}</p>
-              <div className="text-muted">
-                <a href="javascript:void(0)" className="text-secondary">{formatDate(discussion.createdAt)}</a> 
+              <div>
+                <a href="javascript:void(0)" className='text-secondary'>{formatDate(discussion.createdAt)}</a> 
               </div>
               <div>
                 {discussion.comments.map((comment, index) => (

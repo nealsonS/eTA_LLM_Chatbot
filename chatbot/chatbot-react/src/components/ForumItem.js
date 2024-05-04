@@ -8,7 +8,7 @@ function ForumItem({ data }) {
     };
 
     return (
-        <div className="card mb-2" style={{ backgroundColor: 'whitesmoke' }}>
+        <div className="card mb-2" style={{ backgroundColor: '#bcbdd0' }}>
           <div className="card-body p-2">
             <div className="row align-items-center">
               <div className="col-2 text-center">
@@ -18,10 +18,10 @@ function ForumItem({ data }) {
                 <h6 className="mb-1">
                   <Link to={`/discussion/${data._id}`} className="text-dark">{data.title}</Link>
                 </h6>
-                <p className="text-muted small mb-0">{formatContentPreview(data.content)}</p>
+                <p className="text-dark small mb-0">{formatContentPreview(data.content)}</p>
               </div>
               <div className="col-2 text-center">
-                <small className="text-muted">{data.replyTime}</small>
+                <small className="text-secondary">{data.replyTime}</small>
               </div>
             </div>
           </div>
