@@ -73,7 +73,7 @@ function App() {
                 </div>
               </div>
             </div>
-            <div className="col-md-8 d-flex align-items-center justify-content-center">
+            <div className="col-md-8 d-flex align-items-center justify-content-center mb-5">
               <Routes>
                 <Route path="/" element={
                   <div className="text-center" style={{ maxWidth: "600px" }}>
