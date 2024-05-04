@@ -65,10 +65,12 @@ function App() {
                 <NewDiscussionModal addDiscussion={addDiscussion} />
               </div>
               <ForumList discussions={discussions} />
-              <div className="fixed-bottom mb-3">
-                <img src="https://banner2.cleanpng.com/20180419/uze/kisspng-usc-trojans-football-university-of-southern-califo-trojans-clipart-5ad8d67ec5d339.5791848115241601268103.jpg" alt="User Avatar" className="rounded-circle mr-2" style={{ width: '50px', height: '50px' }} />
-                <strong className="ml-1 mr-2" style= {{color:'#faf3e6'}}>{user?.username}</strong>
-                <button className="btn btn-danger" onClick={handleUserLoggedOut}>Logout</button>
+              <div className="fixed-bottom mt-3" style = {{backgroundColor: '#373858'}}>
+                <div className='mb-2 mt-2'>
+                  <img src="https://banner2.cleanpng.com/20180419/uze/kisspng-usc-trojans-football-university-of-southern-califo-trojans-clipart-5ad8d67ec5d339.5791848115241601268103.jpg" alt="User Avatar" className="rounded-circle m-2" style={{ width: '50px', height: '50px' }} />
+                  <strong className="ml-1 mr-2" style= {{color:'#faf3e6'}}>{user?.username}</strong>
+                  <button className="btn btn-danger" onClick={handleUserLoggedOut}>Logout</button>
+                </div>
               </div>
             </div>
             <div className="col-md-8 d-flex align-items-center justify-content-center">
