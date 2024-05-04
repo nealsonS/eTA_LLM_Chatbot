@@ -58,7 +58,7 @@ function DiscussionDetail({ user }) {
       <Link to="/" className="btn btn-light btn-sm mb-3 has-icon">
         <i className="fa fa-arrow-left mr-2"></i>Back
       </Link>
-      <div className="card mb-2" style={{ backgroundColor: '#bcbdd0' }}>
+      <div className="card mb-2" style={{ backgroundColor: '#d7d7e4' }}>
         <div className="card-body">
           <div className="media forum-item">
             <img src={discussion.avatarUrl} className="mr-3 rounded-circle" alt="User" width="50" />

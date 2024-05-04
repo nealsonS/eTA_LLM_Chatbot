@@ -67,7 +67,7 @@ function App() {
               <ForumList discussions={discussions} />
               <div className="fixed-bottom mt-3" style = {{backgroundColor: '#373858'}}>
                 <div className='mb-2 mt-2'>
-                  <img src="https://banner2.cleanpng.com/20180419/uze/kisspng-usc-trojans-football-university-of-southern-califo-trojans-clipart-5ad8d67ec5d339.5791848115241601268103.jpg" alt="User Avatar" className="rounded-circle m-2" style={{ width: '50px', height: '50px' }} />
+                  <img src="https://b.fssta.com/uploads/application/college/team-logos/USC-alternate.vresize.350.350.medium.0.png" alt="User Avatar" className="rounded-circle m-2" style={{ width: '50px', height: '50px' }} />
                   <strong className="ml-1 mr-2" style= {{color:'#faf3e6'}}>{user?.username}</strong>
                   <button className="btn btn-danger" onClick={handleUserLoggedOut}>Logout</button>
                 </div>

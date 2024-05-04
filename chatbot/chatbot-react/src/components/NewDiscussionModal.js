@@ -16,7 +16,7 @@ function NewDiscussionModal({ addDiscussion }) {
             title: title,
             content: content,
             user: 'Student',
-            avatarUrl: "https://banner2.cleanpng.com/20180419/uze/kisspng-usc-trojans-football-university-of-southern-califo-trojans-clipart-5ad8d67ec5d339.5791848115241601268103.jpg",
+            avatarUrl: "https://b.fssta.com/uploads/application/college/team-logos/USC-alternate.vresize.350.350.medium.0.png",
             replyTime: 'Just now',
             views: 0,
             comments: []
