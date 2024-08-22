@@ -2,6 +2,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 const { spawn } = require('child_process');  // To spawn Python process
 const cors = require('cors');
+const axios = require('axios');
+
 
 require('dotenv').config();
 
@@ -115,79 +117,72 @@ app.get('/api/discussions', async (req, res) => {
         res.status(500).json({ message: 'Failed to fetch discussion' });
     }
 });
-// Function to execute Python script and get the AI response
-function getAIResponse(userInput, callback) {
-    const python = spawn('python3', ['../chatbot.py', userInput]);
-    
-    //const python = spawn("C:/Users/neals/anaconda3/envs/langchain/python.exe", ['../Milvus/chatbot.py', userInput]);
-    let output = '';
-  
-    python.stdout.on('data', function (data) {
-      output += data.toString();
-    });
-  
-    python.on('close', (code) => {
-      if (code !== 0) {
-        return callback(new Error('Python script exited with code ' + code), null);
-      }
-      try {
-        console.log(output)
-        const parsedOutput = JSON.parse(output);
-        callback(null, parsedOutput);
-      } catch (parseError) {
-        callback(new Error('Error parsing output: ' + parseError), null);
-      }
-    });
+// Function to call the AI API and get the response
+async function getAIResponse(userInput) {
+  try {
+      const response = await axios.post('https://rag-app-001-1d4e6f4c631a.herokuapp.com/query/', {
+          query: userInput
+      }, {
+          headers: {
+              'Content-Type': 'application/json'
+          }
+      });
+      return response.data;
+  } catch (error) {
+      console.error('Failed to get AI response:', error);
+      throw new Error('Failed to get AI response');
   }
-  app.post('/api/discussions', async (req, res) => {
-    const { title, content, user, avatarUrl } = req.body;
+}
 
-    try {
-        const newDiscussion = new Discussion({
-            title,
-            content,
-            user,
-            avatarUrl,
-            replyTime: new Date().toLocaleString(),
-            comments: [{
-                user: 'ETA',
-                avatarUrl: 'http://localhost:3000/ETA.png',
-                content: '', 
-                YTEmbedLink: '',
-                YT_time: '',
-                Booksrc: '',
-                pageno: '',
-                replyTime: new Date().toLocaleString(),
-            }],
-            isVerified:false
-        });
+app.post('/api/discussions', async (req, res) => {
+  const { title, content, user, avatarUrl } = req.body;
 
-        const savedDiscussion = await newDiscussion.save();
-        res.status(201).json(savedDiscussion);
+  try {
+      const newDiscussion = new Discussion({
+          title,
+          content,
+          user,
+          avatarUrl,
+          replyTime: new Date().toLocaleString(),
+          comments: [{
+              user: 'ETA',
+              avatarUrl: 'http://localhost:3000/ETA.png',
+              content: '', 
+              YTEmbedLink: '',
+              YT_time: '',
+              Booksrc: '',
+              pageno: '',
+              replyTime: new Date().toLocaleString(),
+          }],
+          isVerified: false
+      });
 
-        // Async call to get AI response
-        getAIResponse(content, async (err, aiResponse) => {
-            if (err) {
-                console.error('Failed to get AI response:', err);
-                return;
-            }
+      const savedDiscussion = await newDiscussion.save();
+      res.status(201).json(savedDiscussion);
 
-            // Update the discussion with AI response
-            await Discussion.findByIdAndUpdate(savedDiscussion._id, {
-                $set: {
-                    "comments.0.content": aiResponse.response,
-                    "comments.0.YTEmbedLink": aiResponse.vids,
-                    "comments.0.YT_time": aiResponse.vid_time,
-                    "comments.0.Booksrc": aiResponse.docs,
-                    "comments.0.pageno": aiResponse.pageno,
-                }
-            });
-        });
-    } catch (error) {
-        console.error('Failed to save new discussion:', error);
-        res.status(500).send(error.message);
-    }
-  });
+      // Async call to get AI response from the API
+      try {
+          const aiResponse = await getAIResponse(content);
+
+          // Update the discussion with AI response
+          await Discussion.findByIdAndUpdate(savedDiscussion._id, {
+              $set: {
+                  "comments.0.content": aiResponse.answer,
+                  "comments.0.YTEmbedLink": aiResponse.sources.find(source => source.document.includes('ytvid'))?.document || '',
+                  "comments.0.YT_time": aiResponse.sources.find(source => source.document.includes('ytvid'))?.page || '',
+                  "comments.0.Booksrc": aiResponse.sources.find(source => !source.document.includes('ytvid'))?.document || '',
+                  "comments.0.pageno": aiResponse.sources.find(source => !source.document.includes('ytvid'))?.page || '',
+              }
+          });
+      } catch (error) {
+          console.error('Failed to get AI response:', error);
+      }
+  } catch (error) {
+      console.error('Failed to save new discussion:', error);
+      res.status(500).send(error.message);
+  }
+});
+
 
   // app.post('/api/discussions', async (req, res) => {
   //   const { title, content, user, avatarUrl } = req.body;
